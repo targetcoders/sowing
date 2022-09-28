@@ -1,13 +1,13 @@
-package com.targetcoders.daily;
+package com.targetcoders.sowing;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DailyApplication {
+public class SowingApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DailyApplication.class, args);
+		SpringApplication.run(SowingApplication.class, args);
 	}
 
 }
