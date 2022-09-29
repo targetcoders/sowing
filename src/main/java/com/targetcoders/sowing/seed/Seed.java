@@ -28,4 +28,11 @@ public class Seed {
         return new Seed(null, type, userId, title, content, doneDate);
     }
 
+    public void update(UpdateSeedDTO updateSeedDto) {
+        type = updateSeedDto.getType();
+        title = updateSeedDto.getTitle();
+        content = updateSeedDto.getContent();
+        sowingDate = updateSeedDto.getSowingDate();
+    }
+
 }

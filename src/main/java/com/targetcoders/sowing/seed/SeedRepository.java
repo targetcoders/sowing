@@ -18,4 +18,13 @@ public class SeedRepository {
     public Seed findById(Long id) {
         return em.find(Seed.class, id);
     }
+
+    public void removeById(Long id) {
+        em.remove(findById(id));
+    }
+
+    public void updateSeed(UpdateSeedDTO updateSeedDto) {
+        Seed seed = em.find(Seed.class, updateSeedDto.getId());
+        seed.update(updateSeedDto);
+    }
 }

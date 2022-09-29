@@ -28,11 +28,11 @@ class SeedServiceTest {
         Seed seed = Seed.create(SeedType.PLAY,100L, "제목", "내용", now);
 
         //when
-        seedService.saveSeed(seed);
+        Long saveId = seedService.saveSeed(seed);
 
         //then
-        Seed getSeed = seedService.findById(1L);
-        assertThat(getSeed.getId()).isEqualTo(1L);
+        Seed getSeed = seedService.findSeedById(saveId);
+        assertThat(getSeed.getId()).isEqualTo(getSeed.getId());
         assertThat(getSeed.getType().toString()).isEqualTo("PLAY");
         assertThat(getSeed.getTitle()).isEqualTo("제목");
         assertThat(getSeed.getContent()).isEqualTo("내용");
@@ -43,10 +43,47 @@ class SeedServiceTest {
     @DisplayName("찾지 못하면 null 반환")
     @Transactional
     void seedNotFound() {
+        //then
+        assertThat(seedService.findSeedById(0L)).isNull();
+    }
+
+    @Test
+    @DisplayName("업데이트")
+    @Transactional
+    void updateSeed() {
+        //given
+        LocalDateTime now = LocalDateTime.now();
+        Seed seed = Seed.create(SeedType.PLAY,100L, "제목", "내용", now);
+        Long saveId = seedService.saveSeed(seed);
+
         //when
-        Seed result = seedService.findById(0L);
+        Seed findSeed = seedService.findSeedById(saveId);
+        LocalDateTime updateDate = LocalDateTime.now();
+        UpdateSeedDTO updateSeedDto = new UpdateSeedDTO(findSeed.getId(), SeedType.STUDY, "변경된 제목", "변경된 내용", updateDate);
+        seedService.updateSeed(updateSeedDto);
 
         //then
-        assertThat(result).isEqualTo(null);
+        Seed updateSeed = seedService.findSeedById(findSeed.getId());
+        assertThat(updateSeed.getType()).isEqualTo(SeedType.STUDY);
+        assertThat(updateSeed.getTitle()).isEqualTo("변경된 제목");
+        assertThat(updateSeed.getContent()).isEqualTo("변경된 내용");
+        assertThat(updateSeed.getSowingDate()).isEqualTo(updateDate);
+    }
+
+    @Test
+    @DisplayName("ID로 삭제")
+    @Transactional
+    void removeSeed() {
+        //given
+        LocalDateTime now = LocalDateTime.now();
+        Seed seed = Seed.create(SeedType.PLAY,100L, "제목", "내용", now);
+        Long saveId = seedService.saveSeed(seed);
+        assertThat(seedService.findSeedById(saveId)).isNotNull();
+
+        //when
+        seedService.removeSeedById(saveId);
+
+        //then
+        assertThat(seedService.findSeedById(saveId)).isNull();
     }
 }

@@ -11,12 +11,23 @@ public class SeedService {
     private final SeedRepository seedRepository;
 
     @Transactional
-    public void saveSeed(Seed seed) {
+    public Long saveSeed(Seed seed) {
         seedRepository.save(seed);
+        return seed.getId();
     }
 
     @Transactional
-    public Seed findById(Long id) {
-        return seedRepository.findById(id);
+    public Seed findSeedById(Long seedId) {
+        return seedRepository.findById(seedId);
+    }
+
+    @Transactional
+    public void removeSeedById(Long seedId) {
+        seedRepository.removeById(seedId);
+    }
+
+    @Transactional
+    public void updateSeed(UpdateSeedDTO updateSeedDto) {
+        seedRepository.updateSeed(updateSeedDto);
     }
 }
