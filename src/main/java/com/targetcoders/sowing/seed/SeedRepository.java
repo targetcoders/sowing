@@ -27,4 +27,5 @@ public class SeedRepository {
         Seed seed = em.find(Seed.class, updateSeedDto.getId());
         seed.update(updateSeedDto);
     }
+
 }

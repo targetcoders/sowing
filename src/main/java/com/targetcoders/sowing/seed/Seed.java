@@ -1,5 +1,6 @@
 package com.targetcoders.sowing.seed;
 
+import com.targetcoders.sowing.member.Member;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,13 +20,17 @@ public class Seed {
     @Column(name = "seed_type")
     private SeedType type;
 
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "member_id")
+    private Member member;
     private String title;
     private String content;
     private LocalDateTime sowingDate;
 
-    public static Seed create(SeedType type, Long userId, String title, String content, LocalDateTime doneDate) {
-        return new Seed(null, type, userId, title, content, doneDate);
+    public static Seed create(SeedType type, Member member, String title, String content, LocalDateTime doneDate) {
+        Seed seed = new Seed(null, type, member, title, content, doneDate);
+        member.addSeed(seed);
+        return seed;
     }
 
     public void update(UpdateSeedDTO updateSeedDto) {

@@ -1,5 +1,7 @@
 package com.targetcoders.sowing.seed;
 
+import com.targetcoders.sowing.member.Member;
+import com.targetcoders.sowing.member.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +20,8 @@ class SeedServiceTest {
 
     @Autowired
     SeedService seedService;
+    @Autowired
+    MemberService memberService;
 
     @Test
     @DisplayName("ID로 조회")
@@ -25,7 +29,8 @@ class SeedServiceTest {
     void saveAndFindOne() {
         //given
         LocalDateTime now = LocalDateTime.now();
-        Seed seed = Seed.create(SeedType.PLAY,100L, "제목", "내용", now);
+        Member member = Member.create("greenneuron", "nickname", now, now);
+        Seed seed = Seed.create(SeedType.PLAY, member, "제목", "내용", now);
 
         //when
         Long saveId = seedService.saveSeed(seed);
@@ -43,7 +48,6 @@ class SeedServiceTest {
     @DisplayName("찾지 못하면 null 반환")
     @Transactional
     void seedNotFound() {
-        //then
         assertThat(seedService.findSeedById(0L)).isNull();
     }
 
@@ -53,7 +57,8 @@ class SeedServiceTest {
     void updateSeed() {
         //given
         LocalDateTime now = LocalDateTime.now();
-        Seed seed = Seed.create(SeedType.PLAY,100L, "제목", "내용", now);
+        Member member = Member.create("greenneuron", "nickname", now, now);
+        Seed seed = Seed.create(SeedType.PLAY, member, "제목", "내용", now);
         Long saveId = seedService.saveSeed(seed);
 
         //when
@@ -76,7 +81,8 @@ class SeedServiceTest {
     void removeSeed() {
         //given
         LocalDateTime now = LocalDateTime.now();
-        Seed seed = Seed.create(SeedType.PLAY,100L, "제목", "내용", now);
+        Member member = Member.create("greenneuron", "nickname", now, now);
+        Seed seed = Seed.create(SeedType.PLAY,member, "제목", "내용", now);
         Long saveId = seedService.saveSeed(seed);
         assertThat(seedService.findSeedById(saveId)).isNotNull();
 

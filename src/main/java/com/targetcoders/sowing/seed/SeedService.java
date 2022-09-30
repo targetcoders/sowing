@@ -30,4 +30,5 @@ public class SeedService {
     public void updateSeed(UpdateSeedDTO updateSeedDto) {
         seedRepository.updateSeed(updateSeedDto);
     }
+
 }
