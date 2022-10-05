@@ -24,7 +24,7 @@ class SeedServiceTest {
     MemberService memberService;
 
     @Test
-    @DisplayName("ID로 조회")
+    @DisplayName("시드 조회")
     @Transactional
     void saveAndFindOne() {
         //given
@@ -45,14 +45,7 @@ class SeedServiceTest {
     }
 
     @Test
-    @DisplayName("찾지 못하면 null 반환")
-    @Transactional
-    void seedNotFound() {
-        assertThat(seedService.findSeedById(0L)).isNull();
-    }
-
-    @Test
-    @DisplayName("업데이트")
+    @DisplayName("시드 수정")
     @Transactional
     void updateSeed() {
         //given
@@ -76,7 +69,7 @@ class SeedServiceTest {
     }
 
     @Test
-    @DisplayName("ID로 삭제")
+    @DisplayName("시드 삭제, 찾지 못하면 null")
     @Transactional
     void removeSeed() {
         //given
@@ -90,6 +83,7 @@ class SeedServiceTest {
         seedService.removeSeedById(saveId);
 
         //then
-        assertThat(seedService.findSeedById(saveId)).isNull();
+        Seed findSeed = seedService.findSeedById(saveId);
+        assertThat(findSeed).isNull();
     }
 }

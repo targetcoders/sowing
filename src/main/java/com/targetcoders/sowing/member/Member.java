@@ -34,4 +34,9 @@ public class Member {
         this.seedList.add(seed);
     }
 
+    public void update(UpdateMemberDTO updateMemberDTO) {
+        this.username = updateMemberDTO.getUsername();
+        this.nickname = updateMemberDTO.getNickname();
+    }
+
 }

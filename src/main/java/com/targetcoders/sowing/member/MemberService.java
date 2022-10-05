@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -16,7 +18,28 @@ public class MemberService {
     }
 
     @Transactional
-    public Member findById(Long memberId) {
+    public Member findMemberById(Long memberId) {
         return memberRepository.findById(memberId);
     }
+
+    @Transactional
+    public void removeMember(Member member) {
+        memberRepository.remove(member);
+    }
+
+    @Transactional
+    public void updateMember(UpdateMemberDTO updateMemberDTO) {
+        memberRepository.updateMember(updateMemberDTO);
+    }
+
+    @Transactional
+    public List<Member> findAllMembers() {
+        return memberRepository.findAll();
+    }
+
+    @Transactional
+    public List<Member> findMemberByUsername(String memberUsername) {
+        return memberRepository.findByUsername(memberUsername);
+    }
+
 }
