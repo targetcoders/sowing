@@ -1,7 +1,6 @@
 package com.targetcoders.sowing.member;
 
 import lombok.RequiredArgsConstructor;
-import org.hibernate.sql.Update;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
