@@ -29,7 +29,7 @@ class SeedServiceTest {
     void saveAndFindOne() {
         //given
         LocalDateTime now = LocalDateTime.now();
-        Member member = Member.create("greenneuron", "nickname", now, now);
+        Member member = Member.create("greenneuron", "nickname", "password", now, now);
         Seed seed = Seed.create(SeedType.PLAY, member, "제목", "내용", now);
 
         //when
@@ -50,7 +50,7 @@ class SeedServiceTest {
     void updateSeed() {
         //given
         LocalDateTime now = LocalDateTime.now();
-        Member member = Member.create("greenneuron", "nickname", now, now);
+        Member member = Member.create("greenneuron", "nickname", "password", now, now);
         Seed seed = Seed.create(SeedType.PLAY, member, "제목", "내용", now);
         Long saveId = seedService.saveSeed(seed);
 
@@ -74,7 +74,7 @@ class SeedServiceTest {
     void removeSeed() {
         //given
         LocalDateTime now = LocalDateTime.now();
-        Member member = Member.create("greenneuron", "nickname", now, now);
+        Member member = Member.create("greenneuron", "nickname", "password", now, now);
         Seed seed = Seed.create(SeedType.PLAY,member, "제목", "내용", now);
         Long saveId = seedService.saveSeed(seed);
         assertThat(seedService.findSeedById(saveId)).isNotNull();

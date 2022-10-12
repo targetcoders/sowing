@@ -3,7 +3,6 @@ package com.targetcoders.sowing.member;
 import com.targetcoders.sowing.seed.Seed;
 import com.targetcoders.sowing.seed.SeedService;
 import com.targetcoders.sowing.seed.SeedType;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,7 +31,7 @@ class MemberTest {
     void saveAndFind() {
         //given
         LocalDateTime now = LocalDateTime.now();
-        Member member = Member.create("greenneuron", "nickname", now, now);
+        Member member = Member.create("greenneuron", "nickname", "password", now, now);
         Long saveMemberId = memberService.saveMember(member);
 
         //when
@@ -58,9 +57,9 @@ class MemberTest {
     void findAll() {
         //given
         LocalDateTime now = LocalDateTime.now();
-        Member member = Member.create("greenneuron", "nickname", now, now);
+        Member member = Member.create("greenneuron", "nickname", "password", now, now);
         memberService.saveMember(member);
-        Member member2 = Member.create("greenneuron2", "nickname2", now, now);
+        Member member2 = Member.create("greenneuron2", "nickname2", "password", now, now);
         memberService.saveMember(member2);
 
         //when
@@ -76,7 +75,7 @@ class MemberTest {
     public void remove() {
         //given
         LocalDateTime now = LocalDateTime.now();
-        Member member = Member.create("greenneuron", "nickname", now, now);
+        Member member = Member.create("greenneuron", "nickname", "password", now, now);
         Long saveId = memberService.saveMember(member);
 
         //when
@@ -93,7 +92,7 @@ class MemberTest {
     public void update() {
         //given
         LocalDateTime now = LocalDateTime.now();
-        Member member = Member.create("greenneuron", "nickname", now, now);
+        Member member = Member.create("greenneuron", "nickname", "password", now, now);
         Long saveId = memberService.saveMember(member);
         UpdateMemberDTO updateMemberDTO = new UpdateMemberDTO();
         updateMemberDTO.setId(saveId);
