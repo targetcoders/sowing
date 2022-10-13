@@ -13,12 +13,12 @@ public class MemberController {
 	
 	private final MemberService memberService;
 
-	@GetMapping("/member/new")
+	@GetMapping("/members/new")
 	public String signup() {
 		return "/createMemberForm";
 	}
 	
-	@PostMapping("/member/new")
+	@PostMapping("/members/new")
 	public String create(Member member) {
 		memberService.saveMember(member);
 		return "redirect:/";

@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception
 	{
 		http.authorizeRequests()
-			.antMatchers("/signup", "/login", "/").permitAll()
+			.antMatchers("/members/new", "/login", "/").permitAll()
 				.and()
 				.formLogin()
 				.loginPage("/login")
@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.defaultSuccessUrl("/")
 				.failureUrl("/login")
 				.and()
-				.logout();
+				.logout().logoutUrl("/logout");
 	}
 
 	@Bean

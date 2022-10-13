@@ -10,7 +10,7 @@
 </th:block>
 
 <div layout:fragment="content" class="container">
-    <form class="d-flex flex-column justify-content-around align-items-center" action="/member/new" method="POST">
+    <form class="d-flex flex-column justify-content-around align-items-center" action="/members/new" method="POST">
         <h1 class="text-center">회원가입</h1>
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
             <div class="form-floating">
