@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<th:block layout:fragment="css">
+</th:block>
+
+<th:block layout:fragment="script">
+</th:block>
+
+<div layout:fragment="content" class="container">
+    <div class="d-flex justify-content-center">
+        <h1>시드 등록하기</h1>
+    </div>
+    <form role="form" action="/seeds/new" method="post" class="w-100">
+        <div class="d-flex flex-column justify-content-center align-items-center">
+            <select id="seed-type" name="selectType" class="form-select w-75">
+                <option selected>타입을 선택하세요.</option>
+                <option th:each="type : ${typeList}"
+                        th:value="${type}"
+                        th:text="${type}"/>
+            </select>
+            <textarea id="seed-content" name="content" class="form-control w-75 mt-2" style="height: 300px"
+                      placeholder="오늘 무엇을 했나요?"></textarea>
+
+            <button type="submit" class="btn btn-success mt-2">등록</button>
+        </div>
+    </form>
+
+</div>
+</html>
