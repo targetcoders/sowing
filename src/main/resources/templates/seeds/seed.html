@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<th:block layout:fragment="css">
+</th:block>
+
+<th:block layout:fragment="script">
+</th:block>
+
+<div layout:fragment="content" class="container">
+    <div class="d-flex flex-column justify-content-center align-items-center">
+        <h1 class="text-center" th:text="${seed.title}"></h1>
+        <div class="w-100">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <span th:text="${seed.type}"></span>
+                    <span th:text="${#temporals.format(seed.sowingDate,'yyyy-MM-dd')}"></span>
+                </div>
+                <div class="card-body" th:text="${seed.content}"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>
