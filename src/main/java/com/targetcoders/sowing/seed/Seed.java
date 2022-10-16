@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class Seed {
+public class Seed implements Comparable<Seed> {
 
     @Id
     @GeneratedValue
@@ -40,4 +40,8 @@ public class Seed {
         sowingDate = updateSeedDto.getSowingDate();
     }
 
+    @Override
+    public int compareTo(Seed o) {
+        return type.compareTo(o.type);
+    }
 }

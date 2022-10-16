@@ -15,8 +15,11 @@
         <h1 class="text-center">HOME</h1>
         <p><span th:text="${#authentication.name}"></span>님 안녕하세요.</p>
         <div sec:authorize="isAuthenticated()" class="d-flex w-100 justify-content-center flex-column align-items-center">
-            <div class="w-100 list-group" th:each="seed : ${seedList}">
-                <a class="list-group-item" th:href="|/seeds/${seed.id}|" th:text="|${seed.type} / ${seed.title}|"></a>
+            <div class="w-100 list-group" th:each="seedGroup : ${seedGroupList}">
+                <h5 th:text="${#temporals.format(seedGroup.sowingDate,'yyyy-MM-dd')}"></h5>
+                <a class="list-group-item"
+                   th:each="seed : ${seedGroup.seedList}"
+                   th:href="|/seeds/${seed.id}|" th:text="|${seed.type} / ${seed.title}|"></a>
             </div>
         </div>
     </div>

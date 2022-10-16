@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -27,11 +26,8 @@ public class HomeController {
         if (principal != null) {
             String username = principal.getName();
             List<Member> memberList = memberService.findMemberByUsername(username);
-            if (memberList.isEmpty()) {
-                model.addAttribute("seedList", new ArrayList<>());
-            } else {
-                model.addAttribute("seedList", memberList.get(0).getSeedList());
-            }
+            assert memberList.size() == 1;
+            model.addAttribute("seedGroupList", memberList.get(0).seedGroupList());
         }
         return "home";
     }
