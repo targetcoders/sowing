@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -131,7 +132,7 @@ class MemberTest {
 
     @Test
     @DisplayName("등록된 시드가 없으면 시드 그룹 리스트를 Empty 리스트로 반환")
-    public void seedGroupListReturnEmptyList() throws Exception {
+    public void seedGroupListReturnEmptyList() {
         //given
         LocalDateTime now = LocalDateTime.now();
         Member member = Member.create("greenneuron", "nickname", "password", now, now);
@@ -142,4 +143,26 @@ class MemberTest {
         //then
         Assertions.assertThat(seedGroups.size()).isEqualTo(0);
     }
+
+    @Test
+    @DisplayName("시드 그룹 리스트를 날짜 기준 내림차순 정렬")
+    public void sortedSeedGroupList() {
+        //given
+        List<SeedGroup> seedGroups = new ArrayList<>();
+        SeedGroup seedGroup1 = new SeedGroup(LocalDateTime.now().toLocalDate(), new ArrayList<>());
+        SeedGroup seedGroup2 = new SeedGroup(LocalDateTime.now().minusDays(1).toLocalDate(), new ArrayList<>());
+        SeedGroup seedGroup3 = new SeedGroup(LocalDateTime.now().minusDays(2).toLocalDate(), new ArrayList<>());
+        seedGroups.add(seedGroup3);
+        seedGroups.add(seedGroup2);
+        seedGroups.add(seedGroup1);
+
+        //when
+        Collections.sort(seedGroups);
+
+        //then
+        assertThat(seedGroups.get(0)).isEqualTo(seedGroup1);
+        assertThat(seedGroups.get(1)).isEqualTo(seedGroup2);
+        assertThat(seedGroups.get(2)).isEqualTo(seedGroup3);
+    }
+
 }

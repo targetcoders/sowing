@@ -11,6 +11,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -85,5 +88,31 @@ class SeedServiceTest {
         //then
         Seed findSeed = seedService.findSeedById(saveId);
         assertThat(findSeed).isNull();
+    }
+
+    @Test
+    @DisplayName("시드 리스트를 Type Value 기준으로 오름차순 정렬")
+    public void sortedSeedList() {
+        //given
+        List<Seed> seedList = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now();
+        Member member = Member.create("greenneuron", "nickname", "password", now, now);
+        Seed seed1 = Seed.create(SeedType.PLAY, member, "제목", "내용", now);
+        Seed seed2 = Seed.create(SeedType.READ, member, "제목", "내용", now);
+        Seed seed3 = Seed.create(SeedType.STUDY, member, "제목", "내용", now);
+        Seed seed4 = Seed.create(SeedType.DATE, member, "제목", "내용", now);
+        seedList.add(seed1);
+        seedList.add(seed2);
+        seedList.add(seed3);
+        seedList.add(seed4);
+
+        //when
+        Collections.sort(seedList);
+
+        //then
+        assertThat(seedList.get(0)).isEqualTo(seed2);
+        assertThat(seedList.get(1)).isEqualTo(seed1);
+        assertThat(seedList.get(2)).isEqualTo(seed3);
+        assertThat(seedList.get(3)).isEqualTo(seed4);
     }
 }
