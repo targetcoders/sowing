@@ -2,6 +2,8 @@ package com.targetcoders.sowing.controller;
 
 import com.targetcoders.sowing.seed.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -64,4 +66,11 @@ public class SeedController {
         return "redirect:/";
     }
 
+    @ResponseBody
+    @DeleteMapping("seeds/{id}")
+    public ResponseEntity<String> delete(@PathVariable("id") Long id) {
+        System.out.println("SeedController.delete");
+        seedService.removeSeedById(id);
+        return new ResponseEntity<>("delete success, seedId="+id, HttpStatus.OK);
+    }
 }

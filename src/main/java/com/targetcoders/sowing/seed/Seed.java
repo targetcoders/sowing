@@ -20,7 +20,7 @@ public class Seed implements Comparable<Seed> {
     @Column(name = "seed_type")
     private SeedType type;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
     private String title;
