@@ -42,9 +42,14 @@ public class SeedService {
         String content = seedForm.getContent();
         String username = seedForm.getUsername();
         String title = seedForm.getTitle();
+        String sowingDateTime = defaultSowingDateTime(seedForm.getSowingDate());
         Member member = memberRepository.findByUsername(username).get(0);
-        Seed.create(selectType, member, title, content, LocalDateTime.now());
+        Seed.create(selectType, member, title, content, LocalDateTime.parse(sowingDateTime));
         return member.getId();
+    }
+
+    private String defaultSowingDateTime(String sowingDate) {
+        return sowingDate + "T00:00:00";
     }
 
 }

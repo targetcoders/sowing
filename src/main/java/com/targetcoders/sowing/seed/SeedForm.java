@@ -14,5 +14,6 @@ public class SeedForm {
     private List<SeedType> typeList;
     private SeedType selectType;
     private String content;
+    private String sowingDate;
 
 }
