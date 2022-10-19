@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -20,25 +21,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private final CustomUserDetailsService userDetailsService;
 
 	@Override
-	public void configure(WebSecurity web) throws Exception
-	{
+	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/css/**", "/js/**");
 	}
 
 	@Override
-	protected void configure(HttpSecurity http) throws Exception
-	{
-		http.authorizeRequests()
-			.antMatchers("/members/new", "/login", "/").permitAll()
-				.antMatchers("/seeds/**").authenticated()
+	protected void configure(HttpSecurity http) throws Exception {
+		http.csrf().disable()
+				.cors().and()
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
-				.formLogin()
-				.loginPage("/login")
-				.loginProcessingUrl("/login")
-				.defaultSuccessUrl("/")
-				.failureUrl("/login")
-				.and()
-				.logout().logoutUrl("/logout");
+				.authorizeRequests()
+				.anyRequest().permitAll();
 	}
 
 	@Bean

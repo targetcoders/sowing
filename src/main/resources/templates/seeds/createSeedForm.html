@@ -15,7 +15,6 @@
     </div>
     <form role="form" action="/seeds/new" method="post" class="w-100">
         <div class="d-flex flex-column justify-content-center align-items-center">
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
             <input type="hidden" name="username" th:value="${#authentication.name}"/>
             <input type="date" name="sowingDate" class="form-control w-75" th:value="${#temporals.createToday()}"/>
             <select id="seed-type" name="selectType" class="form-select w-75">
