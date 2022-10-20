@@ -1,5 +1,9 @@
 package com.targetcoders.sowing.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.targetcoders.sowing.common.LoginConstants;
+import com.targetcoders.sowing.login.LoginService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -12,30 +16,28 @@ import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 
 @Controller
+@RequiredArgsConstructor
 public class LoginController {
 
-    private static final String REQUEST_URI = "https://accounts.google.com/o/oauth2/v2/auth";
-    private static final String CLIENT_ID = "341020820476-isdn8vj1e925suj59io78sabdhtukmq0.apps.googleusercontent.com";
-    private static final String REDIRECT_URI = "http://localhost:8080/login/google/callback";
-    private static final String SCOPE = "https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/userinfo.profile+openid";
-    private static final String RESPONSE_TYPE = "code";
+    private final LoginService loginService;
 
     @GetMapping("/login/google")
     public String login(Principal principal) {
         if (principal != null) {
             return "redirect:/";
         }
-        String googleOauthLoginRequestURI = REQUEST_URI +
-                "?client_id=" + CLIENT_ID +
-                "&scope=" + SCOPE +
-                "&redirect_uri=" + REDIRECT_URI +
-                "&response_type=" + RESPONSE_TYPE;
+        String googleOauthLoginRequestURI = LoginConstants.REQUEST_URI +
+                "?client_id=" + LoginConstants.CLIENT_ID +
+                "&scope=" + LoginConstants.SCOPE +
+                "&redirect_uri=" + LoginConstants.REDIRECT_URI +
+                "&response_type=" + LoginConstants.RESPONSE_TYPE;
         return "redirect:" + googleOauthLoginRequestURI;
     }
 
     @GetMapping("/login/google/callback")
-    public String loginCallback(@RequestParam("code") String code, @RequestParam("scope") String scope) {
+    public String loginCallback(@RequestParam("code") String code, @RequestParam("scope") String scope) throws JsonProcessingException {
         System.out.println("code = " + code + ", scope = " + scope);
+        String jwtToken = loginService.jwtToken(code);
         return "redirect:/";
     }
 
