@@ -20,7 +20,7 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
     private String username;
-    private String password;
+    private String accessToken;
     private String nickname;
     private LocalDateTime registrationDate;
     private LocalDateTime lastAccessDate;
@@ -28,10 +28,10 @@ public class Member {
     private MemberRole memberRole;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "member")
-    private List<Seed> seedList;
+    private final List<Seed> seedList = new ArrayList<>();
 
     public static Member create(String userName, String nickName, String password, LocalDateTime registrationDate, LocalDateTime lastAccessDate) {
-        return new Member(null, userName, password, nickName, registrationDate, lastAccessDate, MemberRole.ROLE_USER, new ArrayList<>());
+        return new Member(null, userName, password, nickName, registrationDate, lastAccessDate, MemberRole.ROLE_USER);
     }
 
     public void addSeed(Seed seed) {

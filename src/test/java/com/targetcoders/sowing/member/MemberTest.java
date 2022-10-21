@@ -35,19 +35,19 @@ class MemberTest {
     void saveAndFind() {
         //given
         LocalDateTime now = LocalDateTime.now();
-        Member member = Member.create("greenneuron", "nickname", "password", now, now);
-        Long saveMemberId = memberService.saveMember(member);
+        CreateMemberDTO createMemberDTO = new CreateMemberDTO("greenneuron@naver.com", "nickname", "password");
+        Member saveMember = memberService.saveMember(createMemberDTO);
 
         //when
-        Seed seed1 = Seed.create(SeedType.STUDY, member, "제목1", "내용1", now);
+        Seed seed1 = Seed.create(SeedType.STUDY, saveMember, "제목1", "내용1", now);
         seedService.saveSeed(seed1);
-        Seed seed2 = Seed.create(SeedType.STUDY, member, "제목2", "내용2", now);
+        Seed seed2 = Seed.create(SeedType.STUDY, saveMember, "제목2", "내용2", now);
         seedService.saveSeed(seed2);
-        Seed seed3 = Seed.create(SeedType.STUDY, member, "제목3", "내용3", now);
+        Seed seed3 = Seed.create(SeedType.STUDY, saveMember, "제목3", "내용3", now);
         seedService.saveSeed(seed3);
 
         //when
-        Member findMember2 = memberService.findMemberById(saveMemberId);
+        Member findMember2 = memberService.findMemberById(saveMember.getId());
 
         em.flush();
 
@@ -60,11 +60,10 @@ class MemberTest {
     @Transactional
     void findAll() {
         //given
-        LocalDateTime now = LocalDateTime.now();
-        Member member = Member.create("greenneuron", "nickname", "password", now, now);
-        memberService.saveMember(member);
-        Member member2 = Member.create("greenneuron2", "nickname2", "password", now, now);
-        memberService.saveMember(member2);
+        CreateMemberDTO createMemberDTO1 = new CreateMemberDTO("greenneuron", "nickname", "password");
+        memberService.saveMember(createMemberDTO1);
+        CreateMemberDTO createMemberDTO2 = new CreateMemberDTO("greenneuron2", "nickname2", "password2");
+        memberService.saveMember(createMemberDTO2);
 
         //when
         List<Member> allMembers = memberService.findAllMembers();
@@ -78,15 +77,14 @@ class MemberTest {
     @Transactional
     public void remove() {
         //given
-        LocalDateTime now = LocalDateTime.now();
-        Member member = Member.create("greenneuron", "nickname", "password", now, now);
-        Long saveId = memberService.saveMember(member);
+        CreateMemberDTO createMemberDTO1 = new CreateMemberDTO("greenneuron", "nickname", "password");
+        Member saveMember = memberService.saveMember(createMemberDTO1);
 
         //when
-        memberService.removeMember(member);
+        memberService.removeMember(saveMember);
 
         //then
-        Member findMember = memberService.findMemberById(saveId);
+        Member findMember = memberService.findMemberById(saveMember.getId());
         assertThat(findMember).isNull();
     }
 
@@ -95,11 +93,10 @@ class MemberTest {
     @Transactional
     public void update() {
         //given
-        LocalDateTime now = LocalDateTime.now();
-        Member member = Member.create("greenneuron", "nickname", "password", now, now);
-        Long saveId = memberService.saveMember(member);
+        CreateMemberDTO createMemberDTO1 = new CreateMemberDTO("greenneuron", "nickname", "password");
+        Member saveMember = memberService.saveMember(createMemberDTO1);
         UpdateMemberDTO updateMemberDTO = new UpdateMemberDTO();
-        updateMemberDTO.setId(saveId);
+        updateMemberDTO.setId(saveMember.getId());
         updateMemberDTO.setUsername("변경된 이름");
         updateMemberDTO.setNickname("변경된 닉네임");
 
@@ -107,7 +104,7 @@ class MemberTest {
         memberService.updateMember(updateMemberDTO);
 
         //then
-        Member findMember = memberService.findMemberById(saveId);
+        Member findMember = memberService.findMemberById(saveMember.getId());
         assertThat(findMember.getUsername()).isEqualTo("변경된 이름");
         assertThat(findMember.getNickname()).isEqualTo("변경된 닉네임");
     }
@@ -116,12 +113,11 @@ class MemberTest {
     @DisplayName("등록된 시드 리스트를 시드 그룹 리스트로 변환해서 반환")
     public void seedGroupList() {
         //given
-        List<Seed> seedList = new ArrayList<>();
         LocalDateTime now = LocalDateTime.now();
         Member member = Member.create("greenneuron", "nickname", "password", now, now);
-        seedList.add(Seed.create(SeedType.PLAY, member, "제목", "내용", now));
-        seedList.add(Seed.create(SeedType.STUDY, member, "제목", "내용", now.minusDays(1)));
-        seedList.add(Seed.create(SeedType.READ, member, "제목", "내용", now.minusDays(2)));
+        Seed.create(SeedType.PLAY, member, "제목", "내용", now);
+        Seed.create(SeedType.STUDY, member, "제목", "내용", now.minusDays(1));
+        Seed.create(SeedType.READ, member, "제목", "내용", now.minusDays(2));
 
         //when
         List<SeedGroup> seedGroups = member.seedGroupList();

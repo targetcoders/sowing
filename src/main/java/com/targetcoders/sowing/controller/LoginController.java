@@ -37,7 +37,11 @@ public class LoginController {
     @GetMapping("/login/google/callback")
     public String loginCallback(@RequestParam("code") String code, @RequestParam("scope") String scope) throws JsonProcessingException {
         System.out.println("code = " + code + ", scope = " + scope);
-        String jwtToken = loginService.jwtToken(code);
+
+        String accessToken = loginService.accessToken(code);
+        GoogleUserInfoDTO googleUserInfoDTO = loginService.googleUserInfo(accessToken);
+        loginService.joinMember(googleUserInfoDTO, accessToken);
+
         return "redirect:/";
     }
 

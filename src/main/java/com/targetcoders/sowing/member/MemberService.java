@@ -16,13 +16,33 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public Long saveMember(Member member) {
+    public Member saveMember(CreateMemberDTO createMemberDTO) {
         LocalDateTime now = LocalDateTime.now();
+        Member member = new Member();
+        member.setUsername(createMemberDTO.getEmail());
+        member.setAccessToken(passwordEncoder.encode(createMemberDTO.getPassword()));
+        member.setNickname(createMemberDTO.getNickname());
+        member.setMemberRole(MemberRole.ROLE_USER);
         member.setRegistrationDate(now);
         member.setLastAccessDate(now);
-        member.setMemberRole(MemberRole.ROLE_USER);
-        member.setPassword(passwordEncoder.encode(member.getPassword()));
-        return memberRepository.save(member);
+
+        Member findMember = findMember(member.getUsername());
+        if (findMember.getId() != null) {
+            return findMember;
+        }
+
+        memberRepository.save(member);
+        return member;
+    }
+
+    private Member findMember(String username) {
+        List<Member> findMembers = memberRepository.findByUsername(username);
+        if (!findMembers.isEmpty()) {
+            return findMembers.get(0);
+        }
+        Member defaultMember = new Member();
+        defaultMember.setNickname("guest");
+        return defaultMember;
     }
 
     @Transactional
