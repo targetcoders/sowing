@@ -38,9 +38,9 @@ public class LoginController {
     public String loginCallback(@RequestParam("code") String code, @RequestParam("scope") String scope) throws JsonProcessingException {
         System.out.println("code = " + code + ", scope = " + scope);
 
-        String accessToken = loginService.accessToken(code);
-        GoogleUserInfoDTO googleUserInfoDTO = loginService.googleUserInfo(accessToken);
-        loginService.joinMember(googleUserInfoDTO, accessToken);
+        Tokens tokens = loginService.tokens(code);
+        GoogleUserInfoDTO googleUserInfoDTO = loginService.googleUserInfo(tokens.getAccessToken());
+        loginService.joinMember(googleUserInfoDTO, tokens.getAccessToken(), tokens.getRefreshToken());
 
         return "redirect:/";
     }

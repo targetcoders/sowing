@@ -10,6 +10,7 @@ public class CreateMemberDTO {
 
     private String email;
     private String nickname;
-    private String password;
+    private String accessToken;
+    private String refreshToken;
 
 }

@@ -2,6 +2,7 @@ package com.targetcoders.sowing.seed;
 
 import com.targetcoders.sowing.member.Member;
 import com.targetcoders.sowing.member.MemberService;
+import com.targetcoders.sowing.member.Tokens;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,7 +33,7 @@ class SeedServiceTest {
     void saveAndFindOne() {
         //given
         LocalDateTime now = LocalDateTime.now();
-        Member member = Member.create("greenneuron", "nickname", "password", now, now);
+        Member member = Member.create("greenneuron", "nickname", new Tokens("accessToken","refreshToken"), now, now);
         Seed seed = Seed.create(SeedType.PLAY, member, "제목", "내용", now);
 
         //when
@@ -53,7 +54,7 @@ class SeedServiceTest {
     void updateSeed() {
         //given
         LocalDateTime now = LocalDateTime.now();
-        Member member = Member.create("greenneuron", "nickname", "password", now, now);
+        Member member = Member.create("greenneuron", "nickname", new Tokens("accessToken","refreshToken"), now, now);
         Seed seed = Seed.create(SeedType.PLAY, member, "제목", "내용", now);
         Long saveId = seedService.saveSeed(seed);
 
@@ -77,7 +78,7 @@ class SeedServiceTest {
     void removeSeed() {
         //given
         LocalDateTime now = LocalDateTime.now();
-        Member member = Member.create("greenneuron", "nickname", "password", now, now);
+        Member member = Member.create("greenneuron", "nickname", new Tokens("accessToken","refreshToken"), now, now);
         Seed seed = Seed.create(SeedType.PLAY,member, "제목", "내용", now);
         Long saveId = seedService.saveSeed(seed);
         assertThat(seedService.findSeedById(saveId)).isNotNull();
@@ -96,7 +97,7 @@ class SeedServiceTest {
         //given
         List<Seed> seedList = new ArrayList<>();
         LocalDateTime now = LocalDateTime.now();
-        Member member = Member.create("greenneuron", "nickname", "password", now, now);
+        Member member = Member.create("greenneuron", "nickname", new Tokens("accessToken","refreshToken"), now, now);
         Seed seed1 = Seed.create(SeedType.PLAY, member, "제목", "내용", now);
         Seed seed2 = Seed.create(SeedType.READ, member, "제목", "내용", now);
         Seed seed3 = Seed.create(SeedType.STUDY, member, "제목", "내용", now);

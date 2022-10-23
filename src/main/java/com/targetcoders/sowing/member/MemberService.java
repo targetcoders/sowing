@@ -20,7 +20,13 @@ public class MemberService {
         LocalDateTime now = LocalDateTime.now();
         Member member = new Member();
         member.setUsername(createMemberDTO.getEmail());
-        member.setAccessToken(passwordEncoder.encode(createMemberDTO.getPassword()));
+        String accessToken = passwordEncoder.encode(createMemberDTO.getAccessToken());
+        String refreshToken = createMemberDTO.getRefreshToken();
+        if (refreshToken != null) {
+             refreshToken = passwordEncoder.encode(refreshToken);
+        }
+        Tokens tokens = new Tokens(accessToken, refreshToken);
+        member.setTokens(tokens);
         member.setNickname(createMemberDTO.getNickname());
         member.setMemberRole(MemberRole.ROLE_USER);
         member.setRegistrationDate(now);

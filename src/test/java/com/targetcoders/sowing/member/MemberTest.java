@@ -35,7 +35,7 @@ class MemberTest {
     void saveAndFind() {
         //given
         LocalDateTime now = LocalDateTime.now();
-        CreateMemberDTO createMemberDTO = new CreateMemberDTO("greenneuron@naver.com", "nickname", "password");
+        CreateMemberDTO createMemberDTO = new CreateMemberDTO("greenneuron@naver.com", "nickname", "accessToken", "refreshToken");
         Member saveMember = memberService.saveMember(createMemberDTO);
 
         //when
@@ -60,9 +60,9 @@ class MemberTest {
     @Transactional
     void findAll() {
         //given
-        CreateMemberDTO createMemberDTO1 = new CreateMemberDTO("greenneuron", "nickname", "password");
+        CreateMemberDTO createMemberDTO1 = new CreateMemberDTO("greenneuron", "nickname", "accessToken", "refreshToken");
         memberService.saveMember(createMemberDTO1);
-        CreateMemberDTO createMemberDTO2 = new CreateMemberDTO("greenneuron2", "nickname2", "password2");
+        CreateMemberDTO createMemberDTO2 = new CreateMemberDTO("greenneuron2", "nickname2", "accessToken2", "refreshToken");
         memberService.saveMember(createMemberDTO2);
 
         //when
@@ -77,7 +77,7 @@ class MemberTest {
     @Transactional
     public void remove() {
         //given
-        CreateMemberDTO createMemberDTO1 = new CreateMemberDTO("greenneuron", "nickname", "password");
+        CreateMemberDTO createMemberDTO1 = new CreateMemberDTO("greenneuron", "nickname", "accessToken", "refreshToken");
         Member saveMember = memberService.saveMember(createMemberDTO1);
 
         //when
@@ -93,7 +93,7 @@ class MemberTest {
     @Transactional
     public void update() {
         //given
-        CreateMemberDTO createMemberDTO1 = new CreateMemberDTO("greenneuron", "nickname", "password");
+        CreateMemberDTO createMemberDTO1 = new CreateMemberDTO("greenneuron", "nickname",  "accessToken", "refreshToken");
         Member saveMember = memberService.saveMember(createMemberDTO1);
         UpdateMemberDTO updateMemberDTO = new UpdateMemberDTO();
         updateMemberDTO.setId(saveMember.getId());
@@ -114,7 +114,7 @@ class MemberTest {
     public void seedGroupList() {
         //given
         LocalDateTime now = LocalDateTime.now();
-        Member member = Member.create("greenneuron", "nickname", "password", now, now);
+        Member member = Member.create("greenneuron", "nickname", new Tokens("accessToken","refreshToken"), now, now);
         Seed.create(SeedType.PLAY, member, "제목", "내용", now);
         Seed.create(SeedType.STUDY, member, "제목", "내용", now.minusDays(1));
         Seed.create(SeedType.READ, member, "제목", "내용", now.minusDays(2));
@@ -131,7 +131,7 @@ class MemberTest {
     public void seedGroupListReturnEmptyList() {
         //given
         LocalDateTime now = LocalDateTime.now();
-        Member member = Member.create("greenneuron", "nickname", "password", now, now);
+        Member member = Member.create("greenneuron", "nickname", new Tokens("accessToken","refreshToken"), now, now);
 
         //when
         List<SeedGroup> seedGroups = member.seedGroupList();
