@@ -16,18 +16,25 @@
     <form role="form" action="/seeds/new" method="post" class="w-100">
         <div class="d-flex flex-column justify-content-center align-items-center">
             <input type="hidden" name="username" th:value="${#authentication.name}"/>
-            <input type="date" name="sowingDate" class="form-control w-75" th:value="${#temporals.createToday()}"/>
-            <select id="seed-type" name="selectType" class="form-select w-75">
-                <option selected>타입을 선택하세요.</option>
-                <option th:each="type : ${typeList}"
-                        th:value="${type}"
-                        th:text="${type}"/>
-            </select>
-            <input id="seed-title" class="form-control w-75 mt-2" type="text" name="title" placeholder="제목"/>
+            <div class="form-floating w-75">
+                <input type="date" id="sowing-date" name="sowingDate" class="form-control" th:value="${#temporals.createToday()}"/>
+                <label for="sowing-date">날짜</label>
+            </div>
+            <div class="form-floating w-75 mt-2">
+                <select id="seed-type" name="selectType" class="form-select">
+                    <option th:each="type : ${typeList}"
+                            th:value="${type}"
+                            th:text="${type}"></option>
+                </select>
+                <label for="seed-type">타입</label>
+            </div>
+            <div class="form-floating w-75 mt-2">
+                <input id="seed-title" class="form-control" type="text" name="title"/>
+                <label for="seed-title">제목</label>
+            </div>
             <textarea id="seed-content" name="content" class="form-control w-75 mt-2" style="height: 300px"
-                      placeholder="어떤 씨앗을 심었나요?"></textarea>
-
-            <button type="submit" class="btn btn-success mt-2">등록</button>
+                      placeholder="오늘 하루 어땠나요?"></textarea>
+            <button type="submit" class="btn btn-primary mt-2">등록</button>
         </div>
     </form>
 
