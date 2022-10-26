@@ -114,7 +114,7 @@ class MemberTest {
     public void seedGroupList() {
         //given
         LocalDateTime now = LocalDateTime.now();
-        Member member = Member.create("greenneuron", "nickname", new Tokens("accessToken","refreshToken"), now, now);
+        Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"), now, now);
         Seed.create(SeedType.PLAY, member, "제목", "내용", now);
         Seed.create(SeedType.STUDY, member, "제목", "내용", now.minusDays(1));
         Seed.create(SeedType.READ, member, "제목", "내용", now.minusDays(2));
@@ -131,7 +131,7 @@ class MemberTest {
     public void seedGroupListReturnEmptyList() {
         //given
         LocalDateTime now = LocalDateTime.now();
-        Member member = Member.create("greenneuron", "nickname", new Tokens("accessToken","refreshToken"), now, now);
+        Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"), now, now);
 
         //when
         List<SeedGroup> seedGroups = member.seedGroupList();

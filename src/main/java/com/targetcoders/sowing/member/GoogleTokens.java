@@ -7,17 +7,17 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 @Getter @Setter
-public class Tokens {
+public class GoogleTokens {
 
     private String accessToken;
     private String refreshToken;
 
-    public Tokens(String accessToken, String refreshToken) {
+    public GoogleTokens(String accessToken, String refreshToken) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }
 
-    public Tokens() {
+    public GoogleTokens() {
 
     }
 }

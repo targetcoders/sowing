@@ -25,8 +25,8 @@ public class MemberService {
         if (refreshToken != null) {
              refreshToken = passwordEncoder.encode(refreshToken);
         }
-        Tokens tokens = new Tokens(accessToken, refreshToken);
-        member.setTokens(tokens);
+        GoogleTokens googleTokens = new GoogleTokens(accessToken, refreshToken);
+        member.setGoogleTokens(googleTokens);
         member.setNickname(createMemberDTO.getNickname());
         member.setMemberRole(MemberRole.ROLE_USER);
         member.setRegistrationDate(now);
