@@ -12,5 +12,6 @@ public class CreateMemberDTO {
     private String nickname;
     private String accessToken;
     private String refreshToken;
+    private String sowingRefreshToken;
 
 }

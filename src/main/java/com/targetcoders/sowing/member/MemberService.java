@@ -1,7 +1,6 @@
 package com.targetcoders.sowing.member;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,22 +12,21 @@ import java.util.List;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public Member saveMember(CreateMemberDTO createMemberDTO) {
-        LocalDateTime now = LocalDateTime.now();
+        String accessToken = createMemberDTO.getAccessToken();
+        String refreshToken = createMemberDTO.getRefreshToken();
+        GoogleTokens googleTokens = new GoogleTokens(accessToken, refreshToken);
+        String sowingRefreshToken = createMemberDTO.getSowingRefreshToken();
+
         Member member = new Member();
         member.setUsername(createMemberDTO.getEmail());
-        String accessToken = passwordEncoder.encode(createMemberDTO.getAccessToken());
-        String refreshToken = createMemberDTO.getRefreshToken();
-        if (refreshToken != null) {
-             refreshToken = passwordEncoder.encode(refreshToken);
-        }
-        GoogleTokens googleTokens = new GoogleTokens(accessToken, refreshToken);
         member.setGoogleTokens(googleTokens);
+        member.setSowingRefreshToken(sowingRefreshToken);
         member.setNickname(createMemberDTO.getNickname());
         member.setMemberRole(MemberRole.ROLE_USER);
+        LocalDateTime now = LocalDateTime.now();
         member.setRegistrationDate(now);
         member.setLastAccessDate(now);
 

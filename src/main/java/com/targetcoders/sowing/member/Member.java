@@ -22,6 +22,7 @@ public class Member {
     private String username;
     @Embedded
     private GoogleTokens googleTokens;
+    private String sowingRefreshToken;
     private String nickname;
     private LocalDateTime registrationDate;
     private LocalDateTime lastAccessDate;
@@ -31,8 +32,8 @@ public class Member {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "member")
     private final List<Seed> seedList = new ArrayList<>();
 
-    public static Member create(String userName, String nickName, GoogleTokens googleTokens, LocalDateTime registrationDate, LocalDateTime lastAccessDate) {
-        return new Member(null, userName, googleTokens,  nickName, registrationDate, lastAccessDate, MemberRole.ROLE_USER);
+    public static Member create(String userName, String nickName, GoogleTokens googleTokens, String sowingRefreshToken, LocalDateTime registrationDate, LocalDateTime lastAccessDate) {
+        return new Member(null, userName, googleTokens, sowingRefreshToken, nickName, registrationDate, lastAccessDate, MemberRole.ROLE_USER);
     }
 
     public void addSeed(Seed seed) {

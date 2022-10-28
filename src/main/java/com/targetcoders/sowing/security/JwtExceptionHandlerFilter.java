@@ -1,6 +1,6 @@
 package com.targetcoders.sowing.security;
 
-import com.targetcoders.sowing.exception.InvalidAccessTokenException;
+import com.targetcoders.sowing.exception.InvalidTokenException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -12,12 +12,14 @@ import java.io.IOException;
 
 @Component
 public class JwtExceptionHandlerFilter extends OncePerRequestFilter {
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             filterChain.doFilter(request, response);
-        } catch (InvalidAccessTokenException e) {
-            response.getWriter().write("Unauthorized, message=" + e.getMessage());
+        } catch (InvalidTokenException e) {
+            response.setHeader("Location", "/login/google");
+            response.setStatus(HttpServletResponse.SC_FOUND);
         }
     }
 }

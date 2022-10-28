@@ -26,7 +26,7 @@ import java.util.Date;
 @Slf4j
 public class JwtTokenProvider {
 
-    private final Long ACCESS_TOKEN_VALID_MILISECOND = 1000L * 60 * 10; // 10분
+    private final Long ACCESS_TOKEN_VALID_MILISECOND = 1000L * 60 * 15; // 15분
     private final Long REFRESH_TOKEN_VALID_MILISECOND = 1000L * 60 * 60 * 24; // 24시간
 
     @Value("${spring.jwt.secret}")
@@ -44,9 +44,10 @@ public class JwtTokenProvider {
         secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(Base64.getEncoder().encodeToString(genKey.getBytes())));
     }
 
-    public String createAccessToken(String userPk, MemberRole role) {
+    public String createAccessToken(String userPk, MemberRole role, String refreshTokenPassword) {
         Claims claims = Jwts.claims().setSubject(userPk);
         claims.put("role", role);
+        claims.put("rt", refreshTokenPassword);
         Date now = new Date();
 
         return Jwts.builder()
@@ -85,11 +86,16 @@ public class JwtTokenProvider {
                 .parseClaimsJws(token).getBody().get("role");
     }
 
-    public String resolveToken(HttpServletRequest request) {
+    public String getRefreshToken(String token) {
+        return (String) Jwts.parser().setSigningKey(secretKey)
+                .parseClaimsJws(token).getBody().get("rt");
+    }
+
+    public String getAccessToken(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("REFRESH-TOKEN")) {
+                if (cookie.getName().equals("ACCESS-TOKEN")) {
                     return cookie.getValue();
                 }
             }

@@ -28,8 +28,8 @@ public class LoginService {
         return googleOauth2Manager.googleUserInfo(accessToken);
     }
 
-    public Member joinMember(GoogleUserInfoDTO googleUserInfoDTO, String accessToken, String refreshToken) {
-        CreateMemberDTO createMemberDTO = new CreateMemberDTO(googleUserInfoDTO.getEmail(), googleUserInfoDTO.getName(), accessToken, refreshToken);
+    public Member joinMember(GoogleUserInfoDTO googleUserInfoDTO, String accessToken, String refreshToken, String sowingRefreshToken) {
+        CreateMemberDTO createMemberDTO = new CreateMemberDTO(googleUserInfoDTO.getEmail(), googleUserInfoDTO.getName(), accessToken, refreshToken, sowingRefreshToken);
         return memberService.saveMember(createMemberDTO);
     }
 

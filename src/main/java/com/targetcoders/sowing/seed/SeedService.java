@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -46,6 +48,15 @@ public class SeedService {
         Member member = memberRepository.findByUsername(username).get(0);
         Seed.create(selectType, member, title, content, LocalDateTime.parse(sowingDateTime));
         return member.getId();
+    }
+
+    @Transactional
+    public List<SeedGroup> findSeedGroups(String username) {
+        List<Member> members = memberRepository.findByUsername(username);
+        if (members.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return members.get(0).seedGroupList();
     }
 
     private String defaultSowingDateTime(String sowingDate) {
