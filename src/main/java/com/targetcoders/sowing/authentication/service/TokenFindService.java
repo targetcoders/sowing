@@ -1,5 +1,6 @@
-package com.targetcoders.sowing.security;
+package com.targetcoders.sowing.authentication.service;
 
+import com.targetcoders.sowing.authentication.dao.MemberTokenDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

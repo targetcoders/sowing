@@ -1,4 +1,4 @@
-package com.targetcoders.sowing.controller;
+package com.targetcoders.sowing.authentication.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.targetcoders.sowing.common.LoginConstants;
@@ -7,9 +7,9 @@ import com.targetcoders.sowing.login.LoginService;
 import com.targetcoders.sowing.member.GoogleTokens;
 import com.targetcoders.sowing.member.MemberRole;
 import com.targetcoders.sowing.member.MemberService;
-import com.targetcoders.sowing.security.HeaderSetService;
-import com.targetcoders.sowing.security.JwtTokenProvider;
-import com.targetcoders.sowing.security.TokenUpdateService;
+import com.targetcoders.sowing.authentication.service.HeaderSetService;
+import com.targetcoders.sowing.authentication.domain.JwtTokenProvider;
+import com.targetcoders.sowing.authentication.service.TokenUpdateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

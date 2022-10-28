@@ -1,5 +1,6 @@
-package com.targetcoders.sowing.security;
+package com.targetcoders.sowing.authentication.service;
 
+import com.targetcoders.sowing.authentication.domain.SecurityMember;
 import com.targetcoders.sowing.member.Member;
 import com.targetcoders.sowing.member.MemberRepository;
 import lombok.RequiredArgsConstructor;

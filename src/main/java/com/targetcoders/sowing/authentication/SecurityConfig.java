@@ -1,8 +1,8 @@
-package com.targetcoders.sowing;
+package com.targetcoders.sowing.authentication;
 
-import com.targetcoders.sowing.security.CustomUserDetailsService;
-import com.targetcoders.sowing.security.JwtAuthenticationFilter;
-import com.targetcoders.sowing.security.JwtExceptionHandlerFilter;
+import com.targetcoders.sowing.authentication.service.CustomUserDetailsService;
+import com.targetcoders.sowing.authentication.filter.JwtAuthenticationFilter;
+import com.targetcoders.sowing.authentication.filter.JwtExceptionHandlerFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

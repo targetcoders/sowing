@@ -1,6 +1,6 @@
-package com.targetcoders.sowing.security;
+package com.targetcoders.sowing.authentication.filter;
 
-import com.targetcoders.sowing.exception.InvalidTokenException;
+import com.targetcoders.sowing.authentication.exception.InvalidTokenException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 

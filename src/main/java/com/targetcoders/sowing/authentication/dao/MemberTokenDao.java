@@ -1,4 +1,4 @@
-package com.targetcoders.sowing.security;
+package com.targetcoders.sowing.authentication.dao;
 
 import com.targetcoders.sowing.member.Member;
 import com.targetcoders.sowing.member.MemberRepository;

@@ -1,7 +1,11 @@
-package com.targetcoders.sowing.security;
+package com.targetcoders.sowing.authentication.filter;
 
-import com.targetcoders.sowing.exception.InvalidTokenException;
 import com.targetcoders.sowing.member.MemberRole;
+import com.targetcoders.sowing.authentication.service.HeaderSetService;
+import com.targetcoders.sowing.authentication.domain.JwtParserService;
+import com.targetcoders.sowing.authentication.domain.JwtTokenProvider;
+import com.targetcoders.sowing.authentication.service.TokenFindService;
+import com.targetcoders.sowing.authentication.exception.InvalidTokenException;
 import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -21,6 +25,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends GenericFilterBean {
 
+    private final JwtParserService jwtParserService;
     private final JwtTokenProvider jwtTokenProvider;
     private final TokenFindService tokenFindService;
     private final HeaderSetService headerSetService;
@@ -38,12 +43,9 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             throw new InvalidTokenException("Access token is invalid.");
         }
 
-
         String userPk = userPk(oldAccessToken);
         String refreshToken = tokenFindService.sowingRefreshToken(userPk);
-        System.out.println("refreshToken = " + refreshToken);
-        System.out.println("refreshToken in old = " + jwtTokenProvider.getRefreshToken(oldAccessToken));
-        if (!jwtTokenProvider.getRefreshToken(oldAccessToken).equals(refreshToken)){
+        if (!jwtParserService.refreshToken(oldAccessToken).equals(refreshToken)){
             throw new InvalidTokenException("This refresh token is disabled.");
         }
 
@@ -62,7 +64,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     private String userPk(String oldAccessToken) {
         String userPk;
         try {
-            userPk = jwtTokenProvider.getUserPk(oldAccessToken);
+            userPk = jwtParserService.userPk(oldAccessToken);
         } catch (JwtException e) {
             throw new InvalidTokenException("JWT is invalid.");
         }
@@ -84,7 +86,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     }
 
     private boolean isValidJwt(String jwt) {
-        return jwt != null && jwtTokenProvider.isValidateToken(jwt);
+        return jwt != null && jwtParserService.isValidateToken(jwt);
     }
 
     private Authentication authentication(String accessToken) {
@@ -92,8 +94,8 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     }
 
     private String accessToken(String refreshToken) {
-        String userPk = jwtTokenProvider.getUserPk(refreshToken);
-        MemberRole role = MemberRole.valueOf(jwtTokenProvider.getMemberRole(refreshToken));
+        String userPk = jwtParserService.userPk(refreshToken);
+        MemberRole role = MemberRole.valueOf(jwtParserService.memberRole(refreshToken));
         return jwtTokenProvider.createAccessToken(userPk, role, refreshToken);
     }
 }

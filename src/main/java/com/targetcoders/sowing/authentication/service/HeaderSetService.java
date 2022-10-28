@@ -1,4 +1,4 @@
-package com.targetcoders.sowing.security;
+package com.targetcoders.sowing.authentication.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
