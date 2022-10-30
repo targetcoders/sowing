@@ -1,4 +1,4 @@
-package com.targetcoders.sowing.common;
+package com.targetcoders.sowing.authentication;
 
 public class LoginConstants {
 

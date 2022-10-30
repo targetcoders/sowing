@@ -2,8 +2,8 @@ package com.targetcoders.sowing.authentication.filter;
 
 import com.targetcoders.sowing.member.MemberRole;
 import com.targetcoders.sowing.authentication.service.HeaderSetService;
-import com.targetcoders.sowing.authentication.domain.JwtParserService;
-import com.targetcoders.sowing.authentication.domain.JwtTokenProvider;
+import com.targetcoders.sowing.authentication.service.JwtParserService;
+import com.targetcoders.sowing.authentication.service.JwtTokenService;
 import com.targetcoders.sowing.authentication.service.TokenFindService;
 import com.targetcoders.sowing.authentication.exception.InvalidTokenException;
 import io.jsonwebtoken.JwtException;
@@ -26,14 +26,14 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends GenericFilterBean {
 
     private final JwtParserService jwtParserService;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenService jwtTokenService;
     private final TokenFindService tokenFindService;
     private final HeaderSetService headerSetService;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        String oldAccessToken = jwtTokenProvider.getAccessToken((HttpServletRequest) servletRequest);
+        String oldAccessToken = jwtTokenService.getAccessToken((HttpServletRequest) servletRequest);
         if (isPassRequest(request, oldAccessToken)) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
@@ -90,12 +90,12 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     }
 
     private Authentication authentication(String accessToken) {
-        return jwtTokenProvider.authentication(accessToken);
+        return jwtTokenService.authentication(accessToken);
     }
 
     private String accessToken(String refreshToken) {
         String userPk = jwtParserService.userPk(refreshToken);
         MemberRole role = MemberRole.valueOf(jwtParserService.memberRole(refreshToken));
-        return jwtTokenProvider.createAccessToken(userPk, role, refreshToken);
+        return jwtTokenService.createAccessToken(userPk, role, refreshToken);
     }
 }

@@ -1,8 +1,5 @@
-package com.targetcoders.sowing.authentication.service;
+package com.targetcoders.sowing.member;
 
-import com.targetcoders.sowing.authentication.domain.SecurityMember;
-import com.targetcoders.sowing.member.Member;
-import com.targetcoders.sowing.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

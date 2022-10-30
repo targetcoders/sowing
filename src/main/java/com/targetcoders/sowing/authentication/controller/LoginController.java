@@ -1,15 +1,13 @@
 package com.targetcoders.sowing.authentication.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.targetcoders.sowing.common.LoginConstants;
-import com.targetcoders.sowing.login.GoogleUserInfoDTO;
-import com.targetcoders.sowing.login.LoginService;
+import com.targetcoders.sowing.authentication.LoginConstants;
+import com.targetcoders.sowing.authentication.dto.GoogleUserInfoDTO;
+import com.targetcoders.sowing.authentication.service.*;
+import com.targetcoders.sowing.member.CreateMemberDTO;
 import com.targetcoders.sowing.member.GoogleTokens;
 import com.targetcoders.sowing.member.MemberRole;
 import com.targetcoders.sowing.member.MemberService;
-import com.targetcoders.sowing.authentication.service.HeaderSetService;
-import com.targetcoders.sowing.authentication.domain.JwtTokenProvider;
-import com.targetcoders.sowing.authentication.service.TokenUpdateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
@@ -26,9 +23,9 @@ import javax.servlet.http.HttpServletResponse;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class LoginController {
 
-    private final LoginService loginService;
+    private final GoogleLoginService googleLoginService;
     private final MemberService memberService;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenService jwtTokenService;
     private final TokenUpdateService tokenUpdateService;
     private final HeaderSetService headerSetService;
 
@@ -47,20 +44,21 @@ public class LoginController {
     }
 
     @GetMapping("/login/google/callback")
-    public String loginCallback(@RequestParam("code") String code, @RequestParam("scope") String scope, HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+    public String loginCallback(@RequestParam("code") String code, @RequestParam("scope") String scope, HttpServletResponse response) throws JsonProcessingException {
         System.out.println("code = " + code + ", scope = " + scope);
-        GoogleTokens oauthGoogleTokens = loginService.googleTokens(code);
-        GoogleUserInfoDTO googleUserInfoDTO = loginService.googleUserInfo(oauthGoogleTokens.getAccessToken());
+        GoogleTokens oauthGoogleTokens = googleLoginService.googleTokens(code);
+        GoogleUserInfoDTO googleUserInfoDTO = googleLoginService.googleUserInfo(oauthGoogleTokens.getAccessToken());
 
         String email = googleUserInfoDTO.getEmail();
-        String sowingRefreshToken = jwtTokenProvider.createRefreshToken(email, MemberRole.ROLE_USER);
-        if (memberService.findMemberByUsername(email).size() == 0) {
-            loginService.joinMember(googleUserInfoDTO, oauthGoogleTokens.getAccessToken(), oauthGoogleTokens.getRefreshToken(), sowingRefreshToken);
-        } else {
+        String sowingRefreshToken = jwtTokenService.createRefreshToken(email, MemberRole.ROLE_USER);
+        if (memberService.isExistMember(email)) {
             tokenUpdateService.updateAllTokens(email, oauthGoogleTokens.getAccessToken(), oauthGoogleTokens.getRefreshToken(), sowingRefreshToken);
+        } else {
+            CreateMemberDTO createMemberDTO = new CreateMemberDTO(googleUserInfoDTO.getEmail(), googleUserInfoDTO.getName(), oauthGoogleTokens.getAccessToken(), oauthGoogleTokens.getRefreshToken(), sowingRefreshToken);
+            memberService.saveMember(createMemberDTO);
         }
 
-        String sowingAccessToken = jwtTokenProvider.createAccessToken(email, MemberRole.ROLE_USER, sowingRefreshToken);
+        String sowingAccessToken = jwtTokenService.createAccessToken(email, MemberRole.ROLE_USER, sowingRefreshToken);
         headerSetService.setAccessTokenCookie(response, sowingAccessToken, "900");
         return "redirect:/";
     }

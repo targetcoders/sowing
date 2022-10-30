@@ -1,6 +1,6 @@
-package com.targetcoders.sowing.authentication;
+package com.targetcoders.sowing;
 
-import com.targetcoders.sowing.authentication.service.CustomUserDetailsService;
+import com.targetcoders.sowing.member.CustomUserDetailsService;
 import com.targetcoders.sowing.authentication.filter.JwtAuthenticationFilter;
 import com.targetcoders.sowing.authentication.filter.JwtExceptionHandlerFilter;
 import lombok.RequiredArgsConstructor;

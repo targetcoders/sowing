@@ -1,4 +1,4 @@
-package com.targetcoders.sowing.authentication.domain;
+package com.targetcoders.sowing.authentication.service;
 
 import com.targetcoders.sowing.member.MemberRole;
 import io.jsonwebtoken.Claims;
@@ -21,7 +21,7 @@ import java.util.Date;
 @RequiredArgsConstructor
 @Component
 @Slf4j
-public class JwtTokenProvider {
+public class JwtTokenService {
 
     @Value("${jwt.accessTokenValidMillisecond}")
     private Long ACCESS_TOKEN_VALID_MILLISECOND;

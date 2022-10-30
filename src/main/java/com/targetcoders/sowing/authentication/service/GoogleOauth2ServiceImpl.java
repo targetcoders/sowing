@@ -1,8 +1,10 @@
-package com.targetcoders.sowing.login;
+package com.targetcoders.sowing.authentication.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.targetcoders.sowing.common.LoginConstants;
+import com.targetcoders.sowing.authentication.LoginConstants;
+import com.targetcoders.sowing.authentication.dto.GoogleAuthorizationDTO;
+import com.targetcoders.sowing.authentication.dto.GoogleUserInfoDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -16,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 @RequiredArgsConstructor
 @Component
-public class GoogleOauth2Manager {
+public class GoogleOauth2ServiceImpl implements GoogleOauth2Service {
 
     @Value("${oauth2.client-secret}")
     private String clientSecret;

@@ -70,8 +70,9 @@ public class MemberService {
     }
 
     @Transactional
-    public List<Member> findMemberByUsername(String memberUsername) {
-        return memberRepository.findByUsername(memberUsername);
+    public boolean isExistMember(String memberUsername) {
+        List<Member> members = memberRepository.findByUsername(memberUsername);
+        return members.size() > 0;
     }
 
 }

@@ -1,4 +1,4 @@
-package com.targetcoders.sowing.login;
+package com.targetcoders.sowing.authentication.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

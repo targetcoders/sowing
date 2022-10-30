@@ -1,7 +1,5 @@
-package com.targetcoders.sowing.authentication.domain;
+package com.targetcoders.sowing.member;
 
-import com.targetcoders.sowing.member.Member;
-import com.targetcoders.sowing.member.MemberRole;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,8 +9,7 @@ import org.springframework.security.core.userdetails.User;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
+@Getter @Setter
 public class SecurityMember extends User {
 	private static final String ROLE_PREFIX = "ROLE_";
 	private static final long serialVersionUID = 1L;

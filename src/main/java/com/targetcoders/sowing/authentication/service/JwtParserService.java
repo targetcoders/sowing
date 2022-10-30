@@ -1,4 +1,4 @@
-package com.targetcoders.sowing.authentication.domain;
+package com.targetcoders.sowing.authentication.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
