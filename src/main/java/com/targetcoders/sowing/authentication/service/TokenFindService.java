@@ -1,6 +1,7 @@
 package com.targetcoders.sowing.authentication.service;
 
 import com.targetcoders.sowing.authentication.dao.MemberTokenDao;
+import com.targetcoders.sowing.authentication.domain.JwtToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +14,8 @@ public class TokenFindService {
     private final MemberTokenDao memberTokenDao;
 
     @Transactional
-    public String sowingRefreshToken(String email) {
-        return memberTokenDao.findSowingRefreshToken(email);
+    public JwtToken sowingRefreshToken(String email) {
+        String sowingRefreshToken = memberTokenDao.findSowingRefreshToken(email);
+        return new JwtToken(sowingRefreshToken);
     }
 }

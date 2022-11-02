@@ -1,5 +1,6 @@
 package com.targetcoders.sowing.member;
 
+import com.targetcoders.sowing.authentication.domain.JwtToken;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,8 +11,8 @@ public class CreateMemberDTO {
 
     private String email;
     private String nickname;
-    private String accessToken;
-    private String refreshToken;
-    private String sowingRefreshToken;
+    private String googleAccessToken;
+    private String googleRefreshToken;
+    private JwtToken sowingRefreshToken;
 
 }

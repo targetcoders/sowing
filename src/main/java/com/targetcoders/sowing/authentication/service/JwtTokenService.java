@@ -1,5 +1,6 @@
 package com.targetcoders.sowing.authentication.service;
 
+import com.targetcoders.sowing.authentication.domain.JwtToken;
 import com.targetcoders.sowing.member.MemberRole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -7,10 +8,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -29,51 +26,53 @@ public class JwtTokenService {
     private Long REFRESH_TOKEN_VALID_MILLISECOND;
 
     private final SecretKey secretKey;
-    private final JwtParserService jwtParserService;
-    private final UserDetailsService userDetailsService;
+    private final IDate now;
 
-    public String createAccessToken(String userPk, MemberRole role, String refreshTokenPassword) {
+    public JwtToken createDefaultToken() {
+        return new JwtToken("a.b.c");
+    }
+
+    public JwtToken createAccessToken(String userPk, MemberRole role, JwtToken refreshToken) {
         Claims claims = Jwts.claims().setSubject(userPk);
         claims.put("role", role);
-        claims.put("rt", refreshTokenPassword);
-        Date now = new Date();
+        claims.put("rt", refreshToken.toString());
 
-        return Jwts.builder()
+        String jwtToken = Jwts.builder()
                 .setClaims(claims)
-                .setIssuedAt(now)
+                .setIssuedAt(now.instance())
                 .setExpiration(new Date(now.getTime() + ACCESS_TOKEN_VALID_MILLISECOND))
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
+        return new JwtToken(jwtToken);
     }
 
-    public String createRefreshToken(String userPk, MemberRole role) {
+    public JwtToken createRefreshToken(String userPk, MemberRole role) {
         Claims claims = Jwts.claims().setSubject(userPk);
         claims.put("role", role);
-        Date now = new Date();
 
-        return Jwts.builder()
+        String jwtToken = Jwts.builder()
                 .setClaims(claims)
-                .setIssuedAt(now)
+                .setIssuedAt(now.instance())
                 .setExpiration(new Date(now.getTime() + REFRESH_TOKEN_VALID_MILLISECOND))
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
+        return new JwtToken(jwtToken);
     }
 
-    public Authentication authentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(jwtParserService.userPk(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, token, userDetails.getAuthorities());
-    }
-
-    public String getAccessToken(HttpServletRequest request) {
+    public JwtToken getAccessToken(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("ACCESS-TOKEN")) {
-                    return cookie.getValue();
+                    String accessToken = cookie.getValue();
+                    if (accessToken.equals("")) {
+                        return createDefaultToken();
+                    }
+                    return new JwtToken(accessToken);
                 }
             }
         }
-        return "";
+        return createDefaultToken();
     }
 
 }

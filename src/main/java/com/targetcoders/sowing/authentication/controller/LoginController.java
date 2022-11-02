@@ -2,6 +2,7 @@ package com.targetcoders.sowing.authentication.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.targetcoders.sowing.authentication.LoginConstants;
+import com.targetcoders.sowing.authentication.domain.JwtToken;
 import com.targetcoders.sowing.authentication.dto.GoogleUserInfoDTO;
 import com.targetcoders.sowing.authentication.service.*;
 import com.targetcoders.sowing.member.CreateMemberDTO;
@@ -50,7 +51,7 @@ public class LoginController {
         GoogleUserInfoDTO googleUserInfoDTO = googleLoginService.googleUserInfo(oauthGoogleTokens.getAccessToken());
 
         String email = googleUserInfoDTO.getEmail();
-        String sowingRefreshToken = jwtTokenService.createRefreshToken(email, MemberRole.ROLE_USER);
+        JwtToken sowingRefreshToken = jwtTokenService.createRefreshToken(email, MemberRole.ROLE_USER);
         if (memberService.isExistMember(email)) {
             tokenUpdateService.updateAllTokens(email, oauthGoogleTokens.getAccessToken(), oauthGoogleTokens.getRefreshToken(), sowingRefreshToken);
         } else {
@@ -58,7 +59,7 @@ public class LoginController {
             memberService.saveMember(createMemberDTO);
         }
 
-        String sowingAccessToken = jwtTokenService.createAccessToken(email, MemberRole.ROLE_USER, sowingRefreshToken);
+        JwtToken sowingAccessToken = jwtTokenService.createAccessToken(email, MemberRole.ROLE_USER, sowingRefreshToken);
         headerSetService.setAccessTokenCookie(response, sowingAccessToken, "900");
         return "redirect:/";
     }
@@ -69,7 +70,7 @@ public class LoginController {
         if (authentication.isAuthenticated()) {
             SecurityContextHolder.getContext().setAuthentication(null);
             tokenUpdateService.updateSowingRefreshToken(authentication.getName(), "");
-            headerSetService.setAccessTokenCookie(response, "", "0");
+            headerSetService.setAccessTokenCookie(response, new JwtToken(""), "0");
         }
         return "redirect:/";
     }

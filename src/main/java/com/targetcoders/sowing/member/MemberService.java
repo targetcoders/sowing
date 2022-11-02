@@ -15,10 +15,10 @@ public class MemberService {
 
     @Transactional
     public Member saveMember(CreateMemberDTO createMemberDTO) {
-        String accessToken = createMemberDTO.getAccessToken();
-        String refreshToken = createMemberDTO.getRefreshToken();
+        String accessToken = createMemberDTO.getGoogleAccessToken();
+        String refreshToken = createMemberDTO.getGoogleRefreshToken();
         GoogleTokens googleTokens = new GoogleTokens(accessToken, refreshToken);
-        String sowingRefreshToken = createMemberDTO.getSowingRefreshToken();
+        String sowingRefreshToken = createMemberDTO.getSowingRefreshToken().toString();
 
         Member member = new Member();
         member.setUsername(createMemberDTO.getEmail());
