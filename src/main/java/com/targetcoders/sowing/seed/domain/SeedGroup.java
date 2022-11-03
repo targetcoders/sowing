@@ -1,4 +1,4 @@
-package com.targetcoders.sowing.seed;
+package com.targetcoders.sowing.seed.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,6 +1,6 @@
 package com.targetcoders.sowing.controller;
 
-import com.targetcoders.sowing.seed.SeedService;
+import com.targetcoders.sowing.seed.service.SeedService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;

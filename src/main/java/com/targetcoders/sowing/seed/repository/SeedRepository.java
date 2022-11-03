@@ -1,5 +1,7 @@
-package com.targetcoders.sowing.seed;
+package com.targetcoders.sowing.seed.repository;
 
+import com.targetcoders.sowing.seed.dto.UpdateSeedDTO;
+import com.targetcoders.sowing.seed.domain.Seed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

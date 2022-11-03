@@ -1,13 +1,12 @@
 package com.targetcoders.sowing.member;
 
-import com.targetcoders.sowing.seed.Seed;
-import com.targetcoders.sowing.seed.SeedGroup;
+import com.targetcoders.sowing.seed.domain.Seed;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -43,30 +42,6 @@ public class Member {
     public void update(UpdateMemberDTO updateMemberDTO) {
         this.username = updateMemberDTO.getUsername();
         this.nickname = updateMemberDTO.getNickname();
-    }
-
-    public List<SeedGroup> seedGroupList() {
-        List<SeedGroup> result = new ArrayList<>();
-        Deque<Seed> seedDeque = new ArrayDeque<>(this.seedList);
-
-        while (!seedDeque.isEmpty()) {
-            LocalDate groupDate = seedDeque.peekFirst().getSowingDate().toLocalDate();
-            SeedGroup seedGroup = SeedGroup.create(groupDate);
-            while (!seedDeque.isEmpty()) {
-                Seed seed = seedDeque.peekFirst();
-                LocalDate seedDate = seed.getSowingDate().toLocalDate();
-                if (!groupDate.equals(seedDate)) {
-                    break;
-                }
-                seedGroup.addSeed(seed);
-                seedDeque.pollFirst();
-            }
-            Collections.sort(seedGroup.getSeedList());
-            result.add(seedGroup);
-        }
-
-        Collections.sort(result);
-        return result;
     }
 
 }

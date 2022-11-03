@@ -1,6 +1,10 @@
-package com.targetcoders.sowing.controller;
+package com.targetcoders.sowing.seed.controller;
 
-import com.targetcoders.sowing.seed.*;
+import com.targetcoders.sowing.seed.domain.Seed;
+import com.targetcoders.sowing.seed.domain.SeedForm;
+import com.targetcoders.sowing.seed.domain.SeedType;
+import com.targetcoders.sowing.seed.dto.UpdateSeedDTO;
+import com.targetcoders.sowing.seed.service.SeedService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
