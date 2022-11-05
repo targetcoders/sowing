@@ -26,11 +26,7 @@ public class JwtTokenService {
     private Long REFRESH_TOKEN_VALID_MILLISECOND;
 
     private final SecretKey secretKey;
-    private final IDate now;
-
-    public JwtToken createDefaultToken() {
-        return new JwtToken("a.b.c");
-    }
+    private final IDate date;
 
     public JwtToken createAccessToken(String userPk, MemberRole role, JwtToken refreshToken) {
         Claims claims = Jwts.claims().setSubject(userPk);
@@ -39,8 +35,8 @@ public class JwtTokenService {
 
         String jwtToken = Jwts.builder()
                 .setClaims(claims)
-                .setIssuedAt(now.instance())
-                .setExpiration(new Date(now.getTime() + ACCESS_TOKEN_VALID_MILLISECOND))
+                .setIssuedAt(date.instance())
+                .setExpiration(new Date(date.nowTime() + ACCESS_TOKEN_VALID_MILLISECOND))
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
         return new JwtToken(jwtToken);
@@ -52,8 +48,8 @@ public class JwtTokenService {
 
         String jwtToken = Jwts.builder()
                 .setClaims(claims)
-                .setIssuedAt(now.instance())
-                .setExpiration(new Date(now.getTime() + REFRESH_TOKEN_VALID_MILLISECOND))
+                .setIssuedAt(date.instance())
+                .setExpiration(new Date(date.nowTime() + REFRESH_TOKEN_VALID_MILLISECOND))
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
         return new JwtToken(jwtToken);
@@ -64,15 +60,14 @@ public class JwtTokenService {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("ACCESS-TOKEN")) {
-                    String accessToken = cookie.getValue();
-                    if (accessToken.equals("")) {
-                        return createDefaultToken();
+                    if (cookie.getValue().equals("")) {
+                        return null;
                     }
-                    return new JwtToken(accessToken);
+                    return new JwtToken(cookie.getValue());
                 }
             }
         }
-        return createDefaultToken();
+        return null;
     }
 
 }

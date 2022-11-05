@@ -53,8 +53,9 @@ public class SeedService {
         String title = seedForm.getTitle();
         String sowingDateTime = defaultSowingDateTime(seedForm.getSowingDate());
         Member member = memberRepository.findByUsername(username).get(0);
-        Seed.create(selectType, member, title, content, LocalDateTime.parse(sowingDateTime));
-        return member.getId();
+        Seed seed = Seed.create(selectType, member, title, content, LocalDateTime.parse(sowingDateTime));
+        seedDao.saveSeed(seed);
+        return seed.getId();
     }
 
     @Transactional
@@ -63,11 +64,14 @@ public class SeedService {
         if (members.isEmpty()) {
             return new ArrayList<>();
         }
-        return seedGroupService.seedGroupList(members.get(0));
+        return seedGroupService.seedGroupsByUsername(members.get(0).getUsername());
     }
 
     private String defaultSowingDateTime(String sowingDate) {
         return sowingDate + "T00:00:00";
     }
 
+    public List<Seed> findSeedsByUsername(String username) {
+        return seedDao.findSeedsByUsername(username);
+    }
 }

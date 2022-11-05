@@ -6,6 +6,8 @@ import com.targetcoders.sowing.seed.repository.SeedRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class SeedDao {
@@ -28,4 +30,7 @@ public class SeedDao {
         seedRepository.updateSeed(updateSeedDTO);
     }
 
+    public List<Seed> findSeedsByUsername(String username) {
+        return seedRepository.findByUsername(username);
+    }
 }

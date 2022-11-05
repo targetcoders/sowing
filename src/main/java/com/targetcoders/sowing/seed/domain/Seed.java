@@ -29,9 +29,7 @@ public class Seed implements Comparable<Seed> {
     private LocalDateTime sowingDate;
 
     public static Seed create(SeedType type, Member member, String title, String content, LocalDateTime doneDate) {
-        Seed seed = new Seed(null, type, member, title, content, doneDate);
-        member.addSeed(seed);
-        return seed;
+        return new Seed(null, type, member, title, content, doneDate);
     }
 
     public void update(UpdateSeedDTO updateSeedDto) {

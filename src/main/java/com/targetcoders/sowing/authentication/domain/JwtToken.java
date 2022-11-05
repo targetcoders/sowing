@@ -11,14 +11,13 @@ public class JwtToken {
     private final String value;
 
     public JwtToken(String value) {
+        if (value == null || value.equals("")) {
+            throw new IllegalArgumentException("JwtToken cannot be null or empty.");
+        }
         if (value.split("\\.").length != 3) {
-            throw new IllegalArgumentException("JwtToken");
+            throw new IllegalArgumentException("JwtToken format is wrong.");
         }
         this.value = value;
-    }
-
-    public boolean isDefaultToken() {
-        return value.equals("a.b.c");
     }
 
     public String userPk(JwtParser jwtParser) {

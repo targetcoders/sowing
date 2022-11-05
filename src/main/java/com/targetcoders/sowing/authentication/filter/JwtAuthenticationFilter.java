@@ -15,19 +15,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
-import org.springframework.web.filter.GenericFilterBean;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter extends GenericFilterBean {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenService jwtTokenService;
     private final UserDetailsService userDetailsService;
@@ -36,16 +34,12 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     private final JwtParser jwtParser;
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
-        JwtToken oldAccessToken = jwtTokenService.getAccessToken((HttpServletRequest) servletRequest);
-        if (isPassRequest(request, oldAccessToken)) {
-            filterChain.doFilter(servletRequest, servletResponse);
-            return;
-        }
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        JwtToken oldAccessToken = jwtTokenService.getAccessToken(request);
 
-        if (oldAccessToken.isDefaultToken()) {
-            throw new InvalidTokenException("Access token is invalid.");
+        if (isPassRequest(request, oldAccessToken)) {
+            filterChain.doFilter(request, response);
+            return;
         }
 
         String userPk = userPk(oldAccessToken);
@@ -55,14 +49,14 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         }
 
         if (oldAccessToken.isValidToken(jwtParser)) {
-            setNewAccessToken(refreshToken, (HttpServletResponse) servletResponse);
-            filterChain.doFilter(servletRequest, servletResponse);
+            setNewAccessToken(refreshToken, response);
+            filterChain.doFilter(request, response);
             return;
         }
 
         if (refreshToken.isValidToken(jwtParser)) {
-            setNewAccessToken(refreshToken, (HttpServletResponse) servletResponse);
-            filterChain.doFilter(servletRequest, servletResponse);
+            setNewAccessToken(refreshToken, response);
+            filterChain.doFilter(request, response);
         }
     }
 
@@ -70,24 +64,25 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         String userPk;
         try {
             userPk = oldAccessToken.userPk(jwtParser);
-        } catch (JwtException e) {
-            throw new InvalidTokenException("JWT is invalid.");
+        } catch(NullPointerException | JwtException e) {
+            throw new InvalidTokenException("Fail to get userPk from access token. message="+e.getMessage());
         }
         return userPk;
     }
 
     private void setNewAccessToken(JwtToken refreshToken, HttpServletResponse servletResponse) {
         JwtToken newAccessToken = accessToken(refreshToken);
-        headerSetService.setAccessTokenCookie(servletResponse, newAccessToken, "900");
+        headerSetService.setAccessTokenCookie(servletResponse, newAccessToken.toString(), "900");
         SecurityContextHolder.getContext()
                 .setAuthentication(authentication(newAccessToken));
     }
 
     private boolean isPassRequest(HttpServletRequest request, JwtToken accessToken) {
-        return (accessToken.isDefaultToken() && request.getRequestURI().equals("/")) ||
-                (accessToken.isDefaultToken() && request.getRequestURI().startsWith("/css/")) ||
-                (accessToken.isDefaultToken() && request.getRequestURI().startsWith("/js/")) ||
-                (accessToken.isDefaultToken() && request.getRequestURI().startsWith("/login/google"));
+        return (accessToken == null && request.getRequestURI().equals("/")) ||
+                (accessToken == null && request.getRequestURI().startsWith("/login/google")) ||
+                request.getRequestURI().startsWith("/css/") ||
+                request.getRequestURI().startsWith("/js/") ||
+                request.getRequestURI().startsWith("/error");
     }
 
     private Authentication authentication(JwtToken accessToken) {
@@ -100,4 +95,5 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         MemberRole role = MemberRole.valueOf(refreshToken.memberRole(jwtParser));
         return jwtTokenService.createAccessToken(userPk, role, refreshToken);
     }
+
 }

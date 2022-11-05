@@ -29,7 +29,7 @@ class JwtTokenTest {
     @Autowired
     private JwtTokenService jwtTokenService;
     @MockBean
-    private IDate defaultDate;
+    private IDate date;
 
 
     @Test
@@ -48,7 +48,7 @@ class JwtTokenTest {
     @DisplayName("jwt 토큰에서 Claims를 추출한다")
     void parseClaims() {
         //given
-        Mockito.when(defaultDate.getTime()).thenReturn(new Date().getTime());
+        Mockito.when(date.nowTime()).thenReturn(new Date().getTime());
         JwtToken refreshToken = jwtTokenService.createRefreshToken(USER_PK, MemberRole.ROLE_USER);
         JwtToken accessToken = jwtTokenService.createAccessToken(USER_PK, MemberRole.ROLE_USER, refreshToken);
 
@@ -67,7 +67,7 @@ class JwtTokenTest {
     @DisplayName("유효한 토큰인 것을 확인한다")
     void isValidToken() {
         //given
-        Mockito.when(defaultDate.getTime()).thenReturn(new Date().getTime());
+        Mockito.when(date.nowTime()).thenReturn(new Date().getTime());
         JwtToken refreshToken = jwtTokenService.createRefreshToken(USER_PK, MemberRole.ROLE_USER);
 
         //when
@@ -81,15 +81,13 @@ class JwtTokenTest {
     @DisplayName("basicToken은 유효한 토큰이 아니다")
     void basicToken() {
         //given
-        Mockito.when(defaultDate.instance()).thenReturn(new Date(0));
-        JwtToken basicToken = jwtTokenService.createDefaultToken();
+        Mockito.when(date.instance()).thenReturn(new Date(0));
+        JwtToken basicToken = new JwtToken("a.b.c");
 
         //when
-        boolean isBasicToken = basicToken.isDefaultToken();
         boolean isValidToken = basicToken.isValidToken(jwtParser);
 
         //then
-        assertThat(isBasicToken).isEqualTo(true);
         assertThat(isValidToken).isEqualTo(false);
     }
 
@@ -97,8 +95,8 @@ class JwtTokenTest {
     @DisplayName("Claims 추출 시 토큰 형식이 틀리면 MalformedJwtException이 발생한다")
     void failGetClaims() {
         //given
-        Mockito.when(defaultDate.instance()).thenReturn(new Date(0));
-        JwtToken basicToken = jwtTokenService.createDefaultToken();
+        Mockito.when(date.instance()).thenReturn(new Date(0));
+        JwtToken basicToken = new JwtToken("a.b.c");
 
         //assert
         assertThrows(MalformedJwtException.class, ()-> basicToken.userPk(jwtParser));
@@ -110,7 +108,7 @@ class JwtTokenTest {
     @DisplayName("Claims 추출 시 토큰이 만료되었으면 ExpiredJwtException이 발생한다")
     void expiredToken() {
         //given
-        Mockito.when(defaultDate.instance()).thenReturn(new Date(0));
+        Mockito.when(date.instance()).thenReturn(new Date(0));
 
         //when
         JwtToken refreshToken = jwtTokenService.createRefreshToken("greenneuron", MemberRole.ROLE_USER);

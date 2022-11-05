@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -30,4 +31,9 @@ public class SeedRepository {
         seed.update(updateSeedDto);
     }
 
+    public List<Seed> findByUsername(String username) {
+        return em.createQuery("select s from Seed s where s.member.username = :username")
+                .setParameter("username", username)
+                .getResultList();
+    }
 }

@@ -60,17 +60,16 @@ public class LoginController {
         }
 
         JwtToken sowingAccessToken = jwtTokenService.createAccessToken(email, MemberRole.ROLE_USER, sowingRefreshToken);
-        headerSetService.setAccessTokenCookie(response, sowingAccessToken, "900");
+        headerSetService.setAccessTokenCookie(response, sowingAccessToken.toString(), "900");
         return "redirect:/";
     }
 
     @GetMapping("/logout")
-    public String logout(HttpServletResponse response) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    public String logout(Authentication authentication, HttpServletResponse response) {
         if (authentication.isAuthenticated()) {
             SecurityContextHolder.getContext().setAuthentication(null);
             tokenUpdateService.updateSowingRefreshToken(authentication.getName(), "");
-            headerSetService.setAccessTokenCookie(response, new JwtToken(""), "0");
+            headerSetService.setAccessTokenCookie(response, "", "0");
         }
         return "redirect:/";
     }

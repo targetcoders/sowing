@@ -1,7 +1,9 @@
 package com.targetcoders.sowing.seed.service;
 
-import com.targetcoders.sowing.member.GoogleTokens;
+import com.targetcoders.sowing.authentication.domain.JwtToken;
+import com.targetcoders.sowing.member.CreateMemberDTO;
 import com.targetcoders.sowing.member.Member;
+import com.targetcoders.sowing.member.MemberService;
 import com.targetcoders.sowing.seed.domain.Seed;
 import com.targetcoders.sowing.seed.domain.SeedGroup;
 import com.targetcoders.sowing.seed.domain.SeedType;
@@ -21,19 +23,25 @@ import java.util.List;
 class SeedGroupServiceTest {
 
     @Autowired SeedGroupService seedGroupService;
+    @Autowired SeedService seedService;
+    @Autowired MemberService memberService;
 
     @Test
     @DisplayName("등록된 시드 리스트를 시드 그룹 리스트로 변환해서 반환")
     public void seedGroupList() {
         //given
+        CreateMemberDTO createMemberDTO = new CreateMemberDTO("greenneuron", "nickname", "accessToken","refreshToken", new JwtToken("a.b.c"));
+        Member member = memberService.saveMember(createMemberDTO);
         LocalDateTime now = LocalDateTime.now();
-        Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"), "sowingRefreshToken", now, now);
-        Seed.create(SeedType.PLAY, member, "제목", "내용", now);
-        Seed.create(SeedType.STUDY, member, "제목", "내용", now.minusDays(1));
-        Seed.create(SeedType.READ, member, "제목", "내용", now.minusDays(2));
+        Seed seed1 = Seed.create(SeedType.PLAY, member, "제목", "내용", now);
+        Seed seed2 = Seed.create(SeedType.STUDY, member, "제목", "내용", now.minusDays(1));
+        Seed seed3 = Seed.create(SeedType.READ, member, "제목", "내용", now.minusDays(2));
+        seedService.saveSeed(seed1);
+        seedService.saveSeed(seed2);
+        seedService.saveSeed(seed3);
 
         //when
-        List<SeedGroup> seedGroups = seedGroupService.seedGroupList(member);
+        List<SeedGroup> seedGroups = seedGroupService.seedGroupsByUsername(member.getUsername());
 
         //then
         Assertions.assertThat(seedGroups.size()).isEqualTo(3);
@@ -43,11 +51,10 @@ class SeedGroupServiceTest {
     @DisplayName("등록된 시드가 없으면 시드 그룹 리스트를 Empty 리스트로 반환")
     public void seedGroupListReturnEmptyList() {
         //given
-        LocalDateTime now = LocalDateTime.now();
-        Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"), "sowingRefreshToken", now, now);
-
+        CreateMemberDTO createMemberDTO = new CreateMemberDTO("greenneuron", "nickname", "accessToken","refreshToken", new JwtToken("a.b.c"));
+        Member member = memberService.saveMember(createMemberDTO);
         //when
-        List<SeedGroup> seedGroups = seedGroupService.seedGroupList(member);
+        List<SeedGroup> seedGroups = seedGroupService.seedGroupsByUsername(member.getUsername());
 
         //then
         Assertions.assertThat(seedGroups.size()).isEqualTo(0);

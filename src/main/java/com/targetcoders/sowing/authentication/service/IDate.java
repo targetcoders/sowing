@@ -4,5 +4,5 @@ import java.util.Date;
 
 public interface IDate {
     Date instance();
-    long getTime();
+    long nowTime();
 }

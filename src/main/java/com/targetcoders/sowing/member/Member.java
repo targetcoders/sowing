@@ -1,12 +1,9 @@
 package com.targetcoders.sowing.member;
 
-import com.targetcoders.sowing.seed.domain.Seed;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -28,15 +25,9 @@ public class Member {
     @Enumerated(value = EnumType.STRING)
     private MemberRole memberRole;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "member")
-    private final List<Seed> seedList = new ArrayList<>();
 
     public static Member create(String userName, String nickName, GoogleTokens googleTokens, String sowingRefreshToken, LocalDateTime registrationDate, LocalDateTime lastAccessDate) {
         return new Member(null, userName, googleTokens, sowingRefreshToken, nickName, registrationDate, lastAccessDate, MemberRole.ROLE_USER);
-    }
-
-    public void addSeed(Seed seed) {
-        this.seedList.add(seed);
     }
 
     public void update(UpdateMemberDTO updateMemberDTO) {

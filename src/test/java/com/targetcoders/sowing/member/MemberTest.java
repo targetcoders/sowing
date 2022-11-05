@@ -1,11 +1,11 @@
 package com.targetcoders.sowing.member;
 
+import com.targetcoders.sowing.authentication.domain.JwtToken;
 import com.targetcoders.sowing.authentication.service.JwtTokenService;
 import com.targetcoders.sowing.seed.domain.Seed;
 import com.targetcoders.sowing.seed.domain.SeedGroup;
 import com.targetcoders.sowing.seed.service.SeedService;
 import com.targetcoders.sowing.seed.domain.SeedType;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,7 +37,7 @@ class MemberTest {
     void saveAndFind() {
         //given
         LocalDateTime now = LocalDateTime.now();
-        CreateMemberDTO createMemberDTO = new CreateMemberDTO("greenneuron@naver.com", "nickname", "accessToken", "refreshToken", jwtTokenService.createDefaultToken());
+        CreateMemberDTO createMemberDTO = new CreateMemberDTO("greenneuron@naver.com", "nickname", "accessToken", "refreshToken", invalidJwtToken());
         Member saveMember = memberService.saveMember(createMemberDTO);
 
         //when
@@ -50,11 +50,15 @@ class MemberTest {
 
         //when
         Member findMember2 = memberService.findMemberById(saveMember.getId());
-
         em.flush();
 
         //then
-        assertThat(findMember2.getSeedList().size()).isEqualTo(3);
+        List<Seed> seeds = seedService.findSeedsByUsername(findMember2.getUsername());
+        assertThat(seeds.size()).isEqualTo(3);
+    }
+
+    private JwtToken invalidJwtToken() {
+        return new JwtToken("a.b.c");
     }
 
     @Test
@@ -62,9 +66,9 @@ class MemberTest {
     @Transactional
     void findAll() {
         //given
-        CreateMemberDTO createMemberDTO1 = new CreateMemberDTO("greenneuron", "nickname", "accessToken", "refreshToken", jwtTokenService.createDefaultToken());
+        CreateMemberDTO createMemberDTO1 = new CreateMemberDTO("greenneuron", "nickname", "accessToken", "refreshToken", invalidJwtToken());
         memberService.saveMember(createMemberDTO1);
-        CreateMemberDTO createMemberDTO2 = new CreateMemberDTO("greenneuron2", "nickname2", "accessToken2", "refreshToken", jwtTokenService.createDefaultToken());
+        CreateMemberDTO createMemberDTO2 = new CreateMemberDTO("greenneuron2", "nickname2", "accessToken2", "refreshToken", invalidJwtToken());
         memberService.saveMember(createMemberDTO2);
 
         //when
@@ -79,7 +83,7 @@ class MemberTest {
     @Transactional
     public void remove() {
         //given
-        CreateMemberDTO createMemberDTO1 = new CreateMemberDTO("greenneuron", "nickname", "accessToken", "refreshToken", jwtTokenService.createDefaultToken());
+        CreateMemberDTO createMemberDTO1 = new CreateMemberDTO("greenneuron", "nickname", "accessToken", "refreshToken", invalidJwtToken());
         Member saveMember = memberService.saveMember(createMemberDTO1);
 
         //when
@@ -95,7 +99,7 @@ class MemberTest {
     @Transactional
     public void update() {
         //given
-        CreateMemberDTO createMemberDTO1 = new CreateMemberDTO("greenneuron", "nickname",  "accessToken", "refreshToken", jwtTokenService.createDefaultToken());
+        CreateMemberDTO createMemberDTO1 = new CreateMemberDTO("greenneuron", "nickname",  "accessToken", "refreshToken", invalidJwtToken());
         Member saveMember = memberService.saveMember(createMemberDTO1);
         UpdateMemberDTO updateMemberDTO = new UpdateMemberDTO();
         updateMemberDTO.setId(saveMember.getId());

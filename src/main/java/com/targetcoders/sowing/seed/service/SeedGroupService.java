@@ -1,19 +1,25 @@
 package com.targetcoders.sowing.seed.service;
 
-import com.targetcoders.sowing.member.Member;
+import com.targetcoders.sowing.seed.dao.SeedDao;
 import com.targetcoders.sowing.seed.domain.Seed;
 import com.targetcoders.sowing.seed.domain.SeedGroup;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class SeedGroupService {
 
-    public List<SeedGroup> seedGroupList(Member member) {
+    private final SeedDao seedDao;
+
+    @Transactional
+    public List<SeedGroup> seedGroupsByUsername(String username) {
         List<SeedGroup> result = new ArrayList<>();
-        Deque<Seed> seedDeque = new ArrayDeque<>(member.getSeedList());
+        Deque<Seed> seedDeque = new ArrayDeque<>(seedDao.findSeedsByUsername(username));
 
         while (!seedDeque.isEmpty()) {
             LocalDate groupDate = seedDeque.peekFirst().getSowingDate().toLocalDate();
@@ -27,7 +33,8 @@ public class SeedGroupService {
                 seedGroup.addSeed(seed);
                 seedDeque.pollFirst();
             }
-            Collections.sort(seedGroup.getSeedList());
+            List<Seed> seeds = seedGroup.getSeedList();
+            Collections.sort(seeds);
             result.add(seedGroup);
         }
 

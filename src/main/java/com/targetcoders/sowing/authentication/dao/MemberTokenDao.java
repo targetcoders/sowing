@@ -5,6 +5,8 @@ import com.targetcoders.sowing.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class MemberTokenDao {
@@ -12,8 +14,11 @@ public class MemberTokenDao {
     private final MemberRepository  memberRepository;
 
     public String findSowingRefreshToken(String email) {
-        Member member = memberRepository.findByUsername(email).get(0);
-        return member.getSowingRefreshToken();
+        List<Member> members = memberRepository.findByUsername(email);
+        if (members.size() != 1) {
+            return "";
+        }
+        return members.get(0).getSowingRefreshToken();
     }
     public void updateSowingRefreshToken(String email, String sowingRefreshToken) {
         Member member = memberRepository.findByUsername(email).get(0);

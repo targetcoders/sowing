@@ -17,7 +17,8 @@ public class JwtExceptionHandlerFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             filterChain.doFilter(request, response);
-        } catch (InvalidTokenException e) {
+        } catch (IllegalArgumentException | InvalidTokenException e) {
+            response.setHeader("set-cookie", "ACCESS-TOKEN=; path=/");
             response.setHeader("Location", "/login/google");
             response.setStatus(HttpServletResponse.SC_FOUND);
         }
