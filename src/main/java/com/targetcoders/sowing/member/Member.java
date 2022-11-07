@@ -16,7 +16,8 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
     private String username;
-    @Embedded
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "google_tokens_id")
     private GoogleTokens googleTokens;
     private String sowingRefreshToken;
     private String nickname;

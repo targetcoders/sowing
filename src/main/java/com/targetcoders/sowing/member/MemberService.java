@@ -15,13 +15,18 @@ public class MemberService {
 
     @Transactional
     public Member saveMember(CreateMemberDTO createMemberDTO) {
+        Member findMember = findMember(createMemberDTO.getEmail());
+        if (findMember.getId() != null) {
+            return findMember;
+        }
+
         String accessToken = createMemberDTO.getGoogleAccessToken();
         String refreshToken = createMemberDTO.getGoogleRefreshToken();
-        GoogleTokens googleTokens = new GoogleTokens(accessToken, refreshToken);
         String sowingRefreshToken = createMemberDTO.getSowingRefreshToken().toString();
 
         Member member = new Member();
         member.setUsername(createMemberDTO.getEmail());
+        GoogleTokens googleTokens = new GoogleTokens(accessToken, refreshToken);
         member.setGoogleTokens(googleTokens);
         member.setSowingRefreshToken(sowingRefreshToken);
         member.setNickname(createMemberDTO.getNickname());
@@ -29,12 +34,6 @@ public class MemberService {
         LocalDateTime now = LocalDateTime.now();
         member.setRegistrationDate(now);
         member.setLastAccessDate(now);
-
-        Member findMember = findMember(member.getUsername());
-        if (findMember.getId() != null) {
-            return findMember;
-        }
-
         memberRepository.save(member);
         return member;
     }

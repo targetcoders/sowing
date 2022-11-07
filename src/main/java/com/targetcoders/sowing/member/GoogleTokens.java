@@ -3,12 +3,16 @@ package com.targetcoders.sowing.member;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Embeddable;
+import javax.persistence.*;
 
-@Embeddable
 @Getter @Setter
+@Entity
 public class GoogleTokens {
 
+    @Id
+    @GeneratedValue
+    @Column(name = "google_tokens_id")
+    private Long id;
     private String accessToken;
     private String refreshToken;
 
