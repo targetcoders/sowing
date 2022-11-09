@@ -1,46 +1,36 @@
 package com.targetcoders.sowing.seed.service;
 
-import com.targetcoders.sowing.seed.dao.SeedDao;
-import com.targetcoders.sowing.seed.domain.Seed;
-import com.targetcoders.sowing.seed.domain.SeedGroup;
+import com.targetcoders.sowing.seed.domain.SeedDayGroup;
+import com.targetcoders.sowing.seed.domain.SeedMonthGroup;
+import com.targetcoders.sowing.seed.domain.SeedYearGroup;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class SeedGroupService {
 
-    private final SeedDao seedDao;
+    private final SeedService seedService;
 
     @Transactional
-    public List<SeedGroup> seedGroupsByUsername(String username) {
-        List<SeedGroup> result = new ArrayList<>();
-        Deque<Seed> seedDeque = new ArrayDeque<>(seedDao.findSeedsByUsername(username));
-
-        while (!seedDeque.isEmpty()) {
-            LocalDate groupDate = seedDeque.peekFirst().getSowingDate().toLocalDate();
-            SeedGroup seedGroup = SeedGroup.create(groupDate);
-            while (!seedDeque.isEmpty()) {
-                Seed seed = seedDeque.peekFirst();
-                LocalDate seedDate = seed.getSowingDate().toLocalDate();
-                if (!groupDate.equals(seedDate)) {
-                    break;
-                }
-                seedGroup.addSeed(seed);
-                seedDeque.pollFirst();
-            }
-            List<Seed> seeds = seedGroup.getSeedList();
-            Collections.sort(seeds);
-            result.add(seedGroup);
-        }
-
-        Collections.sort(result);
-        return result;
+    public SeedYearGroup seedThisYearGroup(int year, String email) {
+        SeedYearGroup seedYearGroup = new SeedYearGroup(year, seedService.findSeedsByUsername(email));
+        deepSortSeedYearGroup(seedYearGroup);
+        return seedYearGroup;
     }
 
-    
+    private void deepSortSeedYearGroup(SeedYearGroup seedYearGroup) {
+        List<SeedMonthGroup> seedMonthGroups = seedYearGroup.getSeedMonthGroups();
+        for (SeedMonthGroup seedMonthGroup : seedMonthGroups) {
+            List<SeedDayGroup> seedDayGroups = seedMonthGroup.getSeedDayGroups();
+            Collections.sort(seedDayGroups);
+            for (SeedDayGroup seedDayGroup : seedDayGroups) {
+                Collections.sort(seedDayGroup.getSeeds());
+            }
+        }
+    }
 }

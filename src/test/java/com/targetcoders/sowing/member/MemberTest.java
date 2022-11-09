@@ -3,7 +3,7 @@ package com.targetcoders.sowing.member;
 import com.targetcoders.sowing.authentication.domain.JwtToken;
 import com.targetcoders.sowing.authentication.service.JwtTokenService;
 import com.targetcoders.sowing.seed.domain.Seed;
-import com.targetcoders.sowing.seed.domain.SeedGroup;
+import com.targetcoders.sowing.seed.domain.SeedDayGroup;
 import com.targetcoders.sowing.seed.service.SeedService;
 import com.targetcoders.sowing.seed.domain.SeedType;
 import org.junit.jupiter.api.DisplayName;
@@ -120,21 +120,21 @@ class MemberTest {
     @DisplayName("시드 그룹 리스트를 날짜 기준 내림차순 정렬")
     public void sortedSeedGroupList() {
         //given
-        List<SeedGroup> seedGroups = new ArrayList<>();
-        SeedGroup seedGroup1 = new SeedGroup(LocalDateTime.now().toLocalDate(), new ArrayList<>());
-        SeedGroup seedGroup2 = new SeedGroup(LocalDateTime.now().minusDays(1).toLocalDate(), new ArrayList<>());
-        SeedGroup seedGroup3 = new SeedGroup(LocalDateTime.now().minusDays(2).toLocalDate(), new ArrayList<>());
-        seedGroups.add(seedGroup3);
-        seedGroups.add(seedGroup2);
-        seedGroups.add(seedGroup1);
+        List<SeedDayGroup> seedDayGroups = new ArrayList<>();
+        SeedDayGroup seedDayGroup1 = new SeedDayGroup(LocalDateTime.now().toLocalDate().getDayOfMonth());
+        SeedDayGroup seedDayGroup2 = new SeedDayGroup(LocalDateTime.now().minusDays(1).toLocalDate().getDayOfMonth());
+        SeedDayGroup seedDayGroup3 = new SeedDayGroup(LocalDateTime.now().minusDays(2).toLocalDate().getDayOfMonth());
+        seedDayGroups.add(seedDayGroup3);
+        seedDayGroups.add(seedDayGroup2);
+        seedDayGroups.add(seedDayGroup1);
 
         //when
-        Collections.sort(seedGroups);
+        Collections.sort(seedDayGroups);
 
         //then
-        assertThat(seedGroups.get(0)).isEqualTo(seedGroup1);
-        assertThat(seedGroups.get(1)).isEqualTo(seedGroup2);
-        assertThat(seedGroups.get(2)).isEqualTo(seedGroup3);
+        assertThat(seedDayGroups.get(0)).isEqualTo(seedDayGroup1);
+        assertThat(seedDayGroups.get(1)).isEqualTo(seedDayGroup2);
+        assertThat(seedDayGroups.get(2)).isEqualTo(seedDayGroup3);
     }
 
 }

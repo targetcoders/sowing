@@ -12,14 +12,16 @@
 
 <div layout:fragment="content" class="container">
     <div class="d-flex flex-column justify-content-center align-items-center">
-        <h1 class="text-center">HOME</h1>
-        <p><span th:text="${#authentication.name}"></span>님 안녕하세요.</p>
-        <div sec:authorize="isAuthenticated()" class="d-flex w-100 justify-content-center flex-column align-items-center">
-            <div class="w-100 list-group" th:each="seedGroup : ${seedGroupList}">
-                <h5 th:text="${#temporals.format(seedGroup.sowingDate,'yyyy-MM-dd')}"></h5>
-                <a class="list-group-item"
-                   th:each="seed : ${seedGroup.seedList}"
-                   th:href="|/seeds/${seed.id}|" th:text="|${seed.type} / ${seed.title}|"></a>
+        <div sec:authorize="isAuthenticated()" id="seedsContainer" class="d-flex w-100 justify-content-center flex-column align-items-center">
+            <h1 th:text="|${seedYearGroups.year}년|"></h1>
+            <div th:if="${!seedMonthGroup.seedDayGroups.isEmpty()}" class="w-100 list-group mb-3" th:each="seedMonthGroup : ${seedYearGroups.seedMonthGroups}">
+                <h3 th:text="${seedMonthGroup.month}"></h3>
+                <div class="mb-2" th:each="seedDayGroup : ${seedMonthGroup.seedDayGroups}">
+                    <h5 th:text="|${seedDayGroup.day}일|"></h5>
+                    <a class="list-group-item"
+                       th:each="seed : ${seedDayGroup.seeds}"
+                       th:href="|/seeds/${seed.id}|" th:text="|${seed.type} / ${seed.title}|"></a>
+                </div>
             </div>
         </div>
     </div>
