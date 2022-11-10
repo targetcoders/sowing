@@ -1,8 +1,8 @@
 package com.targetcoders.sowing.seed.domain;
 
-import com.targetcoders.sowing.member.GoogleTokens;
-import com.targetcoders.sowing.member.Member;
-import com.targetcoders.sowing.member.MemberService;
+import com.targetcoders.sowing.member.domain.GoogleTokens;
+import com.targetcoders.sowing.member.domain.Member;
+import com.targetcoders.sowing.member.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

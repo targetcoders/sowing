@@ -2,6 +2,10 @@ package com.targetcoders.sowing.member;
 
 import com.targetcoders.sowing.authentication.domain.JwtToken;
 import com.targetcoders.sowing.authentication.service.JwtTokenService;
+import com.targetcoders.sowing.member.domain.Member;
+import com.targetcoders.sowing.member.dto.CreateMemberDTO;
+import com.targetcoders.sowing.member.dto.UpdateMemberDTO;
+import com.targetcoders.sowing.member.service.MemberService;
 import com.targetcoders.sowing.seed.domain.Seed;
 import com.targetcoders.sowing.seed.domain.SeedDayGroup;
 import com.targetcoders.sowing.seed.service.SeedService;
@@ -27,7 +31,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 class MemberTest {
 
     @Autowired SeedService seedService;
-    @Autowired MemberService memberService;
+    @Autowired
+    MemberService memberService;
     @Autowired EntityManager em;
     @Autowired JwtTokenService jwtTokenService;
 

@@ -1,5 +1,6 @@
-package com.targetcoders.sowing.member;
+package com.targetcoders.sowing.member.domain;
 
+import com.targetcoders.sowing.member.dto.UpdateMemberDTO;
 import lombok.*;
 
 import javax.persistence.*;

@@ -1,5 +1,7 @@
-package com.targetcoders.sowing.member;
+package com.targetcoders.sowing.member.repository;
 
+import com.targetcoders.sowing.member.domain.Member;
+import com.targetcoders.sowing.member.dto.UpdateMemberDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

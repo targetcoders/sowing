@@ -5,7 +5,7 @@ import com.targetcoders.sowing.authentication.exception.InvalidTokenException;
 import com.targetcoders.sowing.authentication.service.HeaderSetService;
 import com.targetcoders.sowing.authentication.service.JwtTokenService;
 import com.targetcoders.sowing.authentication.service.TokenFindService;
-import com.targetcoders.sowing.member.MemberRole;
+import com.targetcoders.sowing.member.domain.MemberRole;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.JwtParser;
 import lombok.RequiredArgsConstructor;

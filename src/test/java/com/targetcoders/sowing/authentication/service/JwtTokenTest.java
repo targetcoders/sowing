@@ -1,7 +1,7 @@
 package com.targetcoders.sowing.authentication.service;
 
 import com.targetcoders.sowing.authentication.domain.JwtToken;
-import com.targetcoders.sowing.member.MemberRole;
+import com.targetcoders.sowing.member.domain.MemberRole;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.MalformedJwtException;

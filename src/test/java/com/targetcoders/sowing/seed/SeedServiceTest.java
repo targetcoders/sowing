@@ -1,8 +1,8 @@
 package com.targetcoders.sowing.seed;
 
-import com.targetcoders.sowing.member.GoogleTokens;
-import com.targetcoders.sowing.member.Member;
-import com.targetcoders.sowing.member.MemberService;
+import com.targetcoders.sowing.member.domain.GoogleTokens;
+import com.targetcoders.sowing.member.domain.Member;
+import com.targetcoders.sowing.member.service.MemberService;
 import com.targetcoders.sowing.seed.domain.Seed;
 import com.targetcoders.sowing.seed.domain.SeedType;
 import com.targetcoders.sowing.seed.dto.UpdateSeedDTO;

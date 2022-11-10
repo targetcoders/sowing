@@ -1,6 +1,6 @@
 package com.targetcoders.sowing.seed.domain;
 
-import com.targetcoders.sowing.member.Member;
+import com.targetcoders.sowing.member.domain.Member;
 import com.targetcoders.sowing.seed.dto.UpdateSeedDTO;
 import lombok.*;
 

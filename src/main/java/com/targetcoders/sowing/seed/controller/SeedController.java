@@ -5,6 +5,7 @@ import com.targetcoders.sowing.seed.domain.SeedForm;
 import com.targetcoders.sowing.seed.domain.SeedType;
 import com.targetcoders.sowing.seed.dto.UpdateSeedDTO;
 import com.targetcoders.sowing.seed.service.SeedService;
+import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class SeedController {
     }
 
     @PostMapping("/seeds/new")
-    public String create(SeedForm seedForm) {
+    public String create(SeedForm seedForm) throws NotFoundException {
         seedService.saveSeed(seedForm);
         return "redirect:/";
     }

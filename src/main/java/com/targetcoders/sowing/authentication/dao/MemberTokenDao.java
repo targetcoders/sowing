@@ -1,7 +1,7 @@
 package com.targetcoders.sowing.authentication.dao;
 
-import com.targetcoders.sowing.member.Member;
-import com.targetcoders.sowing.member.MemberRepository;
+import com.targetcoders.sowing.member.domain.Member;
+import com.targetcoders.sowing.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

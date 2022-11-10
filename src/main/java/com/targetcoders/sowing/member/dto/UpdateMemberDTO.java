@@ -1,4 +1,4 @@
-package com.targetcoders.sowing.member;
+package com.targetcoders.sowing.member.dto;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -3,7 +3,7 @@ package com.targetcoders.sowing.authentication.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.targetcoders.sowing.authentication.dto.GoogleAuthorizationDTO;
 import com.targetcoders.sowing.authentication.dto.GoogleUserInfoDTO;
-import com.targetcoders.sowing.member.GoogleTokens;
+import com.targetcoders.sowing.member.domain.GoogleTokens;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
