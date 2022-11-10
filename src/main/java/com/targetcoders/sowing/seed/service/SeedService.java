@@ -56,11 +56,12 @@ public class SeedService {
         return seed.getId();
     }
 
-    private String defaultSowingDateTime(String sowingDate) {
-        return sowingDate + "T00:00:00";
-    }
-
+    @Transactional
     public List<Seed> findSeedsByUsername(String username) {
         return seedDao.findSeedsByUsername(username);
+    }
+
+    private String defaultSowingDateTime(String sowingDate) {
+        return sowingDate + "T00:00:00";
     }
 }

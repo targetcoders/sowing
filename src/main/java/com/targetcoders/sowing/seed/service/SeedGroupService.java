@@ -17,7 +17,7 @@ public class SeedGroupService {
     private final SeedService seedService;
 
     @Transactional
-    public SeedYearGroup seedThisYearGroup(int year, String email) {
+    public SeedYearGroup seedYearGroup(int year, String email) {
         SeedYearGroup seedYearGroup = new SeedYearGroup(year, seedService.findSeedsByUsername(email));
         deepSortSeedYearGroup(seedYearGroup);
         return seedYearGroup;

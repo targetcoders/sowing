@@ -1,14 +1,14 @@
 package com.targetcoders.sowing.seed.dao;
 
-import com.targetcoders.sowing.seed.dto.UpdateSeedDTO;
 import com.targetcoders.sowing.seed.domain.Seed;
+import com.targetcoders.sowing.seed.dto.UpdateSeedDTO;
 import com.targetcoders.sowing.seed.repository.SeedRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Repository
+@Component
 @RequiredArgsConstructor
 public class SeedDao {
 

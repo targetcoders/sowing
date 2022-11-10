@@ -24,7 +24,7 @@ public class HomeController {
     public String home(Authentication authentication, HttpServletResponse response, Model model) {
         if (authentication != null && authentication.isAuthenticated()) {
             String email = authentication.getName();
-            SeedYearGroup seedYearGroup = seedGroupService.seedThisYearGroup(localDateTime.now().getYear(), email);
+            SeedYearGroup seedYearGroup = seedGroupService.seedYearGroup(localDateTime.now().getYear(), email);
             SeedYearGroupsDTO seedYearGroupsDTO = new ModelMapper().map(seedYearGroup, SeedYearGroupsDTO.class);
             model.addAttribute("seedYearGroups", seedYearGroupsDTO);
         }
