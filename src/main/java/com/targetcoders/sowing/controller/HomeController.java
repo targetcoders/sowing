@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,12 +22,16 @@ public class HomeController {
     private final ILocalDateTime localDateTime;
 
     @GetMapping("/")
-    public String home(Authentication authentication, HttpServletResponse response, Model model) {
+    public String home(Authentication authentication, HttpServletResponse response, @RequestParam(name = "year", required = false) Integer year, Model model) {
         if (authentication != null && authentication.isAuthenticated()) {
+            if (year == null) {
+                year = localDateTime.now().getYear();
+            }
             String email = authentication.getName();
-            SeedYearGroup seedYearGroup = seedGroupService.seedYearGroup(localDateTime.now().getYear(), email);
+            SeedYearGroup seedYearGroup = seedGroupService.seedYearGroup(year, email);
             SeedYearGroupsDTO seedYearGroupsDTO = new ModelMapper().map(seedYearGroup, SeedYearGroupsDTO.class);
             model.addAttribute("seedYearGroups", seedYearGroupsDTO);
+            model.addAttribute("year", year);
         }
         response.setHeader("Cache-Control", "no-cache; no-store; must-revalidate");
         return "home";

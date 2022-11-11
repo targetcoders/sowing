@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -57,8 +58,11 @@ public class SeedService {
     }
 
     @Transactional
-    public List<Seed> findSeedsByUsername(String username) {
-        return seedDao.findSeedsByUsername(username);
+    public List<Seed> findYearSeeds(Integer year, String username) {
+        List<Seed> seeds = seedDao.findSeedsByUsername(username);
+        return seeds.stream()
+                .filter(seed -> seed.getSowingDate().getYear() == year)
+                .collect(Collectors.toList());
     }
 
     private String defaultSowingDateTime(String sowingDate) {

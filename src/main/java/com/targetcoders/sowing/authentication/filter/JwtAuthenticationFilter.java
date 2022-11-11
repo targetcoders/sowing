@@ -82,6 +82,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 (accessToken == null && request.getRequestURI().startsWith("/login/google")) ||
                 request.getRequestURI().startsWith("/css/") ||
                 request.getRequestURI().startsWith("/js/") ||
+                request.getRequestURI().startsWith("/images/") ||
                 request.getRequestURI().startsWith("/error");
     }
 

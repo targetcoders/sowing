@@ -58,7 +58,7 @@ class MemberTest {
         em.flush();
 
         //then
-        List<Seed> seeds = seedService.findSeedsByUsername(findMember2.getUsername());
+        List<Seed> seeds = seedService.findYearSeeds(now.getYear(), findMember2.getUsername());
         assertThat(seeds.size()).isEqualTo(3);
     }
 

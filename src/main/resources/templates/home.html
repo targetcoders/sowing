@@ -5,6 +5,7 @@
       layout:decorate="~{layouts/layout}">
 
 <th:block layout:fragment="css">
+    <link rel="stylesheet" href="/css/common.css"/>
 </th:block>
 
 <th:block layout:fragment="script">
@@ -13,7 +14,22 @@
 <div layout:fragment="content" class="container">
     <div class="d-flex flex-column justify-content-center align-items-center">
         <div sec:authorize="isAuthenticated()" id="seedsContainer" class="d-flex w-100 justify-content-center flex-column align-items-center">
-            <h1 th:text="|${seedYearGroups.year}년|"></h1>
+            <div class="d-flex align-items-center">
+                <span class="text-decoration-none d-flex align-items-center mr-10">
+                    <a th:href="|/?year=${year-1}|">
+                        <img class="icon-small" src="/images/green-arrow-left-64.png"/>
+                    </a>
+                </span>
+                <span class="h1" th:text="|${seedYearGroups.year}년|"></span>
+                <span th:if="${year}<${#temporals.year(#temporals.createToday())}" class="text-decoration-none d-flex align-items-center ml-10">
+                    <a class="h1 text-decoration-none" th:href="|/?year=${year+1}|">
+                        <img class="icon-small" src="/images/green-arrow-right-64.png"/>
+                    </a>
+                </span>
+                <span th:if="${year}>=${#temporals.year(#temporals.createToday())}" class="invisible ml-10">
+                    <img class="icon-small" src="/images/green-arrow-right-64.png"/>
+                </span>
+            </div>
             <div th:if="${!seedMonthGroup.seedDayGroups.isEmpty()}" class="w-100 list-group mb-3" th:each="seedMonthGroup : ${seedYearGroups.seedMonthGroups}">
                 <h3 th:text="${seedMonthGroup.month}"></h3>
                 <div class="mb-2" th:each="seedDayGroup : ${seedMonthGroup.seedDayGroups}">
