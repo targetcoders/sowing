@@ -2,10 +2,13 @@ package com.targetcoders.sowing.seed.domain;
 
 import com.targetcoders.sowing.member.domain.Member;
 import com.targetcoders.sowing.seed.dto.UpdateSeedDTO;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -26,10 +29,10 @@ public class Seed implements Comparable<Seed> {
     private Member member;
     private String title;
     private String content;
-    private LocalDateTime sowingDate;
+    private LocalDate sowingDate;
 
-    public static Seed create(SeedType type, Member member, String title, String content, LocalDateTime doneDate) {
-        return new Seed(null, type, member, title, content, doneDate);
+    public static Seed create(SeedType type, Member member, String title, String content, LocalDate sowingDate) {
+        return new Seed(null, type, member, title, content, sowingDate);
     }
 
     public void update(UpdateSeedDTO updateSeedDto) {

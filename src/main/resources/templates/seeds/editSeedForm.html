@@ -17,15 +17,26 @@
         <div class="d-flex flex-column justify-content-center align-items-center">
             <input type="hidden" name="username" th:value="${#authentication.name}"/>
             <input type="hidden" name="id" th:value="${seed.id}"/>
-            <select id="seed-type" name="selectType" class="form-select w-75">
-                <option selected th:value="${seed.selectType}" th:text="${seed.selectType}"></option>
-                <option th:each="type : ${seed.typeList}"
-                        th:if="${type} != ${seed.selectType}"
-                        th:value="${type}"
-                        th:text="${type}"></option>
-            </select>
-            <input id="seed-title" class="form-control w-75 mt-2" type="text" name="title" th:value="${seed.title}" placeholder="제목"/>
-            <textarea id="seed-content" name="content" th:text="${seed.content}" class="form-control w-75 mt-2" style="height: 300px"></textarea>
+            <div class="form-floating w-75">
+                <input type="date" th:max="${#temporals.createToday()}" id="sowingDate" name="sowingDate" class="form-control" th:value="${seed.sowingDate}"/>
+                <label for="sowingDate">날짜</label>
+            </div>
+            <div class="form-floating w-75 mt-2">
+                <select id="seed-type" name="selectType" class="form-select">
+                    <option selected th:value="${seed.selectType}" th:text="${seed.selectType}"></option>
+                    <option th:each="type : ${seed.typeList}"
+                            th:if="${type} != ${seed.selectType}"
+                            th:value="${type}"
+                            th:text="${type}"></option>
+                </select>
+                <label for="seed-type">타입</label>
+            </div>
+            <div class="form-floating w-75 mt-2">
+                <input id="seed-title" class="form-control" type="text" name="title" th:value="${seed.title}" placeholder="제목"/>
+                <label for="seed-title">제목</label>
+            </div>
+            <textarea id="seed-content" name="content" th:text="${seed.content}" class="form-control w-75 mt-2" style="height: 300px"
+                      placeholder="오늘 하루 어땠나요?"></textarea>
             <button type="submit" class="btn btn-success mt-2">수정</button>
         </div>
     </form>

@@ -7,13 +7,13 @@ import com.targetcoders.sowing.seed.dto.UpdateSeedDTO;
 import com.targetcoders.sowing.seed.service.SeedService;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,6 +52,7 @@ public class SeedController {
         seedForm.setSelectType(seed.getType());
         seedForm.setContent(seed.getContent());
         seedForm.setUsername(seed.getMember().getUsername());
+        seedForm.setSowingDate(seed.getSowingDate());
         model.addAttribute("seed", seedForm);
         List<SeedType> typeList = Arrays.stream(SeedType.values()).collect(Collectors.toList());
         seedForm.setTypeList(typeList);
@@ -61,12 +62,8 @@ public class SeedController {
 
     @PostMapping("seeds/{id}/edit")
     public String update(@ModelAttribute("form") SeedForm seedForm) {
-        UpdateSeedDTO updateSeedDTO = new UpdateSeedDTO(
-                seedForm.getId(),
-                seedForm.getSelectType(),
-                seedForm.getTitle(),
-                seedForm.getContent(),
-                LocalDateTime.now());
+        ModelMapper modelMapper = new ModelMapper();
+        UpdateSeedDTO updateSeedDTO = modelMapper.map(seedForm, UpdateSeedDTO.class);
         seedService.updateSeed(updateSeedDTO);
         return "redirect:/";
     }

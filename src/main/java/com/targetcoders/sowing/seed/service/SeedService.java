@@ -1,7 +1,7 @@
 package com.targetcoders.sowing.seed.service;
 
-import com.targetcoders.sowing.member.domain.Member;
 import com.targetcoders.sowing.member.dao.MemberDao;
+import com.targetcoders.sowing.member.domain.Member;
 import com.targetcoders.sowing.seed.dao.SeedDao;
 import com.targetcoders.sowing.seed.domain.Seed;
 import com.targetcoders.sowing.seed.domain.SeedForm;
@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,9 +49,8 @@ public class SeedService {
         String content = seedForm.getContent();
         String username = seedForm.getUsername();
         String title = seedForm.getTitle();
-        String sowingDateTime = defaultSowingDateTime(seedForm.getSowingDate());
         Member member = memberDao.findByUsername(username);
-        Seed seed = Seed.create(selectType, member, title, content, LocalDateTime.parse(sowingDateTime));
+        Seed seed = Seed.create(selectType, member, title, content, seedForm.getSowingDate());
         seedDao.saveSeed(seed);
         return seed.getId();
     }
@@ -63,9 +61,5 @@ public class SeedService {
         return seeds.stream()
                 .filter(seed -> seed.getSowingDate().getYear() == year)
                 .collect(Collectors.toList());
-    }
-
-    private String defaultSowingDateTime(String sowingDate) {
-        return sowingDate + "T00:00:00";
     }
 }
