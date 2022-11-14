@@ -8,7 +8,13 @@
             <a class="navbar-brand" href="/">Sowing Life Seeds</a>
             <ul sec:authorize="isAuthenticated()" class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="navbar-item">
+                    <a class="nav-link active" href="/">홈</a>
+                </li>
+                <li class="navbar-item">
                     <a class="nav-link active" href="/seeds/new">시드 등록하기</a>
+                </li>
+                <li class="navbar-item">
+                    <a class="nav-link active" href="/overview">요약</a>
                 </li>
             </ul>
             <a sec:authorize="isAnonymous()" class="btn btn-outline-primary" href="/login/google">로그인</a>

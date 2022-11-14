@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,6 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 class SeedServiceTest {
 
+    public static final LocalDate LOCAL_DATE = LocalDate.now();
     @Autowired
     SeedService seedService;
     @Autowired
@@ -36,9 +38,8 @@ class SeedServiceTest {
     @Transactional
     void saveAndFindOne() {
         //given
-        LocalDateTime now = LocalDateTime.now();
-        Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"), "sowingRefreshToken", now, now);
-        Seed seed = Seed.create(SeedType.PLAY, member, "제목", "내용", now);
+        Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"), "sowingRefreshToken", LOCAL_DATE, LOCAL_DATE);
+        Seed seed = Seed.create(SeedType.PLAY, member, "제목", "내용", LOCAL_DATE);
 
         //when
         Long saveId = seedService.saveSeed(seed);
@@ -49,7 +50,7 @@ class SeedServiceTest {
         assertThat(getSeed.getType().toString()).isEqualTo("PLAY");
         assertThat(getSeed.getTitle()).isEqualTo("제목");
         assertThat(getSeed.getContent()).isEqualTo("내용");
-        assertThat(getSeed.getSowingDate()).isEqualTo(now);
+        assertThat(getSeed.getSowingDate()).isEqualTo(LOCAL_DATE);
     }
 
     @Test
@@ -57,15 +58,13 @@ class SeedServiceTest {
     @Transactional
     void updateSeed() {
         //given
-        LocalDateTime now = LocalDateTime.now();
-        Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"), "sowingRefreshToken", now, now);
-        Seed seed = Seed.create(SeedType.PLAY, member, "제목", "내용", now);
+        Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"), "sowingRefreshToken", LOCAL_DATE, LOCAL_DATE);
+        Seed seed = Seed.create(SeedType.PLAY, member, "제목", "내용", LOCAL_DATE);
         Long saveId = seedService.saveSeed(seed);
 
         //when
         Seed findSeed = seedService.findSeedById(saveId);
-        LocalDateTime updateDate = LocalDateTime.now();
-        UpdateSeedDTO updateSeedDto = new UpdateSeedDTO(findSeed.getId(), SeedType.STUDY, "변경된 제목", "변경된 내용", updateDate);
+        UpdateSeedDTO updateSeedDto = new UpdateSeedDTO(findSeed.getId(), SeedType.STUDY, "변경된 제목", "변경된 내용", LOCAL_DATE);
         seedService.updateSeed(updateSeedDto);
 
         //then
@@ -73,7 +72,7 @@ class SeedServiceTest {
         assertThat(updateSeed.getType()).isEqualTo(SeedType.STUDY);
         assertThat(updateSeed.getTitle()).isEqualTo("변경된 제목");
         assertThat(updateSeed.getContent()).isEqualTo("변경된 내용");
-        assertThat(updateSeed.getSowingDate()).isEqualTo(updateDate);
+        assertThat(updateSeed.getSowingDate()).isEqualTo(LOCAL_DATE);
     }
 
     @Test
@@ -81,9 +80,8 @@ class SeedServiceTest {
     @Transactional
     void removeSeed() {
         //given
-        LocalDateTime now = LocalDateTime.now();
-        Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"), "sowingRefreshToken", now, now);
-        Seed seed = Seed.create(SeedType.PLAY,member, "제목", "내용", now);
+        Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"), "sowingRefreshToken", LOCAL_DATE, LOCAL_DATE);
+        Seed seed = Seed.create(SeedType.PLAY,member, "제목", "내용", LOCAL_DATE);
         Long saveId = seedService.saveSeed(seed);
         assertThat(seedService.findSeedById(saveId)).isNotNull();
 
@@ -100,12 +98,11 @@ class SeedServiceTest {
     public void sortedSeedList() {
         //given
         List<Seed> seedList = new ArrayList<>();
-        LocalDateTime now = LocalDateTime.now();
-        Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"), "sowingRefreshToken", now, now);
-        Seed seed1 = Seed.create(SeedType.PLAY, member, "제목", "내용", now);
-        Seed seed2 = Seed.create(SeedType.READ, member, "제목", "내용", now);
-        Seed seed3 = Seed.create(SeedType.STUDY, member, "제목", "내용", now);
-        Seed seed4 = Seed.create(SeedType.DATE, member, "제목", "내용", now);
+        Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"), "sowingRefreshToken", LOCAL_DATE, LOCAL_DATE);
+        Seed seed1 = Seed.create(SeedType.PLAY, member, "제목", "내용", LOCAL_DATE);
+        Seed seed2 = Seed.create(SeedType.READ, member, "제목", "내용", LOCAL_DATE);
+        Seed seed3 = Seed.create(SeedType.STUDY, member, "제목", "내용", LOCAL_DATE);
+        Seed seed4 = Seed.create(SeedType.DATE, member, "제목", "내용", LOCAL_DATE);
         seedList.add(seed1);
         seedList.add(seed2);
         seedList.add(seed3);

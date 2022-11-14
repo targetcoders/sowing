@@ -4,6 +4,7 @@ import com.targetcoders.sowing.member.dto.UpdateMemberDTO;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,13 +23,13 @@ public class Member {
     private GoogleTokens googleTokens;
     private String sowingRefreshToken;
     private String nickname;
-    private LocalDateTime registrationDate;
-    private LocalDateTime lastAccessDate;
+    private LocalDate registrationDate;
+    private LocalDate lastAccessDate;
     @Enumerated(value = EnumType.STRING)
     private MemberRole memberRole;
 
 
-    public static Member create(String userName, String nickName, GoogleTokens googleTokens, String sowingRefreshToken, LocalDateTime registrationDate, LocalDateTime lastAccessDate) {
+    public static Member create(String userName, String nickName, GoogleTokens googleTokens, String sowingRefreshToken, LocalDate registrationDate, LocalDate lastAccessDate) {
         return new Member(null, userName, googleTokens, sowingRefreshToken, nickName, registrationDate, lastAccessDate, MemberRole.ROLE_USER);
     }
 

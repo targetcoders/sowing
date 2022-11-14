@@ -5,13 +5,13 @@ import com.targetcoders.sowing.member.dto.UpdateMemberDTO;
 import com.targetcoders.sowing.member.domain.GoogleTokens;
 import com.targetcoders.sowing.member.domain.Member;
 import com.targetcoders.sowing.member.dto.CreateMemberDTO;
-import com.targetcoders.sowing.seed.ILocalDateTime;
+import com.targetcoders.sowing.seed.ILocalDate;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -19,7 +19,7 @@ import java.util.List;
 public class MemberService {
 
     private final MemberDao memberDao;
-    private final ILocalDateTime localDateTime;
+    private final ILocalDate localDateTime;
 
     @Transactional
     public Member saveMember(CreateMemberDTO createMemberDTO) {
@@ -27,7 +27,7 @@ public class MemberService {
         String refreshToken = createMemberDTO.getGoogleRefreshToken();
         String sowingRefreshToken = createMemberDTO.getSowingRefreshToken().toString();
 
-        LocalDateTime now = localDateTime.now();
+        LocalDate now = localDateTime.now();
         GoogleTokens googleTokens = new GoogleTokens(accessToken, refreshToken);
         Member member = Member.create(createMemberDTO.getEmail(), createMemberDTO.getNickname(), googleTokens, sowingRefreshToken, now, now);
         memberDao.save(member);

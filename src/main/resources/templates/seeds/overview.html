@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" href="/css/common.css"/>
+</th:block>
+
+<th:block layout:fragment="script">
+</th:block>
+
+<div layout:fragment="content" class="container">
+    <div class="d-flex flex-column justify-content-center align-items-center">
+        <div sec:authorize="isAuthenticated()" id="seedsContainer" class="d-flex w-100 justify-content-center flex-column align-items-center">
+            <div class="h1 mb-3">요약</div>
+            <div class="mb-3">
+                지금까지 등록한 시드는 총 <span class="fw-bold" th:text="${seedOverview.typeCounter.total()}"></span>개 입니다.
+            </div>
+            <div class="mb-1">
+                데이트 : <span class="fw-bold" th:text="${seedOverview.typeCounter.getDateCount()}"></span>개
+            </div>
+            <div class="mb-1">
+                독서 : <span class="fw-bold" th:text="${seedOverview.typeCounter.getReadCount()}"></span>개
+            </div>
+            <div class="mb-1">
+                공부 : <span class="fw-bold" th:text="${seedOverview.typeCounter.getStudyCount()}"></span>개
+            </div>
+            <div class="mb-1">
+                놀기 : <span class="fw-bold" th:text="${seedOverview.typeCounter.getPlayCount()}"></span>개
+            </div>
+        </div>
+    </div>
+</div>
+</html>

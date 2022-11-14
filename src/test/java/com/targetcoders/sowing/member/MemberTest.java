@@ -19,6 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,7 +42,7 @@ class MemberTest {
     @Transactional
     void saveAndFind() {
         //given
-        LocalDateTime now = LocalDateTime.now();
+        LocalDate now = LocalDate.now();
         CreateMemberDTO createMemberDTO = new CreateMemberDTO("greenneuron@naver.com", "nickname", "accessToken", "refreshToken", invalidJwtToken());
         Member saveMember = memberService.saveMember(createMemberDTO);
 

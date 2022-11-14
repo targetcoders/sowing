@@ -25,6 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 class SeedGroupServiceTest {
 
+    public static final LocalDate LOCAL_DATE = LocalDate.now();
     @Autowired SeedGroupService seedGroupService;
     @Autowired SeedService seedService;
     @Autowired MemberRepository memberRepository;
@@ -33,36 +34,36 @@ class SeedGroupServiceTest {
     @DisplayName("특정 년도의 SeedYearGroup 조회 및 정렬 테스트")
     @Transactional
     void deepSortSeedYearGroup() {
-        LocalDateTime dateTime1 = LocalDateTime.of(LocalDate.of(2022, 12, 3), LocalTime.of(20,0));
-        LocalDateTime dateTime2 = LocalDateTime.of(LocalDate.of(2022, 12, 9), LocalTime.of(20,0));
-        LocalDateTime dateTime3 = LocalDateTime.of(LocalDate.of(2022, 12, 1), LocalTime.of(21,0));
-        LocalDateTime dateTime4 = LocalDateTime.of(LocalDate.of(2022, 12, 31), LocalTime.of(23,0));
+        LocalDate date1 = LocalDate.of(2022, 12, 3);
+        LocalDate date2 = LocalDate.of(2022, 12, 9);
+        LocalDate date3 = LocalDate.of(2022, 12, 1);
+        LocalDate date4 = LocalDate.of(2022, 12, 31);
 
-        LocalDateTime dateTime5 = LocalDateTime.of(LocalDate.of(2022, 1, 1), LocalTime.of(20,0));
-        LocalDateTime dateTime6 = LocalDateTime.of(LocalDate.of(2022, 1, 1), LocalTime.of(20,0));
-        LocalDateTime dateTime7 = LocalDateTime.of(LocalDate.of(2022, 1, 1), LocalTime.of(21,0));
-        LocalDateTime dateTime8 = LocalDateTime.of(LocalDate.of(2022, 1, 1), LocalTime.of(23,0));
-        LocalDateTime dateTime9 = LocalDateTime.of(LocalDate.of(2022, 1, 1), LocalTime.of(23,0));
-        LocalDateTime dateTime10 = LocalDateTime.of(LocalDate.of(2022, 1, 1), LocalTime.of(20,0));
-        LocalDateTime dateTime11 = LocalDateTime.of(LocalDate.of(2022, 1, 1), LocalTime.of(20,0));
-        LocalDateTime dateTime12 = LocalDateTime.of(LocalDate.of(2022, 1, 1), LocalTime.of(21,0));
+        LocalDate date5 = LocalDate.of(2022, 1, 1);
+        LocalDate date6 = LocalDate.of(2022, 1, 1);
+        LocalDate date7 = LocalDate.of(2022, 1, 1);
+        LocalDate date8 = LocalDate.of(2022, 1, 1);
+        LocalDate date9 = LocalDate.of(2022, 1, 1);
+        LocalDate date10 = LocalDate.of(2022, 1, 1);
+        LocalDate date11 = LocalDate.of(2022, 1, 1);
+        LocalDate date12 = LocalDate.of(2022, 1, 1);
 
-        Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"),"sowingRefreshToken", dateTime1, dateTime1);
+        Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"),"sowingRefreshToken", date1, date1);
         memberRepository.save(member);
 
-        Seed seed1 = Seed.create(SeedType.PLAY, member, "제목1", "내용1", dateTime1);
-        Seed seed2 = Seed.create(SeedType.READ, member, "제목2", "내용2", dateTime2);
-        Seed seed3 = Seed.create(SeedType.STUDY, member, "제목3", "내용3", dateTime3);
-        Seed seed4 = Seed.create(SeedType.DATE, member, "제목4", "내용4", dateTime4);
+        Seed seed1 = Seed.create(SeedType.PLAY, member, "제목1", "내용1", date1);
+        Seed seed2 = Seed.create(SeedType.READ, member, "제목2", "내용2", date2);
+        Seed seed3 = Seed.create(SeedType.STUDY, member, "제목3", "내용3", date3);
+        Seed seed4 = Seed.create(SeedType.DATE, member, "제목4", "내용4", date4);
 
-        Seed seed5 = Seed.create(SeedType.PLAY, member, "제목1", "내용1", dateTime5);
-        Seed seed6 = Seed.create(SeedType.READ, member, "제목2", "내용2", dateTime6);
-        Seed seed7 = Seed.create(SeedType.STUDY, member, "제목3", "내용3", dateTime7);
-        Seed seed8 = Seed.create(SeedType.DATE, member, "제목4", "내용4", dateTime8);
-        Seed seed9 = Seed.create(SeedType.PLAY, member, "제목1", "내용1", dateTime9);
-        Seed seed10 = Seed.create(SeedType.READ, member, "제목2", "내용2", dateTime10);
-        Seed seed11 = Seed.create(SeedType.STUDY, member, "제목3", "내용3", dateTime11);
-        Seed seed12 = Seed.create(SeedType.DATE, member, "제목4", "내용4", dateTime12);
+        Seed seed5 = Seed.create(SeedType.PLAY, member, "제목1", "내용1", date5);
+        Seed seed6 = Seed.create(SeedType.READ, member, "제목2", "내용2", date6);
+        Seed seed7 = Seed.create(SeedType.STUDY, member, "제목3", "내용3", date7);
+        Seed seed8 = Seed.create(SeedType.DATE, member, "제목4", "내용4", date8);
+        Seed seed9 = Seed.create(SeedType.PLAY, member, "제목1", "내용1", date9);
+        Seed seed10 = Seed.create(SeedType.READ, member, "제목2", "내용2", date10);
+        Seed seed11 = Seed.create(SeedType.STUDY, member, "제목3", "내용3", date11);
+        Seed seed12 = Seed.create(SeedType.DATE, member, "제목4", "내용4", date12);
 
         seedService.saveSeed(seed1);
         seedService.saveSeed(seed2);

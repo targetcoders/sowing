@@ -30,10 +30,10 @@ class SeedYearGroupTest {
     @DisplayName("SeedYearGroup 생성자 테스트")
     void createSeedYearGroup() {
         //given
-        LocalDateTime dateTime1 = LocalDateTime.of(LocalDate.of(2022, 1, 1), LocalTime.of(20,0));
-        LocalDateTime dateTime2 = LocalDateTime.of(LocalDate.of(2022, 12, 9), LocalTime.of(20,0));
-        LocalDateTime dateTime3 = LocalDateTime.of(LocalDate.of(2022, 12, 9), LocalTime.of(21,0));
-        LocalDateTime dateTime4 = LocalDateTime.of(LocalDate.of(2022, 12, 31), LocalTime.of(23,0));
+        LocalDate dateTime1 = LocalDate.of(2022, 1, 1);
+        LocalDate dateTime2 = LocalDate.of(2022, 12, 9);
+        LocalDate dateTime3 = LocalDate.of(2022, 12, 9);
+        LocalDate dateTime4 = LocalDate.of(2022, 12, 31);
         Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"),"sowingRefreshToken", dateTime1, dateTime1);
         Seed seed1 = Seed.create(SeedType.PLAY, member, "제목1", "내용1", dateTime1);
         Seed seed2 = Seed.create(SeedType.READ, member, "제목2", "내용2", dateTime2);

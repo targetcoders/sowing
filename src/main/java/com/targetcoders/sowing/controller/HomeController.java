@@ -1,6 +1,6 @@
 package com.targetcoders.sowing.controller;
 
-import com.targetcoders.sowing.seed.ILocalDateTime;
+import com.targetcoders.sowing.seed.ILocalDate;
 import com.targetcoders.sowing.seed.domain.SeedYearGroup;
 import com.targetcoders.sowing.seed.dto.SeedYearGroupsDTO;
 import com.targetcoders.sowing.seed.service.SeedGroupService;
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 public class HomeController {
 
     private final SeedGroupService seedGroupService;
-    private final ILocalDateTime localDateTime;
+    private final ILocalDate localDateTime;
 
     @GetMapping("/")
     public String home(Authentication authentication, HttpServletResponse response, @RequestParam(name = "year", required = false) Integer year, Model model) {
