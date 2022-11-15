@@ -9,7 +9,6 @@ import com.targetcoders.sowing.member.dto.CreateMemberDTO;
 import com.targetcoders.sowing.member.domain.GoogleTokens;
 import com.targetcoders.sowing.member.domain.MemberRole;
 import com.targetcoders.sowing.member.service.MemberService;
-import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -61,7 +60,7 @@ public class LoginController {
         }
 
         JwtToken sowingAccessToken = jwtTokenService.createAccessToken(email, MemberRole.ROLE_USER, sowingRefreshToken);
-        headerSetService.setAccessTokenCookie(response, sowingAccessToken.toString(), "900");
+        headerSetService.setAccessTokenCookie(response, sowingAccessToken.toString());
         return "redirect:/";
     }
 
@@ -70,7 +69,7 @@ public class LoginController {
         if (authentication.isAuthenticated()) {
             SecurityContextHolder.getContext().setAuthentication(null);
             tokenUpdateService.updateSowingRefreshToken(authentication.getName(), "");
-            headerSetService.setAccessTokenCookie(response, "", "0");
+            headerSetService.removeAccessTokenCookie(response);
         }
         return "redirect:/";
     }

@@ -72,7 +72,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private void setNewAccessToken(JwtToken refreshToken, HttpServletResponse servletResponse) {
         JwtToken newAccessToken = accessToken(refreshToken);
-        headerSetService.setAccessTokenCookie(servletResponse, newAccessToken.toString(), "900");
+        headerSetService.setAccessTokenCookie(servletResponse, newAccessToken.toString());
         SecurityContextHolder.getContext()
                 .setAuthentication(authentication(newAccessToken));
     }
