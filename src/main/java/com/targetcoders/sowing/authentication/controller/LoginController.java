@@ -5,10 +5,12 @@ import com.targetcoders.sowing.authentication.LoginConstants;
 import com.targetcoders.sowing.authentication.domain.JwtToken;
 import com.targetcoders.sowing.authentication.dto.GoogleUserInfoDTO;
 import com.targetcoders.sowing.authentication.service.*;
+import com.targetcoders.sowing.member.domain.Member;
 import com.targetcoders.sowing.member.dto.CreateMemberDTO;
 import com.targetcoders.sowing.member.domain.GoogleTokens;
 import com.targetcoders.sowing.member.domain.MemberRole;
 import com.targetcoders.sowing.member.service.MemberService;
+import com.targetcoders.sowing.member.service.SeedTypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,6 +31,7 @@ public class LoginController {
     private final JwtTokenService jwtTokenService;
     private final TokenUpdateService tokenUpdateService;
     private final HeaderSetService headerSetService;
+    private final SeedTypeService seedTypeService;
 
     @GetMapping("/login/google")
     public String login(Authentication authentication) {
@@ -52,11 +55,13 @@ public class LoginController {
 
         String email = googleUserInfoDTO.getEmail();
         JwtToken sowingRefreshToken = jwtTokenService.createRefreshToken(email, MemberRole.ROLE_USER);
-        if (memberService.isExistMember(email)) {
+        Member member = memberService.findMemberByUsername(email);
+        if (member != null) {
             tokenUpdateService.updateAllTokens(email, oauthGoogleTokens.getAccessToken(), oauthGoogleTokens.getRefreshToken(), sowingRefreshToken);
         } else {
             CreateMemberDTO createMemberDTO = new CreateMemberDTO(googleUserInfoDTO.getEmail(), googleUserInfoDTO.getName(), oauthGoogleTokens.getAccessToken(), oauthGoogleTokens.getRefreshToken(), sowingRefreshToken);
-            memberService.saveMember(createMemberDTO);
+            member = memberService.saveMember(createMemberDTO);
+            seedTypeService.saveSeedTypes(member);
         }
 
         JwtToken sowingAccessToken = jwtTokenService.createAccessToken(email, MemberRole.ROLE_USER, sowingRefreshToken);

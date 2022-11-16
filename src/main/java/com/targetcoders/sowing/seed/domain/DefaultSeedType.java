@@ -1,5 +1,5 @@
 package com.targetcoders.sowing.seed.domain;
 
-public enum SeedType {
+public enum DefaultSeedType {
     READ, PLAY, STUDY, DATE
 }

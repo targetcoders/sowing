@@ -2,7 +2,7 @@ package com.targetcoders.sowing.seed.controller;
 
 import com.targetcoders.sowing.seed.domain.Seed;
 import com.targetcoders.sowing.seed.domain.SeedForm;
-import com.targetcoders.sowing.seed.domain.SeedType;
+import com.targetcoders.sowing.seed.domain.DefaultSeedType;
 import com.targetcoders.sowing.seed.dto.UpdateSeedDTO;
 import com.targetcoders.sowing.seed.service.SeedService;
 import javassist.NotFoundException;
@@ -26,7 +26,7 @@ public class SeedController {
 
     @GetMapping("/seeds/new")
     public String seedForm(Model model) {
-        List<SeedType> typeList = Arrays.stream(SeedType.values()).collect(Collectors.toList());
+        List<DefaultSeedType> typeList = Arrays.stream(DefaultSeedType.values()).collect(Collectors.toList());
         model.addAttribute("typeList", typeList);
         return "seeds/createSeedForm";
     }
@@ -54,7 +54,7 @@ public class SeedController {
         seedForm.setUsername(seed.getMember().getUsername());
         seedForm.setSowingDate(seed.getSowingDate());
         model.addAttribute("seed", seedForm);
-        List<SeedType> typeList = Arrays.stream(SeedType.values()).collect(Collectors.toList());
+        List<DefaultSeedType> typeList = Arrays.stream(DefaultSeedType.values()).collect(Collectors.toList());
         seedForm.setTypeList(typeList);
         seedForm.setId(id);
         return "seeds/editSeedForm";

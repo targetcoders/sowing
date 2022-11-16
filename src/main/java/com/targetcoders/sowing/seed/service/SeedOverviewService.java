@@ -3,7 +3,7 @@ package com.targetcoders.sowing.seed.service;
 import com.targetcoders.sowing.seed.dao.SeedDao;
 import com.targetcoders.sowing.seed.domain.Seed;
 import com.targetcoders.sowing.seed.domain.TypeCounter;
-import com.targetcoders.sowing.seed.domain.SeedType;
+import com.targetcoders.sowing.seed.domain.DefaultSeedType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,11 +21,11 @@ public class SeedOverviewService {
         List<Seed> seeds = seedDao.findSeedsByUsername(username);
         TypeCounter typeCounter = new TypeCounter();
         for (Seed seed : seeds) {
-            if (seed.getType() == SeedType.DATE) {
+            if (seed.getType() == DefaultSeedType.DATE) {
                 typeCounter.incDate();
-            } else if( seed.getType() == SeedType.PLAY) {
+            } else if( seed.getType() == DefaultSeedType.PLAY) {
                 typeCounter.incPlay();
-            } else if( seed.getType() == SeedType.READ) {
+            } else if( seed.getType() == DefaultSeedType.READ) {
                 typeCounter.incRead();
             } else {
                 typeCounter.incStudy();

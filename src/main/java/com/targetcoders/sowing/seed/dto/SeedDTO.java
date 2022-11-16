@@ -1,6 +1,6 @@
 package com.targetcoders.sowing.seed.dto;
 
-import com.targetcoders.sowing.seed.domain.SeedType;
+import com.targetcoders.sowing.seed.domain.DefaultSeedType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -8,6 +8,6 @@ import lombok.ToString;
 @Getter @Setter @ToString
 public class SeedDTO {
     private Long id;
-    private SeedType type;
+    private DefaultSeedType type;
     private String title;
 }

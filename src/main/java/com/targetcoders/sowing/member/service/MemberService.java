@@ -63,4 +63,12 @@ public class MemberService {
         }
         return true;
     }
+
+    public Member findMemberByUsername(String email) {
+        try {
+            return memberDao.findByUsername(email);
+        } catch (NotFoundException e) {
+            return null;
+        }
+    }
 }
