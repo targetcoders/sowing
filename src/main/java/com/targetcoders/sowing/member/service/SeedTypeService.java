@@ -23,4 +23,7 @@ public class SeedTypeService {
         return seedTypeDao.saveSeedTypes(member, defaultSeedTypes);
     }
 
+    public List<SeedType> findSeedTypesByUsername(String username) {
+        return seedTypeDao.findSeedTypesByUsername(username);
+    }
 }

@@ -23,7 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 class SeedGroupServiceTest {
 
-    public static final LocalDate LOCAL_DATE = LocalDate.now();
     @Autowired SeedGroupService seedGroupService;
     @Autowired SeedService seedService;
     @Autowired MemberRepository memberRepository;
@@ -49,19 +48,19 @@ class SeedGroupServiceTest {
         Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"),"sowingRefreshToken", date1, date1);
         memberRepository.save(member);
 
-        Seed seed1 = Seed.create(DefaultSeedType.PLAY, member, "제목1", "내용1", date1);
-        Seed seed2 = Seed.create(DefaultSeedType.READ, member, "제목2", "내용2", date2);
-        Seed seed3 = Seed.create(DefaultSeedType.STUDY, member, "제목3", "내용3", date3);
-        Seed seed4 = Seed.create(DefaultSeedType.DATE, member, "제목4", "내용4", date4);
+        Seed seed1 = Seed.create(DefaultSeedType.PLAY.toString(), member, "제목1", "내용1", date1);
+        Seed seed2 = Seed.create(DefaultSeedType.READ.toString(), member, "제목2", "내용2", date2);
+        Seed seed3 = Seed.create(DefaultSeedType.STUDY.toString(), member, "제목3", "내용3", date3);
+        Seed seed4 = Seed.create(DefaultSeedType.DATE.toString(), member, "제목4", "내용4", date4);
 
-        Seed seed5 = Seed.create(DefaultSeedType.PLAY, member, "제목1", "내용1", date5);
-        Seed seed6 = Seed.create(DefaultSeedType.READ, member, "제목2", "내용2", date6);
-        Seed seed7 = Seed.create(DefaultSeedType.STUDY, member, "제목3", "내용3", date7);
-        Seed seed8 = Seed.create(DefaultSeedType.DATE, member, "제목4", "내용4", date8);
-        Seed seed9 = Seed.create(DefaultSeedType.PLAY, member, "제목1", "내용1", date9);
-        Seed seed10 = Seed.create(DefaultSeedType.READ, member, "제목2", "내용2", date10);
-        Seed seed11 = Seed.create(DefaultSeedType.STUDY, member, "제목3", "내용3", date11);
-        Seed seed12 = Seed.create(DefaultSeedType.DATE, member, "제목4", "내용4", date12);
+        Seed seed5 = Seed.create(DefaultSeedType.PLAY.toString(), member, "제목1", "내용1", date5);
+        Seed seed6 = Seed.create(DefaultSeedType.READ.toString(), member, "제목2", "내용2", date6);
+        Seed seed7 = Seed.create(DefaultSeedType.STUDY.toString(), member, "제목3", "내용3", date7);
+        Seed seed8 = Seed.create(DefaultSeedType.DATE.toString(), member, "제목4", "내용4", date8);
+        Seed seed9 = Seed.create(DefaultSeedType.PLAY.toString(), member, "제목1", "내용1", date9);
+        Seed seed10 = Seed.create(DefaultSeedType.READ.toString(), member, "제목2", "내용2", date10);
+        Seed seed11 = Seed.create(DefaultSeedType.STUDY.toString(), member, "제목3", "내용3", date11);
+        Seed seed12 = Seed.create(DefaultSeedType.DATE.toString(), member, "제목4", "내용4", date12);
 
         seedService.saveSeed(seed1);
         seedService.saveSeed(seed2);
@@ -109,13 +108,13 @@ class SeedGroupServiceTest {
         SeedMonthGroup seedTypeSortTestGroup = monthSortTestGroup.stream().filter(smg -> smg.getSowingMonth() == Month.JANUARY).findFirst().orElse(null);
         assertThat(seedTypeSortTestGroup).isNotNull();
         List<Seed> seedTypeSortTestList = seedTypeSortTestGroup.getSeedDayGroups().get(0).getSeeds();
-        assertThat(seedTypeSortTestList.get(0).getType()).isEqualTo(DefaultSeedType.READ);
-        assertThat(seedTypeSortTestList.get(1).getType()).isEqualTo(DefaultSeedType.READ);
-        assertThat(seedTypeSortTestList.get(2).getType()).isEqualTo(DefaultSeedType.PLAY);
-        assertThat(seedTypeSortTestList.get(3).getType()).isEqualTo(DefaultSeedType.PLAY);
-        assertThat(seedTypeSortTestList.get(4).getType()).isEqualTo(DefaultSeedType.STUDY);
-        assertThat(seedTypeSortTestList.get(5).getType()).isEqualTo(DefaultSeedType.STUDY);
-        assertThat(seedTypeSortTestList.get(6).getType()).isEqualTo(DefaultSeedType.DATE);
-        assertThat(seedTypeSortTestList.get(7).getType()).isEqualTo(DefaultSeedType.DATE);
+        assertThat(seedTypeSortTestList.get(0).getType()).isEqualTo(DefaultSeedType.DATE.toString());
+        assertThat(seedTypeSortTestList.get(1).getType()).isEqualTo(DefaultSeedType.DATE.toString());
+        assertThat(seedTypeSortTestList.get(2).getType()).isEqualTo(DefaultSeedType.PLAY.toString());
+        assertThat(seedTypeSortTestList.get(3).getType()).isEqualTo(DefaultSeedType.PLAY.toString());
+        assertThat(seedTypeSortTestList.get(4).getType()).isEqualTo(DefaultSeedType.READ.toString());
+        assertThat(seedTypeSortTestList.get(5).getType()).isEqualTo(DefaultSeedType.READ.toString());
+        assertThat(seedTypeSortTestList.get(6).getType()).isEqualTo(DefaultSeedType.STUDY.toString());
+        assertThat(seedTypeSortTestList.get(7).getType()).isEqualTo(DefaultSeedType.STUDY.toString());
     }
 }

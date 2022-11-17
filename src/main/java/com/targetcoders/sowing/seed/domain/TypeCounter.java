@@ -1,30 +1,48 @@
 package com.targetcoders.sowing.seed.domain;
 
+import com.targetcoders.sowing.member.domain.SeedType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor
 @Getter
 public class TypeCounter {
-    //TODO: 유저마다 자신만의 시드 타입 목록을 관리할 수 있도록 개선이 필요합니다.
-    private long playCount;
-    private long studyCount;
-    private long dateCount;
-    private long readCount;
+    private final HashMap<String, Long> typeCountMap = new HashMap<>();
+
+    public TypeCounter(List<SeedType> seedTypes) {
+        for(SeedType seedType : seedTypes) {
+            typeCountMap.put(seedType.getName(), 0L);
+        }
+    }
+
+    public void count(List<Seed> seeds) {
+        for (Seed seed : seeds) {
+            for (String seedType : typeCountMap.keySet()) {
+                if (seed.getType().equals(seedType)) {
+                    Long nextCount = typeCountMap.get(seedType) + 1;
+                    typeCountMap.put(seedType, nextCount);
+                }
+            }
+        }
+    }
 
     public long total() {
-        return playCount + studyCount + dateCount + readCount;
+        long result = 0;
+        for (Long count : typeCountMap.values()) {
+            result += count;
+        }
+        return result;
     }
-    public void incPlay() {
-        playCount += 1;
+
+    public Set<String> keySet() {
+        return typeCountMap.keySet();
     }
-    public void incStudy() {
-        studyCount += 1;
-    }
-    public void incDate() {
-        dateCount += 1;
-    }
-    public void incRead() {
-        readCount += 1;
+
+    public Long getCount(String key) {
+        return typeCountMap.get(key);
     }
 }

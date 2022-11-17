@@ -20,9 +20,8 @@ public class Seed implements Comparable<Seed> {
     @GeneratedValue
     @Column(name = "seed_id")
     private Long id;
-    @Enumerated(EnumType.STRING)
     @Column(name = "seed_type")
-    private DefaultSeedType type;
+    private String type;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -31,7 +30,7 @@ public class Seed implements Comparable<Seed> {
     private String content;
     private LocalDate sowingDate;
 
-    public static Seed create(DefaultSeedType type, Member member, String title, String content, LocalDate sowingDate) {
+    public static Seed create(String type, Member member, String title, String content, LocalDate sowingDate) {
         return new Seed(null, type, member, title, content, sowingDate);
     }
 

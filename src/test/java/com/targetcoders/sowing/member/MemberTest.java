@@ -47,11 +47,11 @@ class MemberTest {
         Member saveMember = memberService.saveMember(createMemberDTO);
 
         //when
-        Seed seed1 = Seed.create(DefaultSeedType.STUDY, saveMember, "제목1", "내용1", now);
+        Seed seed1 = Seed.create(DefaultSeedType.STUDY.toString(), saveMember, "제목1", "내용1", now);
         seedService.saveSeed(seed1);
-        Seed seed2 = Seed.create(DefaultSeedType.STUDY, saveMember, "제목2", "내용2", now);
+        Seed seed2 = Seed.create(DefaultSeedType.STUDY.toString(), saveMember, "제목2", "내용2", now);
         seedService.saveSeed(seed2);
-        Seed seed3 = Seed.create(DefaultSeedType.STUDY, saveMember, "제목3", "내용3", now);
+        Seed seed3 = Seed.create(DefaultSeedType.STUDY.toString(), saveMember, "제목3", "내용3", now);
         seedService.saveSeed(seed3);
 
         //when

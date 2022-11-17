@@ -5,7 +5,6 @@ import com.targetcoders.sowing.member.domain.Member;
 import com.targetcoders.sowing.seed.dao.SeedDao;
 import com.targetcoders.sowing.seed.domain.Seed;
 import com.targetcoders.sowing.seed.domain.SeedForm;
-import com.targetcoders.sowing.seed.domain.DefaultSeedType;
 import com.targetcoders.sowing.seed.dto.UpdateSeedDTO;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +44,7 @@ public class SeedService {
 
     @Transactional
     public Long saveSeed(SeedForm seedForm) throws NotFoundException {
-        DefaultSeedType selectType = seedForm.getSelectType();
+        String selectType = seedForm.getSelectType();
         String content = seedForm.getContent();
         String username = seedForm.getUsername();
         String title = seedForm.getTitle();

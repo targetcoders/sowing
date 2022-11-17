@@ -18,4 +18,8 @@ public class SeedTypeDao {
     public List<SeedType> saveSeedTypes(Member member, List<DefaultSeedType> defaultSeedTypes) {
         return seedTypeRepository.save(member, defaultSeedTypes);
     }
+
+    public List<SeedType> findSeedTypesByUsername(String username) {
+        return seedTypeRepository.findSeedTypesByUsername(username);
+    }
 }

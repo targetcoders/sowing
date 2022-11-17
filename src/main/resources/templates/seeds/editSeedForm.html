@@ -25,9 +25,9 @@
                 <select id="seed-type" name="selectType" class="form-select">
                     <option selected th:value="${seed.selectType}" th:text="${seed.selectType}"></option>
                     <option th:each="type : ${seed.typeList}"
-                            th:if="${type} != ${seed.selectType}"
-                            th:value="${type}"
-                            th:text="${type}"></option>
+                            th:if="${!type.name.equals(seed.selectType)}"
+                            th:value="${type.name}"
+                            th:text="${type.name}"></option>
                 </select>
                 <label for="seed-type">타입</label>
             </div>

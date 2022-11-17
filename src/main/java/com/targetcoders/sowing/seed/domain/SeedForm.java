@@ -1,5 +1,6 @@
 package com.targetcoders.sowing.seed.domain;
 
+import com.targetcoders.sowing.member.domain.SeedType;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,8 +16,8 @@ public class SeedForm {
     private Long id;
     private String username;
     private String title;
-    private List<DefaultSeedType> typeList;
-    private DefaultSeedType selectType;
+    private List<SeedType> typeList;
+    private String selectType;
     private String content;
     private @DateTimeFormat(iso = ISO.DATE) LocalDate sowingDate;
 

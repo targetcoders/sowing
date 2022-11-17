@@ -26,4 +26,10 @@ public class SeedTypeRepository {
         }
         return result;
     }
+
+    public List<SeedType> findSeedTypesByUsername(String username) {
+        return em.createQuery("select st from SeedType st where st.member.username = :username")
+                .setParameter("username", username)
+                .getResultList();
+    }
 }

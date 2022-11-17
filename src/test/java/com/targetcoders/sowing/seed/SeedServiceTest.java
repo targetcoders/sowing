@@ -38,7 +38,7 @@ class SeedServiceTest {
     void saveAndFindOne() {
         //given
         Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"), "sowingRefreshToken", LOCAL_DATE, LOCAL_DATE);
-        Seed seed = Seed.create(DefaultSeedType.PLAY, member, "제목", "내용", LOCAL_DATE);
+        Seed seed = Seed.create(DefaultSeedType.PLAY.toString(), member, "제목", "내용", LOCAL_DATE);
 
         //when
         Long saveId = seedService.saveSeed(seed);
@@ -58,17 +58,17 @@ class SeedServiceTest {
     void updateSeed() {
         //given
         Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"), "sowingRefreshToken", LOCAL_DATE, LOCAL_DATE);
-        Seed seed = Seed.create(DefaultSeedType.PLAY, member, "제목", "내용", LOCAL_DATE);
+        Seed seed = Seed.create(DefaultSeedType.PLAY.toString(), member, "제목", "내용", LOCAL_DATE);
         Long saveId = seedService.saveSeed(seed);
 
         //when
         Seed findSeed = seedService.findSeedById(saveId);
-        UpdateSeedDTO updateSeedDto = new UpdateSeedDTO(findSeed.getId(), DefaultSeedType.STUDY, "변경된 제목", "변경된 내용", LOCAL_DATE);
+        UpdateSeedDTO updateSeedDto = new UpdateSeedDTO(findSeed.getId(), DefaultSeedType.STUDY.toString(), "변경된 제목", "변경된 내용", LOCAL_DATE);
         seedService.updateSeed(updateSeedDto);
 
         //then
         Seed updateSeed = seedService.findSeedById(findSeed.getId());
-        assertThat(updateSeed.getType()).isEqualTo(DefaultSeedType.STUDY);
+        assertThat(updateSeed.getType()).isEqualTo(DefaultSeedType.STUDY.toString());
         assertThat(updateSeed.getTitle()).isEqualTo("변경된 제목");
         assertThat(updateSeed.getContent()).isEqualTo("변경된 내용");
         assertThat(updateSeed.getSowingDate()).isEqualTo(LOCAL_DATE);
@@ -80,7 +80,7 @@ class SeedServiceTest {
     void removeSeed() {
         //given
         Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"), "sowingRefreshToken", LOCAL_DATE, LOCAL_DATE);
-        Seed seed = Seed.create(DefaultSeedType.PLAY,member, "제목", "내용", LOCAL_DATE);
+        Seed seed = Seed.create(DefaultSeedType.PLAY.toString(),member, "제목", "내용", LOCAL_DATE);
         Long saveId = seedService.saveSeed(seed);
         assertThat(seedService.findSeedById(saveId)).isNotNull();
 
@@ -98,10 +98,10 @@ class SeedServiceTest {
         //given
         List<Seed> seedList = new ArrayList<>();
         Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"), "sowingRefreshToken", LOCAL_DATE, LOCAL_DATE);
-        Seed seed1 = Seed.create(DefaultSeedType.PLAY, member, "제목", "내용", LOCAL_DATE);
-        Seed seed2 = Seed.create(DefaultSeedType.READ, member, "제목", "내용", LOCAL_DATE);
-        Seed seed3 = Seed.create(DefaultSeedType.STUDY, member, "제목", "내용", LOCAL_DATE);
-        Seed seed4 = Seed.create(DefaultSeedType.DATE, member, "제목", "내용", LOCAL_DATE);
+        Seed seed1 = Seed.create(DefaultSeedType.PLAY.toString(), member, "제목", "내용", LOCAL_DATE);
+        Seed seed2 = Seed.create(DefaultSeedType.READ.toString(), member, "제목", "내용", LOCAL_DATE);
+        Seed seed3 = Seed.create(DefaultSeedType.STUDY.toString(), member, "제목", "내용", LOCAL_DATE);
+        Seed seed4 = Seed.create(DefaultSeedType.DATE.toString(), member, "제목", "내용", LOCAL_DATE);
         seedList.add(seed1);
         seedList.add(seed2);
         seedList.add(seed3);
@@ -111,9 +111,9 @@ class SeedServiceTest {
         Collections.sort(seedList);
 
         //then
-        assertThat(seedList.get(0)).isEqualTo(seed2);
+        assertThat(seedList.get(0)).isEqualTo(seed4);
         assertThat(seedList.get(1)).isEqualTo(seed1);
-        assertThat(seedList.get(2)).isEqualTo(seed3);
-        assertThat(seedList.get(3)).isEqualTo(seed4);
+        assertThat(seedList.get(2)).isEqualTo(seed2);
+        assertThat(seedList.get(3)).isEqualTo(seed3);
     }
 }

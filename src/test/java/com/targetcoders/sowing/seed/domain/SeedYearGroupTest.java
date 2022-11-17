@@ -33,10 +33,10 @@ class SeedYearGroupTest {
         LocalDate dateTime3 = LocalDate.of(2022, 12, 9);
         LocalDate dateTime4 = LocalDate.of(2022, 12, 31);
         Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"),"sowingRefreshToken", dateTime1, dateTime1);
-        Seed seed1 = Seed.create(DefaultSeedType.PLAY, member, "제목1", "내용1", dateTime1);
-        Seed seed2 = Seed.create(DefaultSeedType.READ, member, "제목2", "내용2", dateTime2);
-        Seed seed3 = Seed.create(DefaultSeedType.STUDY, member, "제목3", "내용3", dateTime3);
-        Seed seed4 = Seed.create(DefaultSeedType.DATE, member, "제목4", "내용4", dateTime4);
+        Seed seed1 = Seed.create(DefaultSeedType.PLAY.toString(), member, "제목1", "내용1", dateTime1);
+        Seed seed2 = Seed.create(DefaultSeedType.READ.toString(), member, "제목2", "내용2", dateTime2);
+        Seed seed3 = Seed.create(DefaultSeedType.STUDY.toString(), member, "제목3", "내용3", dateTime3);
+        Seed seed4 = Seed.create(DefaultSeedType.DATE.toString(), member, "제목4", "내용4", dateTime4);
         List<Seed> seeds = new ArrayList<>();
         seeds.add(seed1);
         seeds.add(seed2);
