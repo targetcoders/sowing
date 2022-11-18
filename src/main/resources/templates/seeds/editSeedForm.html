@@ -25,7 +25,7 @@
                 <select id="seed-type" name="selectType" class="form-select">
                     <option selected th:value="${seedForm.selectType}" th:text="${seedForm.selectType}"></option>
                     <option th:each="type : ${seedForm.typeList}"
-                            th:if="${!type.equals(seedForm.selectType)}"
+                            th:if="${!seedForm.selectType.equals(type)}"
                             th:value="${type}"
                             th:text="${type}"></option>
                 </select>

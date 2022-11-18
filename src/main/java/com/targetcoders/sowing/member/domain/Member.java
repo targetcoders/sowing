@@ -26,7 +26,7 @@ public class Member {
     private LocalDate lastAccessDate;
     @Enumerated(value = EnumType.STRING)
     private MemberRole memberRole;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "settings_id")
     private Settings settings;
 

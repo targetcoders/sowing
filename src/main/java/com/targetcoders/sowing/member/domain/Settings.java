@@ -4,8 +4,8 @@ import com.targetcoders.sowing.seed.domain.DefaultSeedType;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -16,19 +16,18 @@ public class Settings {
     @GeneratedValue
     private Long id;
 
-    @ElementCollection
-    @CollectionTable(name = "seedtype", joinColumns = @JoinColumn(name = "seedtype_id"))
-    @Column(name = "seedtype")
-    private final Set<String> seedTypes;
+    @JoinColumn(name = "settings_id")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<SeedType> seedTypes;
 
     public static Settings create() {
         return new Settings();
     }
 
     protected Settings() {
-        HashSet<String> seedTypes = new HashSet<>();
+        List<SeedType> seedTypes = new ArrayList<>();
         for (DefaultSeedType defaultSeedType : DefaultSeedType.values()) {
-            seedTypes.add(defaultSeedType.name());
+            seedTypes.add(new SeedType(defaultSeedType.name()));
         }
         this.seedTypes = seedTypes;
     }

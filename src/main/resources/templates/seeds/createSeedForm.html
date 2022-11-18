@@ -23,8 +23,8 @@
             <div class="form-floating w-75 mt-2">
                 <select id="seed-type" name="selectType" class="form-select">
                     <option th:each="type : ${seedTypes}"
-                            th:value="${type}"
-                            th:text="${type}"></option>
+                            th:value="${type.name}"
+                            th:text="${type.name}"></option>
                 </select>
                 <label for="seed-type">타입</label>
             </div>

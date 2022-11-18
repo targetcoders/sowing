@@ -1,6 +1,8 @@
 package com.targetcoders.sowing.seed.controller;
 
 import com.targetcoders.sowing.member.domain.Member;
+import com.targetcoders.sowing.member.domain.SeedType;
+import com.targetcoders.sowing.member.domain.Settings;
 import com.targetcoders.sowing.member.service.MemberService;
 import com.targetcoders.sowing.seed.domain.Seed;
 import com.targetcoders.sowing.seed.domain.SeedForm;
@@ -15,6 +17,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -53,7 +58,8 @@ public class SeedController {
         seedForm.setUsername(seed.getMember().getUsername());
         seedForm.setSowingDate(seed.getSowingDate());
         Member member = memberService.findMemberByUsername(authentication.getName());
-        seedForm.setTypeList(member.getSettings().getSeedTypes());
+        List<SeedType> seedTypes = member.getSettings().getSeedTypes();
+        seedForm.setTypeList(seedTypes.stream().map(SeedType::getName).collect(Collectors.toList()));
         seedForm.setId(id);
         model.addAttribute("seedForm", seedForm);
         return "seeds/editSeedForm";

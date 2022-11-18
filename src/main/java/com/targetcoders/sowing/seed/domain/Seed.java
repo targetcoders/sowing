@@ -35,7 +35,7 @@ public class Seed implements Comparable<Seed> {
     }
 
     public void update(UpdateSeedDTO updateSeedDto) {
-        type = updateSeedDto.getType();
+        type = updateSeedDto.getSelectType();
         title = updateSeedDto.getTitle();
         content = updateSeedDto.getContent();
         sowingDate = updateSeedDto.getSowingDate();
