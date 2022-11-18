@@ -26,10 +26,12 @@ public class Member {
     private LocalDate lastAccessDate;
     @Enumerated(value = EnumType.STRING)
     private MemberRole memberRole;
+    @OneToOne
+    @JoinColumn(name = "settings_id")
+    private Settings settings;
 
-
-    public static Member create(String userName, String nickName, GoogleTokens googleTokens, String sowingRefreshToken, LocalDate registrationDate, LocalDate lastAccessDate) {
-        return new Member(null, userName, googleTokens, sowingRefreshToken, nickName, registrationDate, lastAccessDate, MemberRole.ROLE_USER);
+    public static Member create(String userName, String nickName, GoogleTokens googleTokens, String sowingRefreshToken, LocalDate registrationDate, LocalDate lastAccessDate, Settings settings) {
+        return new Member(null, userName, googleTokens, sowingRefreshToken, nickName, registrationDate, lastAccessDate, MemberRole.ROLE_USER, settings);
     }
 
     public void update(UpdateMemberDTO updateMemberDTO) {

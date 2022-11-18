@@ -2,7 +2,9 @@ package com.targetcoders.sowing.seed.service;
 
 import com.targetcoders.sowing.member.domain.GoogleTokens;
 import com.targetcoders.sowing.member.domain.Member;
+import com.targetcoders.sowing.member.domain.Settings;
 import com.targetcoders.sowing.member.repository.MemberRepository;
+import com.targetcoders.sowing.member.repository.SettingsRepository;
 import com.targetcoders.sowing.seed.domain.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -26,6 +28,7 @@ class SeedGroupServiceTest {
     @Autowired SeedGroupService seedGroupService;
     @Autowired SeedService seedService;
     @Autowired MemberRepository memberRepository;
+    @Autowired SettingsRepository settingsRepository;
 
     @Test
     @DisplayName("특정 년도의 SeedYearGroup 조회 및 정렬 테스트")
@@ -45,7 +48,9 @@ class SeedGroupServiceTest {
         LocalDate date11 = LocalDate.of(2022, 1, 1);
         LocalDate date12 = LocalDate.of(2022, 1, 1);
 
-        Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"),"sowingRefreshToken", date1, date1);
+        Settings settings = Settings.create();
+        settingsRepository.saveSettings(settings);
+        Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"),"sowingRefreshToken", date1, date1, settings);
         memberRepository.save(member);
 
         Seed seed1 = Seed.create(DefaultSeedType.PLAY.toString(), member, "제목1", "내용1", date1);

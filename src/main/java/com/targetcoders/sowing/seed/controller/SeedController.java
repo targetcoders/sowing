@@ -1,7 +1,7 @@
 package com.targetcoders.sowing.seed.controller;
 
-import com.targetcoders.sowing.member.domain.SeedType;
-import com.targetcoders.sowing.member.service.SeedTypeService;
+import com.targetcoders.sowing.member.domain.Member;
+import com.targetcoders.sowing.member.service.MemberService;
 import com.targetcoders.sowing.seed.domain.Seed;
 import com.targetcoders.sowing.seed.domain.SeedForm;
 import com.targetcoders.sowing.seed.dto.UpdateSeedDTO;
@@ -16,19 +16,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
 @RequiredArgsConstructor
 public class SeedController {
 
     private final SeedService seedService;
-    private final SeedTypeService seedTypeService;
+    private final MemberService memberService;
 
     @GetMapping("/seeds/new")
     public String seedForm(Model model, Authentication authentication) {
-        List<SeedType> seedTypes = seedTypeService.findSeedTypesByUsername(authentication.getName());
-        model.addAttribute("typeList", seedTypes);
+        Member member = memberService.findMemberByUsername(authentication.getName());
+        model.addAttribute("seedTypes", member.getSettings().getSeedTypes());
         return "seeds/createSeedForm";
     }
 
@@ -54,10 +52,10 @@ public class SeedController {
         seedForm.setContent(seed.getContent());
         seedForm.setUsername(seed.getMember().getUsername());
         seedForm.setSowingDate(seed.getSowingDate());
-        model.addAttribute("seed", seedForm);
-        List<SeedType> seedTypes = seedTypeService.findSeedTypesByUsername(authentication.getName());
-        seedForm.setTypeList(seedTypes);
+        Member member = memberService.findMemberByUsername(authentication.getName());
+        seedForm.setTypeList(member.getSettings().getSeedTypes());
         seedForm.setId(id);
+        model.addAttribute("seedForm", seedForm);
         return "seeds/editSeedForm";
     }
 

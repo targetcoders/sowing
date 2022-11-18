@@ -2,6 +2,7 @@ package com.targetcoders.sowing.seed;
 
 import com.targetcoders.sowing.member.domain.GoogleTokens;
 import com.targetcoders.sowing.member.domain.Member;
+import com.targetcoders.sowing.member.domain.Settings;
 import com.targetcoders.sowing.member.service.MemberService;
 import com.targetcoders.sowing.seed.domain.Seed;
 import com.targetcoders.sowing.seed.domain.DefaultSeedType;
@@ -37,7 +38,7 @@ class SeedServiceTest {
     @Transactional
     void saveAndFindOne() {
         //given
-        Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"), "sowingRefreshToken", LOCAL_DATE, LOCAL_DATE);
+        Member member = createDefaultMember();
         Seed seed = Seed.create(DefaultSeedType.PLAY.toString(), member, "제목", "내용", LOCAL_DATE);
 
         //when
@@ -46,7 +47,7 @@ class SeedServiceTest {
         //then
         Seed getSeed = seedService.findSeedById(saveId);
         assertThat(getSeed.getId()).isEqualTo(getSeed.getId());
-        assertThat(getSeed.getType().toString()).isEqualTo("PLAY");
+        assertThat(getSeed.getType()).isEqualTo("PLAY");
         assertThat(getSeed.getTitle()).isEqualTo("제목");
         assertThat(getSeed.getContent()).isEqualTo("내용");
         assertThat(getSeed.getSowingDate()).isEqualTo(LOCAL_DATE);
@@ -57,7 +58,7 @@ class SeedServiceTest {
     @Transactional
     void updateSeed() {
         //given
-        Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"), "sowingRefreshToken", LOCAL_DATE, LOCAL_DATE);
+        Member member = createDefaultMember();
         Seed seed = Seed.create(DefaultSeedType.PLAY.toString(), member, "제목", "내용", LOCAL_DATE);
         Long saveId = seedService.saveSeed(seed);
 
@@ -79,7 +80,7 @@ class SeedServiceTest {
     @Transactional
     void removeSeed() {
         //given
-        Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"), "sowingRefreshToken", LOCAL_DATE, LOCAL_DATE);
+        Member member = createDefaultMember();
         Seed seed = Seed.create(DefaultSeedType.PLAY.toString(),member, "제목", "내용", LOCAL_DATE);
         Long saveId = seedService.saveSeed(seed);
         assertThat(seedService.findSeedById(saveId)).isNotNull();
@@ -92,12 +93,16 @@ class SeedServiceTest {
         assertThat(findSeed).isNull();
     }
 
+    private Member createDefaultMember() {
+        return Member.create("greenneuron", "nickname", new GoogleTokens("accessToken", "refreshToken"), "sowingRefreshToken", LOCAL_DATE, LOCAL_DATE, Settings.create());
+    }
+
     @Test
     @DisplayName("시드 리스트를 Type Value 기준으로 오름차순 정렬")
     public void sortedSeedList() {
         //given
         List<Seed> seedList = new ArrayList<>();
-        Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"), "sowingRefreshToken", LOCAL_DATE, LOCAL_DATE);
+        Member member = createDefaultMember();
         Seed seed1 = Seed.create(DefaultSeedType.PLAY.toString(), member, "제목", "내용", LOCAL_DATE);
         Seed seed2 = Seed.create(DefaultSeedType.READ.toString(), member, "제목", "내용", LOCAL_DATE);
         Seed seed3 = Seed.create(DefaultSeedType.STUDY.toString(), member, "제목", "내용", LOCAL_DATE);

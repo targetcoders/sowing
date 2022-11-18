@@ -3,6 +3,7 @@ package com.targetcoders.sowing.seed.domain;
 import com.targetcoders.sowing.member.domain.GoogleTokens;
 import com.targetcoders.sowing.member.domain.Member;
 import com.targetcoders.sowing.member.service.MemberService;
+import com.targetcoders.sowing.member.domain.Settings;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,7 +33,7 @@ class SeedYearGroupTest {
         LocalDate dateTime2 = LocalDate.of(2022, 12, 9);
         LocalDate dateTime3 = LocalDate.of(2022, 12, 9);
         LocalDate dateTime4 = LocalDate.of(2022, 12, 31);
-        Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"),"sowingRefreshToken", dateTime1, dateTime1);
+        Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"),"sowingRefreshToken", dateTime1, dateTime1, Settings.create());
         Seed seed1 = Seed.create(DefaultSeedType.PLAY.toString(), member, "제목1", "내용1", dateTime1);
         Seed seed2 = Seed.create(DefaultSeedType.READ.toString(), member, "제목2", "내용2", dateTime2);
         Seed seed3 = Seed.create(DefaultSeedType.STUDY.toString(), member, "제목3", "내용3", dateTime3);

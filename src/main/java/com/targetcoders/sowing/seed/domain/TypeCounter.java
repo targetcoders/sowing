@@ -1,6 +1,5 @@
 package com.targetcoders.sowing.seed.domain;
 
-import com.targetcoders.sowing.member.domain.SeedType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,9 +12,9 @@ import java.util.Set;
 public class TypeCounter {
     private final HashMap<String, Long> typeCountMap = new HashMap<>();
 
-    public TypeCounter(List<SeedType> seedTypes) {
-        for(SeedType seedType : seedTypes) {
-            typeCountMap.put(seedType.getName(), 0L);
+    public TypeCounter(Set<String> seedTypes) {
+        for(String seedType : seedTypes) {
+            typeCountMap.put(seedType, 0L);
         }
     }
 

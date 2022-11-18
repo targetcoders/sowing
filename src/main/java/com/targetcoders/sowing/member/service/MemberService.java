@@ -1,10 +1,12 @@
 package com.targetcoders.sowing.member.service;
 
 import com.targetcoders.sowing.member.dao.MemberDao;
-import com.targetcoders.sowing.member.dto.UpdateMemberDTO;
+import com.targetcoders.sowing.member.dao.SettingsDao;
 import com.targetcoders.sowing.member.domain.GoogleTokens;
 import com.targetcoders.sowing.member.domain.Member;
+import com.targetcoders.sowing.member.domain.Settings;
 import com.targetcoders.sowing.member.dto.CreateMemberDTO;
+import com.targetcoders.sowing.member.dto.UpdateMemberDTO;
 import com.targetcoders.sowing.seed.ILocalDate;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import java.util.List;
 public class MemberService {
 
     private final MemberDao memberDao;
+    private final SettingsDao settingsDao;
     private final ILocalDate localDateTime;
 
     @Transactional
@@ -26,10 +29,10 @@ public class MemberService {
         String accessToken = createMemberDTO.getGoogleAccessToken();
         String refreshToken = createMemberDTO.getGoogleRefreshToken();
         String sowingRefreshToken = createMemberDTO.getSowingRefreshToken().toString();
-
         LocalDate now = localDateTime.now();
         GoogleTokens googleTokens = new GoogleTokens(accessToken, refreshToken);
-        Member member = Member.create(createMemberDTO.getEmail(), createMemberDTO.getNickname(), googleTokens, sowingRefreshToken, now, now);
+        Settings settings = settingsDao.saveSettings(Settings.create());
+        Member member = Member.create(createMemberDTO.getEmail(), createMemberDTO.getNickname(), googleTokens, sowingRefreshToken, now, now, settings);
         memberDao.save(member);
         return member;
     }
@@ -52,16 +55,6 @@ public class MemberService {
     @Transactional
     public List<Member> findAllMembers() {
         return memberDao.findAll();
-    }
-
-    @Transactional
-    public boolean isExistMember(String username) {
-        try {
-            memberDao.findByUsername(username);
-        } catch(NotFoundException e) {
-            return false;
-        }
-        return true;
     }
 
     public Member findMemberByUsername(String email) {
