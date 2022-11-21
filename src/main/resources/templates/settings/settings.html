@@ -13,6 +13,10 @@
     <div class="d-flex flex-column justify-content-center align-items-center">
         <h1 class="text-center mb-3">설정</h1>
         <div class="w-100">
+            <h3>나의 시드 타입</h3>
+            <ul>
+                <li th:each="seedType: ${settings.seedTypes}" th:text="${seedType.name}"></li>
+            </ul>
         </div>
     </div>
 </div>

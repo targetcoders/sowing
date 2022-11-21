@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtParser;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class JwtToken {
 
@@ -49,11 +50,14 @@ public class JwtToken {
 
     @Override
     public boolean equals(Object o) {
-        if (o.getClass() != this.getClass()) {
-            return false;
-        }
-        JwtToken another = (JwtToken) o;
-        return value.equals(another.value);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        JwtToken jwtToken = (JwtToken) o;
+        return Objects.equals(value, jwtToken.value);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
+    }
 }

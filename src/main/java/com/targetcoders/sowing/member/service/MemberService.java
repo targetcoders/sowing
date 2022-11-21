@@ -1,7 +1,7 @@
 package com.targetcoders.sowing.member.service;
 
 import com.targetcoders.sowing.member.dao.MemberDao;
-import com.targetcoders.sowing.member.dao.SettingsDao;
+import com.targetcoders.sowing.settings.SettingsDao;
 import com.targetcoders.sowing.member.domain.GoogleTokens;
 import com.targetcoders.sowing.member.domain.Member;
 import com.targetcoders.sowing.member.domain.Settings;
