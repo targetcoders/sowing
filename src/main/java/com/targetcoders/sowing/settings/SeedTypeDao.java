@@ -15,7 +15,7 @@ public class SeedTypeDao {
 
     private final MemberDao memberDao;
 
-    public String addSeedType(String username, AddSeedTypeDTO addSeedTypeDTO) throws NotFoundException {
+    public void addSeedType(String username, AddSeedTypeDTO addSeedTypeDTO) throws NotFoundException {
         String seedTypeName = addSeedTypeDTO.getSeedTypeName();
         Member member = memberDao.findByUsername(username);
         List<SeedType> seedTypes = member.getSettings().getSeedTypes();
@@ -23,7 +23,6 @@ public class SeedTypeDao {
             throw new SeedTypeDuplicateException(seedTypeName + " already exist.");
         }
         seedTypes.add(new SeedType(seedTypeName));
-        return seedTypeName;
     }
 
     private boolean isDuplicated(String seedTypeName, List<SeedType> seedTypes) {
@@ -33,5 +32,12 @@ public class SeedTypeDao {
     public List<SeedType> seedTypes(String username) throws NotFoundException {
         Member member = memberDao.findByUsername(username);
         return member.getSettings().getSeedTypes();
+    }
+
+    public void removeSeedType(String username, String seedTypeName) throws NotFoundException {
+        Member member = memberDao.findByUsername(username);
+        List<SeedType> seedTypes = member.getSettings().getSeedTypes();
+        SeedType foundSeedType = seedTypes.stream().filter(seedType -> seedType.getName().equals(seedTypeName)).findFirst().orElse(null);
+        seedTypes.remove(foundSeedType);
     }
 }

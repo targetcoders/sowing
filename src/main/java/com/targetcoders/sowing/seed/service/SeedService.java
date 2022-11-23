@@ -61,4 +61,10 @@ public class SeedService {
                 .filter(seed -> seed.getSowingDate().getYear() == year)
                 .collect(Collectors.toList());
     }
+
+    public boolean isUsedSeedType(String username, String seedTypeName) {
+        return seedDao.findSeedsByUsername(username)
+                .stream()
+                .anyMatch(seed -> seed.getType().equals(seedTypeName));
+    }
 }

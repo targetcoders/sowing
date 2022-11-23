@@ -20,7 +20,12 @@ public class SettingsService {
     }
 
     @Transactional
-    public String addSeedType(String username, AddSeedTypeDTO addSeedTypeDTO) throws NotFoundException {
-        return seedTypeDao.addSeedType(username, addSeedTypeDTO);
+    public void addSeedType(String username, AddSeedTypeDTO addSeedTypeDTO) throws NotFoundException {
+        seedTypeDao.addSeedType(username, addSeedTypeDTO);
+    }
+
+    @Transactional
+    public void removeSeedType(String username, String seedTypeName) throws NotFoundException {
+         seedTypeDao.removeSeedType(username, seedTypeName);
     }
 }
