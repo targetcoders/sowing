@@ -7,16 +7,45 @@
 </th:block>
 
 <th:block layout:fragment="script">
+    <script>
+        const addSeedType = () => {
+            const seedTypeName = document.getElementById("seed-type-name").value;
+            axios({
+                url: '/settings/seedtype/new',
+                method: 'POST',
+                data: {seedTypeName: seedTypeName}
+            }).then((response) => {
+                console.log(response);
+                let li = document.createElement('li');
+                li.innerText = response.data;
+                const seedTypeList = document.getElementById("seed-type-list");
+                seedTypeList.appendChild(li);
+            }).catch((error) => {
+                const status = error.response.status;
+                if (status === 400) {
+                    alert('이미 존재하는 시드 타입입니다.');
+                }
+            });
+        };
+    </script>
 </th:block>
 
 <div layout:fragment="content" class="container">
     <div class="d-flex flex-column justify-content-center align-items-center">
         <h1 class="text-center mb-3">설정</h1>
-        <div class="w-100">
-            <h3>나의 시드 타입</h3>
-            <ul>
-                <li th:each="seedType: ${settings.seedTypes}" th:text="${seedType.name}"></li>
-            </ul>
+        <div class="d-flex flex-column justify-content-center align-items-center w-100">
+            <div class="seed-type-setting">
+                <h3>시드 타입</h3>
+                <div class="d-flex" style="width: 250px;">
+                    <input id="seed-type-name" class="border-success" type="text"/>&nbsp;
+                    <a class="btn btn-success" onclick="addSeedType()">추가</a>
+                </div>
+                <ul id="seed-type-list">
+                    <div class="d-flex align-items-center" th:each="seedType, i: ${settings.seedTypes}">
+                        <li th:id="|seedType${i.index}|" th:text="${seedType.name}"></li>
+                    </div>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
