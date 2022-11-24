@@ -1,6 +1,6 @@
 package com.targetcoders.sowing.seed.controller;
 
-import com.targetcoders.sowing.seed.domain.TypeCounter;
+import com.targetcoders.sowing.seed.domain.SeedTypeCountResult;
 import com.targetcoders.sowing.seed.dto.SeedOverviewDTO;
 import com.targetcoders.sowing.seed.service.SeedOverviewService;
 import javassist.NotFoundException;
@@ -19,9 +19,9 @@ public class SeedOverviewController {
     @GetMapping("/overview")
     public String overview(Authentication authentication, Model model) throws NotFoundException {
         if (authentication.isAuthenticated()) {
-            TypeCounter typeCounter = seedOverviewService.countSeeds(authentication.getName());
+            SeedTypeCountResult seedTypeCounterResult = seedOverviewService.countSeeds(authentication.getName());
             SeedOverviewDTO seedOverviewDTO = new SeedOverviewDTO();
-            seedOverviewDTO.setTypeCounter(typeCounter);
+            seedOverviewDTO.setSeedTypeCounterResult(seedTypeCounterResult);
             model.addAttribute("seedOverview", seedOverviewDTO);
         }
         return "seeds/overview";

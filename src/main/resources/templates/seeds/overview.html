@@ -16,11 +16,11 @@
         <div sec:authorize="isAuthenticated()" id="seedsContainer" class="d-flex w-100 justify-content-center flex-column align-items-center">
             <div class="h1 mb-3">요약</div>
             <div class="mb-3">
-                지금까지 등록한 시드는 총 <span class="fw-bold" th:text="${seedOverview.typeCounter.total()}"></span>개 입니다.
+                지금까지 등록한 시드는 총 <span class="fw-bold" th:text="${seedOverview.seedTypeCounterResult.total()}"></span>개 입니다.
             </div>
-            <div th:each="seedType : ${seedOverview.typeCounter.keySet()}">
+            <div th:each="seedType : ${seedOverview.seedTypeCounterResult.seedTypeNameSet()}">
                 <div class="mb-1">
-                    <span th:text="|${seedType} : |"></span> <span class="fw-bold" th:text="${seedOverview.typeCounter.getCount(seedType)}"></span>개
+                    <span th:text="|${seedType} : |"></span> <span class="fw-bold" th:text="${seedOverview.seedTypeCounterResult.getCount(seedType)}"></span>개
                 </div>
             </div>
         </div>

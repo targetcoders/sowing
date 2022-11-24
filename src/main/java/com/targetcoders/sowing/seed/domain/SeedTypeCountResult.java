@@ -10,16 +10,17 @@ import java.util.Set;
 
 @NoArgsConstructor
 @Getter
-public class TypeCounter {
+public class SeedTypeCountResult {
     private final HashMap<String, Long> typeCountMap = new HashMap<>();
 
-    public TypeCounter(List<SeedType> seedTypes) {
+    public SeedTypeCountResult(List<SeedType> seedTypes, List<Seed> seeds) {
         for(SeedType seedType : seedTypes) {
             typeCountMap.put(seedType.getName(), 0L);
         }
+        count(seeds);
     }
 
-    public void count(List<Seed> seeds) {
+    private void count(List<Seed> seeds) {
         for (Seed seed : seeds) {
             for (String seedType : typeCountMap.keySet()) {
                 if (seed.getType().equals(seedType)) {
@@ -38,11 +39,15 @@ public class TypeCounter {
         return result;
     }
 
-    public Set<String> keySet() {
+    public Set<String> seedTypeNameSet() {
         return typeCountMap.keySet();
     }
 
     public Long getCount(String key) {
-        return typeCountMap.get(key);
+        Long result = typeCountMap.get(key);
+        if (result == null) {
+            return 0L;
+        }
+        return result;
     }
 }
