@@ -1,6 +1,8 @@
-package com.targetcoders.sowing.settings;
+package com.targetcoders.sowing.settings.service;
 
 import com.targetcoders.sowing.member.domain.SeedType;
+import com.targetcoders.sowing.settings.dao.SeedTypeDao;
+import com.targetcoders.sowing.settings.dto.AddSeedTypeDTO;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

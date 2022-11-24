@@ -31,13 +31,14 @@ public class MemberRepository {
         Member member = em.find(Member.class, updateMemberDTO.getId());
         member.update(updateMemberDTO);
     }
-
+    @SuppressWarnings("unchecked")
     public List<Member> findByUsername(String memberUsername) {
         return em.createQuery("select m from Member m where m.username = :userName")
                 .setParameter("userName", memberUsername)
                 .getResultList();
     }
 
+    @SuppressWarnings("unchecked")
     public List<Member> findAll() {
         return em.createQuery("select m from Member m")
                 .getResultList();

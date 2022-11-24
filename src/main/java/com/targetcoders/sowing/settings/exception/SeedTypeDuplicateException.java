@@ -1,4 +1,4 @@
-package com.targetcoders.sowing.settings;
+package com.targetcoders.sowing.settings.exception;
 
 public class SeedTypeDuplicateException extends RuntimeException {
 

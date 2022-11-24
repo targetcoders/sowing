@@ -28,10 +28,11 @@
                 span.innerText = seedTypeName;
                 const removeHyperText = document.createElement("a");
                 removeHyperText.classList.add('text-decoration-none');
-                removeHyperText.style = 'color: red; cursor: pointer';
+                removeHyperText.style.color = 'red';
+                removeHyperText.style.cursor = 'pointer';
                 removeHyperText.innerText = '삭제';
                 removeHyperText.addEventListener('click', ()=> {
-                    deleteSeedType(nextIndex);
+                    removeSeedType(nextIndex);
                 });
 
                 div.appendChild(span);
@@ -46,7 +47,7 @@
             });
         };
 
-        const deleteSeedType = (index) => {
+        const removeSeedType = (index) => {
             axios({
                 url: '/settings/seedtype?seedTypeName='+document.getElementById('seedType'+index).firstElementChild.innerHTML,
                 method: 'DELETE',

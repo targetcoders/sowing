@@ -1,4 +1,4 @@
-package com.targetcoders.sowing.settings;
+package com.targetcoders.sowing.settings.dao;
 
 import com.targetcoders.sowing.member.domain.Settings;
 import com.targetcoders.sowing.member.repository.SettingsRepository;

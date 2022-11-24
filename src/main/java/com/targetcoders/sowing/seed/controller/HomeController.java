@@ -1,4 +1,4 @@
-package com.targetcoders.sowing.controller;
+package com.targetcoders.sowing.seed.controller;
 
 import com.targetcoders.sowing.seed.ILocalDate;
 import com.targetcoders.sowing.seed.domain.SeedYearGroup;
