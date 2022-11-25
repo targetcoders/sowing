@@ -1,5 +1,6 @@
 package com.targetcoders.sowing.seed.service;
 
+import com.targetcoders.sowing.seed.dao.SeedDao;
 import com.targetcoders.sowing.seed.domain.SeedDayGroup;
 import com.targetcoders.sowing.seed.domain.SeedMonthGroup;
 import com.targetcoders.sowing.seed.domain.SeedYearGroup;
@@ -14,11 +15,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SeedGroupService {
 
-    private final SeedService seedService;
+    private final SeedDao seedDao;
 
     @Transactional
     public SeedYearGroup seedYearGroup(int year, String email) {
-        SeedYearGroup seedYearGroup = new SeedYearGroup(year, seedService.findYearSeeds(year, email));
+        SeedYearGroup seedYearGroup = new SeedYearGroup(year, seedDao.findYearSeeds(year, email));
         deepSortSeedYearGroup(seedYearGroup);
         return seedYearGroup;
     }

@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -30,7 +31,14 @@ public class SeedDao {
         seedRepository.updateSeed(updateSeedDTO);
     }
 
-    public List<Seed> findSeedsByUsername(String username) {
+    public List<Seed> findSeeds(String username) {
         return seedRepository.findByUsername(username);
+    }
+
+    public List<Seed> findYearSeeds(Integer year, String username) {
+        List<Seed> seeds = seedRepository.findByUsername(username);
+        return seeds.stream()
+                .filter(seed -> seed.getSowingDate().getYear() == year)
+                .collect(Collectors.toList());
     }
 }

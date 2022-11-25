@@ -11,9 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 @RequiredArgsConstructor
 public class SeedService {
@@ -55,15 +52,8 @@ public class SeedService {
     }
 
     @Transactional
-    public List<Seed> findYearSeeds(Integer year, String username) {
-        List<Seed> seeds = seedDao.findSeedsByUsername(username);
-        return seeds.stream()
-                .filter(seed -> seed.getSowingDate().getYear() == year)
-                .collect(Collectors.toList());
-    }
-
     public boolean isUsedSeedType(String username, String seedTypeName) {
-        return seedDao.findSeedsByUsername(username)
+        return seedDao.findSeeds(username)
                 .stream()
                 .anyMatch(seed -> seed.getType().equals(seedTypeName));
     }

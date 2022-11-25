@@ -6,10 +6,7 @@ import com.targetcoders.sowing.member.domain.Member;
 import com.targetcoders.sowing.member.dto.CreateMemberDTO;
 import com.targetcoders.sowing.member.dto.UpdateMemberDTO;
 import com.targetcoders.sowing.member.service.MemberService;
-import com.targetcoders.sowing.seed.domain.Seed;
-import com.targetcoders.sowing.seed.domain.SeedDayGroup;
-import com.targetcoders.sowing.seed.service.SeedService;
-import com.targetcoders.sowing.seed.domain.DefaultSeedType;
+import com.targetcoders.sowing.seed.dao.SeedDao;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,10 +16,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,41 +24,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 class MemberTest {
 
-    @Autowired SeedService seedService;
-    @Autowired
-    MemberService memberService;
+    @Autowired MemberService memberService;
+    @Autowired SeedDao seedDao;
     @Autowired EntityManager em;
     @Autowired JwtTokenService jwtTokenService;
-
-    @Test
-    @DisplayName("멤버를 조회하면 해당 멤버의 모든 시드도 조회된다")
-    @Transactional
-    void saveAndFind() {
-        //given
-        LocalDate now = LocalDate.now();
-        CreateMemberDTO createMemberDTO = new CreateMemberDTO("greenneuron@naver.com", "nickname", "accessToken", "refreshToken", invalidJwtToken());
-        Member saveMember = memberService.saveMember(createMemberDTO);
-
-        //when
-        Seed seed1 = Seed.create(DefaultSeedType.STUDY.toString(), saveMember, "제목1", "내용1", now);
-        seedService.saveSeed(seed1);
-        Seed seed2 = Seed.create(DefaultSeedType.STUDY.toString(), saveMember, "제목2", "내용2", now);
-        seedService.saveSeed(seed2);
-        Seed seed3 = Seed.create(DefaultSeedType.STUDY.toString(), saveMember, "제목3", "내용3", now);
-        seedService.saveSeed(seed3);
-
-        //when
-        Member findMember2 = memberService.findMemberById(saveMember.getId());
-        em.flush();
-
-        //then
-        List<Seed> seeds = seedService.findYearSeeds(now.getYear(), findMember2.getUsername());
-        assertThat(seeds.size()).isEqualTo(3);
-    }
-
-    private JwtToken invalidJwtToken() {
-        return new JwtToken("a.b.c");
-    }
 
     @Test
     @DisplayName("모든 멤버 조회")
@@ -121,26 +83,8 @@ class MemberTest {
         assertThat(findMember.getNickname()).isEqualTo("변경된 닉네임");
     }
 
-
-    @Test
-    @DisplayName("시드 그룹 리스트를 날짜 기준 내림차순 정렬")
-    public void sortedSeedGroupList() {
-        //given
-        List<SeedDayGroup> seedDayGroups = new ArrayList<>();
-        SeedDayGroup seedDayGroup1 = new SeedDayGroup(LocalDateTime.now().toLocalDate().getDayOfMonth());
-        SeedDayGroup seedDayGroup2 = new SeedDayGroup(LocalDateTime.now().minusDays(1).toLocalDate().getDayOfMonth());
-        SeedDayGroup seedDayGroup3 = new SeedDayGroup(LocalDateTime.now().minusDays(2).toLocalDate().getDayOfMonth());
-        seedDayGroups.add(seedDayGroup3);
-        seedDayGroups.add(seedDayGroup2);
-        seedDayGroups.add(seedDayGroup1);
-
-        //when
-        Collections.sort(seedDayGroups);
-
-        //then
-        assertThat(seedDayGroups.get(0)).isEqualTo(seedDayGroup1);
-        assertThat(seedDayGroups.get(1)).isEqualTo(seedDayGroup2);
-        assertThat(seedDayGroups.get(2)).isEqualTo(seedDayGroup3);
+    private JwtToken invalidJwtToken() {
+        return new JwtToken("a.b.c");
     }
 
 }

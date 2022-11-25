@@ -21,7 +21,7 @@ public class SeedOverviewService {
 
     @Transactional
     public SeedTypeCountResult countSeeds(String username) throws NotFoundException {
-        List<Seed> seeds = seedDao.findSeedsByUsername(username);
+        List<Seed> seeds = seedDao.findSeeds(username);
         Member member = memberDao.findByUsername(username);
         return new SeedTypeCountResult(member.getSettings().getSeedTypes(), seeds);
 
