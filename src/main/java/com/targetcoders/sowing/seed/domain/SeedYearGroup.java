@@ -13,9 +13,15 @@ public class SeedYearGroup implements Comparable<SeedYearGroup> {
     private final Integer year;
     private final List<SeedMonthGroup> seedMonthGroups = new ArrayList<>();
 
-    public SeedYearGroup(int year, List<Seed> seeds) {
+    public SeedYearGroup(int year, List<Seed> sameYearSeeds) {
         this.year = year;
-        setSeedMonthGroups(seeds);
+        for (Seed seed : sameYearSeeds) {
+            int eachYear = seed.getSowingDate().getYear();
+            if (eachYear != year) {
+                throw new IllegalArgumentException("예상 Year=" + year + ", 실제 Year=" + eachYear);
+            }
+        }
+        setSeedMonthGroups(sameYearSeeds);
     }
 
     private void setSeedMonthGroups(List<Seed> sameYearSeeds) {

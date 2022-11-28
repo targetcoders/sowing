@@ -4,7 +4,7 @@ import com.targetcoders.sowing.member.dao.MemberDao;
 import com.targetcoders.sowing.member.domain.Member;
 import com.targetcoders.sowing.seed.dao.SeedDao;
 import com.targetcoders.sowing.seed.domain.Seed;
-import com.targetcoders.sowing.seed.domain.SeedForm;
+import com.targetcoders.sowing.seed.dto.SeedFormDTO;
 import com.targetcoders.sowing.seed.dto.UpdateSeedDTO;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -40,13 +40,13 @@ public class SeedService {
     }
 
     @Transactional
-    public Long saveSeed(SeedForm seedForm) throws NotFoundException {
-        String selectType = seedForm.getSelectType();
-        String content = seedForm.getContent();
-        String username = seedForm.getUsername();
-        String title = seedForm.getTitle();
+    public Long saveSeed(SeedFormDTO seedFormDTO) throws NotFoundException {
+        String selectType = seedFormDTO.getSelectType();
+        String content = seedFormDTO.getContent();
+        String username = seedFormDTO.getUsername();
+        String title = seedFormDTO.getTitle();
         Member member = memberDao.findByUsername(username);
-        Seed seed = Seed.create(selectType, member, title, content, seedForm.getSowingDate());
+        Seed seed = Seed.create(selectType, member, title, content, seedFormDTO.getSowingDate());
         seedDao.saveSeed(seed);
         return seed.getId();
     }

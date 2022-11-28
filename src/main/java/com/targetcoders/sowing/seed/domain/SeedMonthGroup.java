@@ -15,6 +15,12 @@ public class SeedMonthGroup implements Comparable<SeedMonthGroup> {
 
     public SeedMonthGroup(Month sowingMonth, List<Seed> sameMonthSeeds) {
         this.sowingMonth = sowingMonth;
+        for (Seed seed : sameMonthSeeds) {
+            Month month = seed.getSowingDate().getMonth();
+            if (month != sowingMonth) {
+                throw new IllegalArgumentException("예상 Month=" + sowingMonth + ", 실제 Month=" + month);
+            }
+        }
         setSeedDayGroups(sameMonthSeeds);
     }
 

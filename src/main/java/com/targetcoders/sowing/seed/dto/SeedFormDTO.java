@@ -1,4 +1,4 @@
-package com.targetcoders.sowing.seed.domain;
+package com.targetcoders.sowing.seed.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +10,7 @@ import java.util.List;
 import static org.springframework.format.annotation.DateTimeFormat.ISO;
 
 @Getter @Setter
-public class SeedForm {
+public class SeedFormDTO {
 
     private Long id;
     private String username;
