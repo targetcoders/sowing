@@ -27,7 +27,6 @@ public class SeedDayGroup implements Comparable<SeedDayGroup> {
 
     @Override
     public int compareTo(SeedDayGroup seedDayGroup) {
-        int compareResult = day.compareTo(seedDayGroup.day);
-        return Integer.compare(0, compareResult);
+        return day.compareTo(seedDayGroup.day) *-1;
     }
 }

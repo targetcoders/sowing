@@ -10,13 +10,16 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.*;
 
 class SeedMonthGroupTest {
 
     @Test
     @DisplayName("다른 월에 등록된 시드가 있는 경우 예외 발생")
-    void test() {
+    void anOtherMonthIsContained() {
         LocalDate dateTime1 = LocalDate.of(2022, 1, 1);
         LocalDate dateTime2 = LocalDate.of(2022, 12, 9);
         LocalDate dateTime3 = LocalDate.of(2022, 12, 9);
@@ -33,6 +36,21 @@ class SeedMonthGroupTest {
         seeds.add(seed4);
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> new SeedMonthGroup(Month.JANUARY, seeds));
+    }
+
+    @Test
+    @DisplayName("월별 내림차순 정렬")
+    void sortSeedMonthGroupDesc() {
+        List<SeedMonthGroup> seedMonthGroups = new ArrayList<>();
+        seedMonthGroups.add(new SeedMonthGroup(Month.JANUARY, new ArrayList<>()));
+        seedMonthGroups.add(new SeedMonthGroup(Month.DECEMBER, new ArrayList<>()));
+        seedMonthGroups.add(new SeedMonthGroup(Month.JULY, new ArrayList<>()));
+
+        Collections.sort(seedMonthGroups);
+
+        assertThat(seedMonthGroups.get(0).getSowingMonth()).isEqualTo(Month.DECEMBER);
+        assertThat(seedMonthGroups.get(1).getSowingMonth()).isEqualTo(Month.JULY);
+        assertThat(seedMonthGroups.get(2).getSowingMonth()).isEqualTo(Month.JANUARY);
     }
 
 }

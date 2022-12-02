@@ -5,6 +5,7 @@ import lombok.ToString;
 
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @ToString @Getter
@@ -22,6 +23,7 @@ public class SeedYearGroup implements Comparable<SeedYearGroup> {
             }
         }
         setSeedMonthGroups(sameYearSeeds);
+        Collections.sort(seedMonthGroups);
     }
 
     private void setSeedMonthGroups(List<Seed> sameYearSeeds) {
@@ -33,7 +35,9 @@ public class SeedYearGroup implements Comparable<SeedYearGroup> {
                 }
             }
             SeedMonthGroup seedMonthGroup = new SeedMonthGroup(month, sameMonthSeeds);
-            seedMonthGroups.add(seedMonthGroup);
+            if (!seedMonthGroup.getSeedDayGroups().isEmpty()) {
+                seedMonthGroups.add(seedMonthGroup);
+            }
         }
     }
 

@@ -52,19 +52,22 @@ class SeedYearGroupTest {
     void createSeedYearGroup() {
         //given
         LocalDate dateTime1 = LocalDate.of(2022, 1, 1);
-        LocalDate dateTime2 = LocalDate.of(2022, 12, 9);
+        LocalDate dateTime2 = LocalDate.of(2022, 2, 9);
         LocalDate dateTime3 = LocalDate.of(2022, 12, 9);
-        LocalDate dateTime4 = LocalDate.of(2022, 12, 31);
+        LocalDate dateTime4 = LocalDate.of(2022, 12, 9);
+        LocalDate dateTime5 = LocalDate.of(2022, 12, 31);
         Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"),"sowingRefreshToken", dateTime1, dateTime1, Settings.create());
         Seed seed1 = Seed.create(DefaultSeedType.PLAY.toString(), member, "제목1", "내용1", dateTime1);
         Seed seed2 = Seed.create(DefaultSeedType.READ.toString(), member, "제목2", "내용2", dateTime2);
         Seed seed3 = Seed.create(DefaultSeedType.STUDY.toString(), member, "제목3", "내용3", dateTime3);
         Seed seed4 = Seed.create(DefaultSeedType.DATE.toString(), member, "제목4", "내용4", dateTime4);
+        Seed seed5 = Seed.create(DefaultSeedType.PLAY.toString(), member, "제목5", "내용5", dateTime5);
         List<Seed> seeds = new ArrayList<>();
         seeds.add(seed1);
         seeds.add(seed2);
         seeds.add(seed3);
         seeds.add(seed4);
+        seeds.add(seed5);
 
         //when
         int year = 2022;
@@ -73,18 +76,15 @@ class SeedYearGroupTest {
 
         //then
         List<SeedMonthGroup> seedMonthGroups = seedYearGroup.getSeedMonthGroups();
-        SeedMonthGroup seedMonthGroup1 = seedMonthGroups.stream().filter(smg -> smg.getSowingMonth() == Month.DECEMBER).findFirst().orElse(null);
-        SeedMonthGroup seedMonthGroup2 = seedMonthGroups.stream().filter(smg -> smg.getSowingMonth() == Month.FEBRUARY).findFirst().orElse(null);
-        SeedMonthGroup seedMonthGroup3 = seedMonthGroups.stream().filter(smg -> smg.getSowingMonth() == Month.JANUARY).findFirst().orElse(null);
 
-        assertThat(seedMonthGroup1).isNotNull();
-        assertThat(seedMonthGroup2).isNotNull();
-        assertThat(seedMonthGroup3).isNotNull();
+        assertThat(seedMonthGroups.get(0).getSowingMonth()).isEqualTo(Month.DECEMBER);
+        assertThat(seedMonthGroups.get(1).getSowingMonth()).isEqualTo(Month.FEBRUARY);
+        assertThat(seedMonthGroups.get(2).getSowingMonth()).isEqualTo(Month.JANUARY);
 
-        assertThat(seedMonthGroup1.getSeedDayGroups().size()).isEqualTo(2);
-        assertThat(seedMonthGroup1.getSeedDayGroups().get(0).getSeeds().size()).isEqualTo(2); // 12월 9일 시드 개수 = 2
-        assertThat(seedMonthGroup2.getSeedDayGroups().size()).isEqualTo(0);
-        assertThat(seedMonthGroup3.getSeedDayGroups().size()).isEqualTo(1);
+        assertThat(seedMonthGroups.get(0).getSeedDayGroups().size()).isEqualTo(2);
+        assertThat(seedMonthGroups.get(0).getSeedDayGroups().get(1).getSeeds().size()).isEqualTo(2); // 12월 9일 시드 개수 = 2
+        assertThat(seedMonthGroups.get(1).getSeedDayGroups().size()).isEqualTo(1);
+        assertThat(seedMonthGroups.get(2).getSeedDayGroups().size()).isEqualTo(1);
     }
 
 }

@@ -85,20 +85,10 @@ class SeedGroupServiceTest {
         SeedYearGroup seedYearGroup = seedGroupService.seedYearGroup(year, "greenneuron");
 
         //then
-        //월 오름차순 정렬
+        //월 내림차순 정렬
         List<SeedMonthGroup> monthSortTestGroup = seedYearGroup.getSeedMonthGroups();
-        Assertions.assertThat(monthSortTestGroup.get(0).getSowingMonth()).isEqualTo(Month.JANUARY);
-        Assertions.assertThat(monthSortTestGroup.get(1).getSowingMonth()).isEqualTo(Month.FEBRUARY);
-        Assertions.assertThat(monthSortTestGroup.get(2).getSowingMonth()).isEqualTo(Month.MARCH);
-        Assertions.assertThat(monthSortTestGroup.get(3).getSowingMonth()).isEqualTo(Month.APRIL);
-        Assertions.assertThat(monthSortTestGroup.get(4).getSowingMonth()).isEqualTo(Month.MAY);
-        Assertions.assertThat(monthSortTestGroup.get(5).getSowingMonth()).isEqualTo(Month.JUNE);
-        Assertions.assertThat(monthSortTestGroup.get(6).getSowingMonth()).isEqualTo(Month.JULY);
-        Assertions.assertThat(monthSortTestGroup.get(7).getSowingMonth()).isEqualTo(Month.AUGUST);
-        Assertions.assertThat(monthSortTestGroup.get(8).getSowingMonth()).isEqualTo(Month.SEPTEMBER);
-        Assertions.assertThat(monthSortTestGroup.get(9).getSowingMonth()).isEqualTo(Month.OCTOBER);
-        Assertions.assertThat(monthSortTestGroup.get(10).getSowingMonth()).isEqualTo(Month.NOVEMBER);
-        Assertions.assertThat(monthSortTestGroup.get(11).getSowingMonth()).isEqualTo(Month.DECEMBER);
+        Assertions.assertThat(monthSortTestGroup.get(0).getSowingMonth()).isEqualTo(Month.DECEMBER);
+        Assertions.assertThat(monthSortTestGroup.get(1).getSowingMonth()).isEqualTo(Month.JANUARY);
 
         //일 내림차순 정렬
         SeedMonthGroup daySortTestGroup = monthSortTestGroup.stream().filter(smg -> smg.getSowingMonth() == Month.DECEMBER).findFirst().orElse(null);
