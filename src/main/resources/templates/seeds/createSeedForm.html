@@ -21,10 +21,10 @@
                 <label for="sowingDate">날짜</label>
             </div>
             <div class="form-floating w-75 mt-2">
-                <select id="seed-type" name="selectType" class="form-select">
+                <select id="seed-type" name="seedTypeId" class="form-select">
                     <option th:each="type : ${seedTypes}"
-                            th:value="${type.name}"
-                            th:text="${type.name}"></option>
+                            th:text="${type.getName()}"
+                            th:value="${type.getId()}"></option>
                 </select>
                 <label for="seed-type">타입</label>
             </div>

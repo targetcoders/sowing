@@ -16,26 +16,26 @@
     <form role="form" action="/seeds/new/edit" method="post" class="w-100">
         <div class="d-flex flex-column justify-content-center align-items-center">
             <input type="hidden" name="username" th:value="${#authentication.name}"/>
-            <input type="hidden" name="id" th:value="${seedForm.id}"/>
+            <input type="hidden" name="id" th:value="${seedEditFormDto.id}"/>
             <div class="form-floating w-75">
-                <input type="date" th:max="${#temporals.createToday()}" id="sowingDate" name="sowingDate" class="form-control" th:value="${seedForm.sowingDate}"/>
+                <input type="date" th:max="${#temporals.createToday()}" id="sowingDate" name="sowingDate" class="form-control" th:value="${seedEditFormDto.sowingDate}"/>
                 <label for="sowingDate">날짜</label>
             </div>
             <div class="form-floating w-75 mt-2">
-                <select id="seed-type" name="selectType" class="form-select">
-                    <option selected th:value="${seedForm.selectType}" th:text="${seedForm.selectType}"></option>
-                    <option th:each="type : ${seedForm.typeList}"
-                            th:if="${!seedForm.selectType.equals(type)}"
-                            th:value="${type}"
-                            th:text="${type}"></option>
+                <select id="seed-type" name="seedTypeId" class="form-select">
+                    <option selected th:value="${seedEditFormDto.getSelectedType().getName()}" th:text="${seedEditFormDto.getSelectedType().getName()}"></option>
+                    <option th:each="type : ${seedEditFormDto.getTypeList()}"
+                            th:if="${!seedEditFormDto.getSelectedType.getName().equals(type.getName())}"
+                            th:text="${type.getName()}"
+                            th:value="${type.getId()}"></option>
                 </select>
                 <label for="seed-type">타입</label>
             </div>
             <div class="form-floating w-75 mt-2">
-                <input id="seed-title" class="form-control" type="text" name="title" th:value="${seedForm.title}" placeholder="제목"/>
+                <input id="seed-title" class="form-control" type="text" name="title" th:value="${seedEditFormDto.title}" placeholder="제목"/>
                 <label for="seed-title">제목</label>
             </div>
-            <textarea id="seed-content" name="content" th:text="${seedForm.content}" class="form-control w-75 mt-2" style="height: 300px"
+            <textarea id="seed-content" name="content" th:text="${seedEditFormDto.content}" class="form-control w-75 mt-2" style="height: 300px"
                       placeholder="오늘 하루 어땠나요?"></textarea>
             <button type="submit" class="btn btn-success mt-2">수정</button>
         </div>

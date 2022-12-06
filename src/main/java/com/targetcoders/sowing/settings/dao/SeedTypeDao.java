@@ -5,6 +5,7 @@ import com.targetcoders.sowing.member.domain.Member;
 import com.targetcoders.sowing.member.domain.SeedType;
 import com.targetcoders.sowing.settings.dto.AddSeedTypeDTO;
 import com.targetcoders.sowing.settings.exception.SeedTypeDuplicateException;
+import com.targetcoders.sowing.settings.repository.SeedTypeRepository;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,7 @@ import java.util.List;
 public class SeedTypeDao {
 
     private final MemberDao memberDao;
+    private final SeedTypeRepository seedTypeRepository;
 
     public void addSeedType(String username, AddSeedTypeDTO addSeedTypeDTO) throws NotFoundException {
         String seedTypeName = addSeedTypeDTO.getSeedTypeName();
@@ -42,4 +44,9 @@ public class SeedTypeDao {
         SeedType foundSeedType = seedTypes.stream().filter(seedType -> seedType.getName().equals(seedTypeName)).findFirst().orElse(null);
         seedTypes.remove(foundSeedType);
     }
+
+    public SeedType findSeedTypeById(Long id) {
+        return seedTypeRepository.findSeedTypeById(id);
+    }
+
 }

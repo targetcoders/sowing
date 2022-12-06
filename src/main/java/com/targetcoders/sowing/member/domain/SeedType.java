@@ -3,6 +3,7 @@ package com.targetcoders.sowing.member.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-@Getter @Setter
+@Getter @Setter @ToString
 @NoArgsConstructor
 public class SeedType {
 
@@ -24,4 +25,9 @@ public class SeedType {
     public SeedType(String name) {
         this.name = name;
     }
+
+    public void rename(String newName) {
+        this.name = newName;
+    }
+
 }

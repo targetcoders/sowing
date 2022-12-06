@@ -1,7 +1,8 @@
 package com.targetcoders.sowing.seed.domain;
 
 import com.targetcoders.sowing.member.domain.Member;
-import com.targetcoders.sowing.seed.dto.UpdateSeedDTO;
+import com.targetcoders.sowing.member.domain.SeedType;
+import com.targetcoders.sowing.seed.dto.SeedUpdateDTO;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,8 +21,10 @@ public class Seed implements Comparable<Seed> {
     @GeneratedValue
     @Column(name = "seed_id")
     private Long id;
-    @Column(name = "seed_type")
-    private String type;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seed_type_id")
+    private SeedType seedType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -30,19 +33,19 @@ public class Seed implements Comparable<Seed> {
     private String content;
     private LocalDate sowingDate;
 
-    public static Seed create(String type, Member member, String title, String content, LocalDate sowingDate) {
-        return new Seed(null, type, member, title, content, sowingDate);
+    public static Seed create(SeedType seedType, Member member, String title, String content, LocalDate sowingDate) {
+        return new Seed(null, seedType, member, title, content, sowingDate);
     }
 
-    public void update(UpdateSeedDTO updateSeedDto) {
-        type = updateSeedDto.getSelectType();
-        title = updateSeedDto.getTitle();
-        content = updateSeedDto.getContent();
-        sowingDate = updateSeedDto.getSowingDate();
+    public void update(SeedUpdateDTO seedUpdateDto) {
+        seedType = seedUpdateDto.getSeedType();
+        title = seedUpdateDto.getTitle();
+        content = seedUpdateDto.getContent();
+        sowingDate = seedUpdateDto.getSowingDate();
     }
 
     @Override
     public int compareTo(Seed o) {
-        return type.compareTo(o.type);
+        return seedType.getName().compareTo(o.seedType.getName());
     }
 }

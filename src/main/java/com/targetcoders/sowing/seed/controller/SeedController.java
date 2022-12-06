@@ -4,9 +4,12 @@ import com.targetcoders.sowing.member.domain.Member;
 import com.targetcoders.sowing.member.domain.SeedType;
 import com.targetcoders.sowing.member.service.MemberService;
 import com.targetcoders.sowing.seed.domain.Seed;
-import com.targetcoders.sowing.seed.dto.SeedFormDTO;
-import com.targetcoders.sowing.seed.dto.UpdateSeedDTO;
+import com.targetcoders.sowing.seed.dto.SeedCreateDTO;
+import com.targetcoders.sowing.seed.dto.SeedEditDTO;
+import com.targetcoders.sowing.seed.dto.SeedEditFormDTO;
+import com.targetcoders.sowing.seed.dto.SeedUpdateDTO;
 import com.targetcoders.sowing.seed.service.SeedService;
+import com.targetcoders.sowing.settings.service.SeedTypeService;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -18,7 +21,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -26,6 +28,7 @@ public class SeedController {
 
     private final SeedService seedService;
     private final MemberService memberService;
+    private final SeedTypeService seedTypeService;
 
     @GetMapping("/seeds/new")
     public String seedForm(Model model, Authentication authentication) {
@@ -35,8 +38,8 @@ public class SeedController {
     }
 
     @PostMapping("/seeds/new")
-    public String create(SeedFormDTO seedFormDTO) throws NotFoundException {
-        seedService.saveSeed(seedFormDTO);
+    public String create(SeedCreateDTO seedCreateDTO) throws NotFoundException {
+        seedService.saveSeed(seedCreateDTO);
         return "redirect:/";
     }
 
@@ -50,25 +53,27 @@ public class SeedController {
     @GetMapping("seeds/{id}/edit")
     public String update(Model model, Authentication authentication, @PathVariable("id") Long id) {
         Seed seed = seedService.findSeedById(id);
-        SeedFormDTO seedFormDTO = new SeedFormDTO();
-        seedFormDTO.setTitle(seed.getTitle());
-        seedFormDTO.setSelectType(seed.getType());
-        seedFormDTO.setContent(seed.getContent());
-        seedFormDTO.setUsername(seed.getMember().getUsername());
-        seedFormDTO.setSowingDate(seed.getSowingDate());
+        SeedEditFormDTO seedEditFormDTO = new SeedEditFormDTO();
+        seedEditFormDTO.setTitle(seed.getTitle());
+        seedEditFormDTO.setSelectedType(seed.getSeedType());
+        seedEditFormDTO.setContent(seed.getContent());
+        seedEditFormDTO.setUsername(seed.getMember().getUsername());
+        seedEditFormDTO.setSowingDate(seed.getSowingDate());
         Member member = memberService.findMemberByUsername(authentication.getName());
         List<SeedType> seedTypes = member.getSettings().getSeedTypes();
-        seedFormDTO.setTypeList(seedTypes.stream().map(SeedType::getName).collect(Collectors.toList()));
-        seedFormDTO.setId(id);
-        model.addAttribute("seedForm", seedFormDTO);
+        seedEditFormDTO.setTypeList(seedTypes);
+        seedEditFormDTO.setId(id);
+        model.addAttribute("seedEditFormDto", seedEditFormDTO);
         return "seeds/editSeedForm";
     }
 
     @PostMapping("seeds/{id}/edit")
-    public String update(@ModelAttribute("form") SeedFormDTO seedFormDTO) {
+    public String update(@ModelAttribute("form") SeedEditDTO seedEditDTO) {
         ModelMapper modelMapper = new ModelMapper();
-        UpdateSeedDTO updateSeedDTO = modelMapper.map(seedFormDTO, UpdateSeedDTO.class);
-        seedService.updateSeed(updateSeedDTO);
+        SeedUpdateDTO seedUpdateDTO = modelMapper.map(seedEditDTO, SeedUpdateDTO.class);
+        Long seedTypeId = seedEditDTO.getSeedTypeId();
+        seedUpdateDTO.setSeedType(seedTypeService.findSeedTypeBydId(seedTypeId));
+        seedService.updateSeed(seedUpdateDTO);
         return "redirect:/";
     }
 

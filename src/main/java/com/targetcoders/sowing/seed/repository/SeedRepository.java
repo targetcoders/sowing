@@ -1,6 +1,6 @@
 package com.targetcoders.sowing.seed.repository;
 
-import com.targetcoders.sowing.seed.dto.UpdateSeedDTO;
+import com.targetcoders.sowing.seed.dto.SeedUpdateDTO;
 import com.targetcoders.sowing.seed.domain.Seed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -26,11 +26,12 @@ public class SeedRepository {
         em.remove(findById(id));
     }
 
-    public void updateSeed(UpdateSeedDTO updateSeedDto) {
-        Seed seed = em.find(Seed.class, updateSeedDto.getId());
-        seed.update(updateSeedDto);
+    public void updateSeed(SeedUpdateDTO seedUpdateDto) {
+        Seed seed = em.find(Seed.class, seedUpdateDto.getId());
+        seed.update(seedUpdateDto);
     }
 
+    @SuppressWarnings("unchecked")
     public List<Seed> findByUsername(String username) {
         return em.createQuery("select s from Seed s where s.member.username = :username")
                 .setParameter("username", username)

@@ -1,7 +1,7 @@
 package com.targetcoders.sowing.seed.dao;
 
 import com.targetcoders.sowing.seed.domain.Seed;
-import com.targetcoders.sowing.seed.dto.UpdateSeedDTO;
+import com.targetcoders.sowing.seed.dto.SeedUpdateDTO;
 import com.targetcoders.sowing.seed.repository.SeedRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -27,8 +27,8 @@ public class SeedDao {
         seedRepository.removeById(id);
     }
 
-    public void updateSeed(UpdateSeedDTO updateSeedDTO) {
-        seedRepository.updateSeed(updateSeedDTO);
+    public void updateSeed(SeedUpdateDTO seedUpdateDTO) {
+        seedRepository.updateSeed(seedUpdateDTO);
     }
 
     public List<Seed> findSeeds(String username) {

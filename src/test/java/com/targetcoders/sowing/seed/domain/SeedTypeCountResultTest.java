@@ -25,9 +25,9 @@ class SeedTypeCountResultTest {
         seedTypes.add(new SeedType("휴식"));
 
         seeds = new ArrayList<>();
-        seeds.add(Seed.create("공부", null, "title", "content", null));
-        seeds.add(Seed.create("독서", null, "title", "content", null));
-        seeds.add(Seed.create("휴식", null, "title", "content", null));
+        seeds.add(Seed.create(new SeedType("공부"), null, "title", "content", null));
+        seeds.add(Seed.create(new SeedType("독서"), null, "title", "content", null));
+        seeds.add(Seed.create(new SeedType("휴식"), null, "title", "content", null));
     }
 
     @Test

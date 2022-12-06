@@ -1,6 +1,7 @@
 package com.targetcoders.sowing.settings.service;
 
 import com.targetcoders.sowing.member.domain.SeedType;
+import com.targetcoders.sowing.seed.dto.SeedTypeRenameDTO;
 import com.targetcoders.sowing.settings.dao.SeedTypeDao;
 import com.targetcoders.sowing.settings.dto.AddSeedTypeDTO;
 import javassist.NotFoundException;
@@ -19,6 +20,12 @@ public class SettingsService {
     @Transactional
     public List<SeedType> seedTypes(String username) throws NotFoundException {
         return seedTypeDao.seedTypes(username);
+    }
+
+    @Transactional
+    public void renameSeedType(SeedTypeRenameDTO seedTypeRenameDTO) {
+        SeedType seedType = seedTypeDao.findSeedTypeById(seedTypeRenameDTO.getSeedTypeId());
+        seedType.rename(seedTypeRenameDTO.getNewSeedTypeName());
     }
 
     @Transactional

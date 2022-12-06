@@ -2,6 +2,7 @@ package com.targetcoders.sowing.settings.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.targetcoders.sowing.seed.dto.SeedTypeRenameDTO;
 import com.targetcoders.sowing.seed.service.SeedService;
 import com.targetcoders.sowing.settings.exception.SeedTypeDuplicateException;
 import com.targetcoders.sowing.settings.service.SettingsService;
@@ -55,6 +56,12 @@ public class SettingsController {
         }
         settingsService.removeSeedType(authentication.getName(), seedTypeName);
         return new ResponseEntity<>(seedTypeName, HttpStatus.OK);
+    }
+
+    @PostMapping("/seedtypes/rename")
+    public ResponseEntity<String> renameSeedType(@RequestBody SeedTypeRenameDTO seedTypeRenameDTO) {
+        settingsService.renameSeedType(seedTypeRenameDTO);
+        return new ResponseEntity<>("rename success", HttpStatus.OK);
     }
 
 }

@@ -22,10 +22,10 @@ public class SeedTypeCountResult {
 
     private void count(List<Seed> seeds) {
         for (Seed seed : seeds) {
-            for (String seedType : typeCountMap.keySet()) {
-                if (seed.getType().equals(seedType)) {
-                    Long nextCount = typeCountMap.get(seedType) + 1;
-                    typeCountMap.put(seedType, nextCount);
+            for (String seedTypeName : typeCountMap.keySet()) {
+                if (seed.getSeedType().getName().equals(seedTypeName)) {
+                    Long nextCount = typeCountMap.get(seedTypeName) + 1;
+                    typeCountMap.put(seedTypeName, nextCount);
                 }
             }
         }

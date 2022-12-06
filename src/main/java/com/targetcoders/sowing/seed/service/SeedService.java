@@ -2,10 +2,12 @@ package com.targetcoders.sowing.seed.service;
 
 import com.targetcoders.sowing.member.dao.MemberDao;
 import com.targetcoders.sowing.member.domain.Member;
+import com.targetcoders.sowing.member.domain.SeedType;
 import com.targetcoders.sowing.seed.dao.SeedDao;
 import com.targetcoders.sowing.seed.domain.Seed;
-import com.targetcoders.sowing.seed.dto.SeedFormDTO;
-import com.targetcoders.sowing.seed.dto.UpdateSeedDTO;
+import com.targetcoders.sowing.seed.dto.SeedCreateDTO;
+import com.targetcoders.sowing.seed.dto.SeedUpdateDTO;
+import com.targetcoders.sowing.settings.dao.SeedTypeDao;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class SeedService {
 
     private final SeedDao seedDao;
+    private final SeedTypeDao seedTypeDao;
     private final MemberDao memberDao;
 
     @Transactional
@@ -35,18 +38,18 @@ public class SeedService {
     }
 
     @Transactional
-    public void updateSeed(UpdateSeedDTO updateSeedDto) {
-        seedDao.updateSeed(updateSeedDto);
+    public void updateSeed(SeedUpdateDTO seedUpdateDto) {
+        seedDao.updateSeed(seedUpdateDto);
     }
 
     @Transactional
-    public Long saveSeed(SeedFormDTO seedFormDTO) throws NotFoundException {
-        String selectType = seedFormDTO.getSelectType();
-        String content = seedFormDTO.getContent();
-        String username = seedFormDTO.getUsername();
-        String title = seedFormDTO.getTitle();
+    public Long saveSeed(SeedCreateDTO seedCreateDTO) throws NotFoundException {
+        String content = seedCreateDTO.getContent();
+        String username = seedCreateDTO.getUsername();
+        String title = seedCreateDTO.getTitle();
         Member member = memberDao.findByUsername(username);
-        Seed seed = Seed.create(selectType, member, title, content, seedFormDTO.getSowingDate());
+        SeedType seedType = seedTypeDao.findSeedTypeById(seedCreateDTO.getSeedTypeId());
+        Seed seed = Seed.create(seedType, member, title, content, seedCreateDTO.getSowingDate());
         seedDao.saveSeed(seed);
         return seed.getId();
     }
@@ -55,6 +58,7 @@ public class SeedService {
     public boolean isUsedSeedType(String username, String seedTypeName) {
         return seedDao.findSeeds(username)
                 .stream()
-                .anyMatch(seed -> seed.getType().equals(seedTypeName));
+                .anyMatch(seed -> seed.getSeedType().getName().equals(seedTypeName));
     }
+
 }

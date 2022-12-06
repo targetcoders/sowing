@@ -76,13 +76,25 @@
             changeBtn.setAttribute('hidden','hidden');
         }
 
-        const saveName = (index) => {
-            const seedTypeName = document.getElementById('seedTypeName'+index);
-            const newName = seedTypeName.children.item(0).value;
-            seedTypeName.children.item(0).remove();
-            seedTypeName.innerHTML = newName;
+        const saveName = (index, seedTypeId) => {
+            const oldSeedType = document.getElementById('seedTypeName'+index);
+            const newSeedTypeName = oldSeedType.children.item(0).value;
+            oldSeedType.children.item(0).remove();
+            oldSeedType.innerHTML = newSeedTypeName;
 
-            //TODO: (BackEnd) 시드 타입 이름을 변경하고, 이미 등록된 시드의 타입 이름도 변경합니다.
+            axios({
+                url: '/seedtypes/rename',
+                method: 'POST',
+                data: {
+                    seedTypeId: seedTypeId,
+                    newSeedTypeName: newSeedTypeName
+                }
+            }).catch((error) => {
+                const status = error.response.status;
+                if (status === 404) {
+                    alert(error.response.data);
+                }
+            });
 
             const saveBtn = document.getElementById('saveBtn'+index);
             saveBtn.setAttribute('hidden', 'hidden');
@@ -108,7 +120,7 @@
                         <span th:id="|seedTypeName${i.index}|" th:text="${seedType.name}"></span>
                         <div>
                             <a th:id="|changeBtn${i.index}|" class="text-decoration-none" style="color: blue; cursor: pointer" th:onclick="|changeName(${i.index})|">수정</a>
-                            <a th:id="|saveBtn${i.index}|" class="text-decoration-none" style="color: blue; cursor: pointer" th:onclick="|saveName(${i.index})|" hidden>저장</a>
+                            <a th:id="|saveBtn${i.index}|" class="text-decoration-none" style="color: blue; cursor: pointer" th:onclick="|saveName(${i.index}, ${seedType.id})|" hidden>저장</a>
                             <a class="text-decoration-none" style="color: red; cursor: pointer" th:onclick="|deleteSeedType(${i.index})|">삭제</a>
                         </div>
                     </div>

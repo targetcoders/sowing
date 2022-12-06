@@ -2,10 +2,13 @@ package com.targetcoders.sowing.seed.dao;
 
 import com.targetcoders.sowing.authentication.domain.JwtToken;
 import com.targetcoders.sowing.member.domain.Member;
+import com.targetcoders.sowing.member.domain.SeedType;
 import com.targetcoders.sowing.member.dto.CreateMemberDTO;
 import com.targetcoders.sowing.member.service.MemberService;
 import com.targetcoders.sowing.seed.domain.DefaultSeedType;
 import com.targetcoders.sowing.seed.domain.Seed;
+import com.targetcoders.sowing.settings.dao.SeedTypeDao;
+import com.targetcoders.sowing.settings.repository.SeedTypeRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,6 +29,7 @@ public class SeedDaoTest {
 
     @Autowired MemberService memberService;
     @Autowired SeedDao seedDao;
+    @Autowired SeedTypeRepository seedTypeRepository;
     @Autowired EntityManager em;
 
     @Test
@@ -36,13 +40,16 @@ public class SeedDaoTest {
         LocalDate now = LocalDate.now();
         CreateMemberDTO createMemberDTO = new CreateMemberDTO("greenneuron@naver.com", "nickname", "accessToken", "refreshToken", invalidJwtToken());
         Member saveMember = memberService.saveMember(createMemberDTO);
+        SeedType seedType = new SeedType(DefaultSeedType.STUDY.toString());
+        seedTypeRepository.saveSeedType(seedType);
+
 
         //when
-        Seed seed1 = Seed.create(DefaultSeedType.STUDY.toString(), saveMember, "제목1", "내용1", now);
+        Seed seed1 = Seed.create(seedType, saveMember, "제목1", "내용1", now);
         seedDao.saveSeed(seed1);
-        Seed seed2 = Seed.create(DefaultSeedType.STUDY.toString(), saveMember, "제목2", "내용2", now);
+        Seed seed2 = Seed.create(seedType, saveMember, "제목2", "내용2", now);
         seedDao.saveSeed(seed2);
-        Seed seed3 = Seed.create(DefaultSeedType.STUDY.toString(), saveMember, "제목3", "내용3", now);
+        Seed seed3 = Seed.create(seedType, saveMember, "제목3", "내용3", now);
         seedDao.saveSeed(seed3);
         em.flush();
 

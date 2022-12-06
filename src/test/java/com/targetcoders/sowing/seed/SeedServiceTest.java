@@ -2,12 +2,14 @@ package com.targetcoders.sowing.seed;
 
 import com.targetcoders.sowing.member.domain.GoogleTokens;
 import com.targetcoders.sowing.member.domain.Member;
+import com.targetcoders.sowing.member.domain.SeedType;
 import com.targetcoders.sowing.member.domain.Settings;
 import com.targetcoders.sowing.member.service.MemberService;
 import com.targetcoders.sowing.seed.domain.Seed;
 import com.targetcoders.sowing.seed.domain.DefaultSeedType;
-import com.targetcoders.sowing.seed.dto.UpdateSeedDTO;
+import com.targetcoders.sowing.seed.dto.SeedUpdateDTO;
 import com.targetcoders.sowing.seed.service.SeedService;
+import com.targetcoders.sowing.settings.repository.SeedTypeRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,6 +34,8 @@ class SeedServiceTest {
     SeedService seedService;
     @Autowired
     MemberService memberService;
+    @Autowired
+    SeedTypeRepository seedTypeRepository;
 
     @Test
     @DisplayName("시드 조회")
@@ -39,7 +43,7 @@ class SeedServiceTest {
     void saveAndFindOne() {
         //given
         Member member = createDefaultMember();
-        Seed seed = Seed.create(DefaultSeedType.PLAY.toString(), member, "제목", "내용", LOCAL_DATE);
+        Seed seed = Seed.create(new SeedType(DefaultSeedType.PLAY.toString()), member, "제목", "내용", LOCAL_DATE);
 
         //when
         Long saveId = seedService.saveSeed(seed);
@@ -47,7 +51,7 @@ class SeedServiceTest {
         //then
         Seed getSeed = seedService.findSeedById(saveId);
         assertThat(getSeed.getId()).isEqualTo(getSeed.getId());
-        assertThat(getSeed.getType()).isEqualTo("PLAY");
+        assertThat(getSeed.getSeedType().getName()).isEqualTo("PLAY");
         assertThat(getSeed.getTitle()).isEqualTo("제목");
         assertThat(getSeed.getContent()).isEqualTo("내용");
         assertThat(getSeed.getSowingDate()).isEqualTo(LOCAL_DATE);
@@ -59,17 +63,19 @@ class SeedServiceTest {
     void updateSeed() {
         //given
         Member member = createDefaultMember();
-        Seed seed = Seed.create(DefaultSeedType.PLAY.toString(), member, "제목", "내용", LOCAL_DATE);
+        SeedType seedTypePlay = new SeedType(DefaultSeedType.PLAY.toString());
+        seedTypeRepository.saveSeedType(seedTypePlay);
+        Seed seed = Seed.create(seedTypePlay, member, "제목", "내용", LOCAL_DATE);
         Long saveId = seedService.saveSeed(seed);
 
         //when
         Seed findSeed = seedService.findSeedById(saveId);
-        UpdateSeedDTO updateSeedDto = new UpdateSeedDTO(findSeed.getId(), DefaultSeedType.STUDY.toString(), "변경된 제목", "변경된 내용", LOCAL_DATE);
-        seedService.updateSeed(updateSeedDto);
+        SeedUpdateDTO seedUpdateDto = new SeedUpdateDTO(findSeed.getId(), seedTypePlay, "변경된 제목", "변경된 내용", LOCAL_DATE);
+        seedService.updateSeed(seedUpdateDto);
 
         //then
         Seed updateSeed = seedService.findSeedById(findSeed.getId());
-        assertThat(updateSeed.getType()).isEqualTo(DefaultSeedType.STUDY.toString());
+        assertThat(updateSeed.getSeedType()).isEqualTo(seedTypePlay);
         assertThat(updateSeed.getTitle()).isEqualTo("변경된 제목");
         assertThat(updateSeed.getContent()).isEqualTo("변경된 내용");
         assertThat(updateSeed.getSowingDate()).isEqualTo(LOCAL_DATE);
@@ -81,7 +87,7 @@ class SeedServiceTest {
     void removeSeed() {
         //given
         Member member = createDefaultMember();
-        Seed seed = Seed.create(DefaultSeedType.PLAY.toString(),member, "제목", "내용", LOCAL_DATE);
+        Seed seed = Seed.create(new SeedType(DefaultSeedType.PLAY.toString()),member, "제목", "내용", LOCAL_DATE);
         Long saveId = seedService.saveSeed(seed);
         assertThat(seedService.findSeedById(saveId)).isNotNull();
 
@@ -103,10 +109,10 @@ class SeedServiceTest {
         //given
         List<Seed> seedList = new ArrayList<>();
         Member member = createDefaultMember();
-        Seed seed1 = Seed.create(DefaultSeedType.PLAY.toString(), member, "제목", "내용", LOCAL_DATE);
-        Seed seed2 = Seed.create(DefaultSeedType.READ.toString(), member, "제목", "내용", LOCAL_DATE);
-        Seed seed3 = Seed.create(DefaultSeedType.STUDY.toString(), member, "제목", "내용", LOCAL_DATE);
-        Seed seed4 = Seed.create(DefaultSeedType.DATE.toString(), member, "제목", "내용", LOCAL_DATE);
+        Seed seed1 = Seed.create(new SeedType(DefaultSeedType.PLAY.toString()), member, "제목", "내용", LOCAL_DATE);
+        Seed seed2 = Seed.create(new SeedType(DefaultSeedType.READ.toString()), member, "제목", "내용", LOCAL_DATE);
+        Seed seed3 = Seed.create(new SeedType(DefaultSeedType.STUDY.toString()), member, "제목", "내용", LOCAL_DATE);
+        Seed seed4 = Seed.create(new SeedType(DefaultSeedType.DATE.toString()), member, "제목", "내용", LOCAL_DATE);
         seedList.add(seed1);
         seedList.add(seed2);
         seedList.add(seed3);

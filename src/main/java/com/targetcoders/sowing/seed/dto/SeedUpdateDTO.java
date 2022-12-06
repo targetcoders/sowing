@@ -1,5 +1,6 @@
 package com.targetcoders.sowing.seed.dto;
 
+import com.targetcoders.sowing.member.domain.SeedType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,10 +11,10 @@ import java.time.LocalDate;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateSeedDTO {
+public class SeedUpdateDTO {
 
     private Long id;
-    private String selectType;
+    private SeedType seedType;
     private String title;
     private String content;
     private LocalDate sowingDate;

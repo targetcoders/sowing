@@ -36,7 +36,7 @@
                     <h5 th:text="|${seedDayGroup.day}일|"></h5>
                     <a class="list-group-item"
                        th:each="seed : ${seedDayGroup.seeds}"
-                       th:href="|/seeds/${seed.id}|" th:text="|${seed.type} / ${seed.title}|"></a>
+                       th:href="|/seeds/${seed.id}|" th:text="|${seed.type.getName()} / ${seed.title}|"></a>
                 </div>
             </div>
         </div>
