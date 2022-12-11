@@ -121,7 +121,7 @@
                         <div>
                             <a th:id="|changeBtn${i.index}|" class="text-decoration-none" style="color: blue; cursor: pointer" th:onclick="|changeName(${i.index})|">수정</a>
                             <a th:id="|saveBtn${i.index}|" class="text-decoration-none" style="color: blue; cursor: pointer" th:onclick="|saveName(${i.index}, ${seedType.id})|" hidden>저장</a>
-                            <a class="text-decoration-none" style="color: red; cursor: pointer" th:onclick="|deleteSeedType(${i.index})|">삭제</a>
+                            <a class="text-decoration-none" style="color: red; cursor: pointer" th:onclick="|removeSeedType(${i.index})|">삭제</a>
                         </div>
                     </div>
                 </div>
