@@ -1,6 +1,6 @@
-package com.targetcoders.sowing.member.repository;
+package com.targetcoders.sowing.settings.repository;
 
-import com.targetcoders.sowing.member.domain.Settings;
+import com.targetcoders.sowing.settings.domain.Settings;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

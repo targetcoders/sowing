@@ -1,6 +1,6 @@
 package com.targetcoders.sowing.seed.domain;
 
-import com.targetcoders.sowing.member.domain.SeedType;
+import com.targetcoders.sowing.seedtype.domain.SeedType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

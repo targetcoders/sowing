@@ -2,9 +2,10 @@ package com.targetcoders.sowing.seed.domain;
 
 import com.targetcoders.sowing.member.domain.GoogleTokens;
 import com.targetcoders.sowing.member.domain.Member;
-import com.targetcoders.sowing.member.domain.SeedType;
+import com.targetcoders.sowing.seedtype.domain.SeedType;
 import com.targetcoders.sowing.member.service.MemberService;
-import com.targetcoders.sowing.member.domain.Settings;
+import com.targetcoders.sowing.settings.domain.Settings;
+import com.targetcoders.sowing.seedtype.domain.DefaultSeedType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

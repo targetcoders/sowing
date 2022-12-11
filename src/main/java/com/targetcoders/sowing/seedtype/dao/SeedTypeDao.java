@@ -1,11 +1,12 @@
-package com.targetcoders.sowing.settings.dao;
+package com.targetcoders.sowing.seedtype.dao;
 
 import com.targetcoders.sowing.member.dao.MemberDao;
 import com.targetcoders.sowing.member.domain.Member;
-import com.targetcoders.sowing.member.domain.SeedType;
-import com.targetcoders.sowing.settings.dto.AddSeedTypeDTO;
-import com.targetcoders.sowing.settings.exception.SeedTypeDuplicateException;
-import com.targetcoders.sowing.settings.repository.SeedTypeRepository;
+import com.targetcoders.sowing.seed.repository.SeedRepository;
+import com.targetcoders.sowing.seedtype.domain.SeedType;
+import com.targetcoders.sowing.seedtype.dto.AddSeedTypeDTO;
+import com.targetcoders.sowing.seedtype.exception.SeedTypeDuplicateException;
+import com.targetcoders.sowing.seedtype.repository.SeedTypeRepository;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,7 @@ public class SeedTypeDao {
 
     private final MemberDao memberDao;
     private final SeedTypeRepository seedTypeRepository;
+    private final SeedRepository seedRepository;
 
     public void addSeedType(String username, AddSeedTypeDTO addSeedTypeDTO) throws NotFoundException {
         String seedTypeName = addSeedTypeDTO.getSeedTypeName();
@@ -49,4 +51,9 @@ public class SeedTypeDao {
         return seedTypeRepository.findSeedTypeById(id);
     }
 
+    public boolean hasSeedType(String username, String seedTypeName) {
+        return seedRepository.findByUsername(username)
+                .stream()
+                .anyMatch(seed -> seed.getSeedType().getName().equals(seedTypeName));
+    }
 }

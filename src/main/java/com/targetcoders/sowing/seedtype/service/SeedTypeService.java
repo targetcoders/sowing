@@ -1,21 +1,32 @@
-package com.targetcoders.sowing.settings.service;
+package com.targetcoders.sowing.seedtype.service;
 
-import com.targetcoders.sowing.member.domain.SeedType;
-import com.targetcoders.sowing.seed.dto.SeedTypeRenameDTO;
-import com.targetcoders.sowing.settings.dao.SeedTypeDao;
-import com.targetcoders.sowing.settings.dto.AddSeedTypeDTO;
+import com.targetcoders.sowing.seedtype.dao.SeedTypeDao;
+import com.targetcoders.sowing.seedtype.domain.SeedType;
+import com.targetcoders.sowing.seedtype.dto.AddSeedTypeDTO;
+import com.targetcoders.sowing.seedtype.dto.SeedTypeRenameDTO;
 import javassist.NotFoundException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
-public class SettingsService {
+public class SeedTypeService {
 
     private final SeedTypeDao seedTypeDao;
+
+    public SeedTypeService(SeedTypeDao seedTypeDao) {
+        this.seedTypeDao = seedTypeDao;
+    }
+
+    public SeedType findSeedTypeBydId(Long id) {
+        return seedTypeDao.findSeedTypeById(id);
+    }
+
+    @Transactional
+    public boolean hasSeedType(String username, String seedTypeName) {
+        return seedTypeDao.hasSeedType(username, seedTypeName);
+    }
 
     @Transactional
     public List<SeedType> seedTypes(String username) throws NotFoundException {
@@ -35,6 +46,7 @@ public class SettingsService {
 
     @Transactional
     public void removeSeedType(String username, String seedTypeName) throws NotFoundException {
-         seedTypeDao.removeSeedType(username, seedTypeName);
+        seedTypeDao.removeSeedType(username, seedTypeName);
     }
+
 }

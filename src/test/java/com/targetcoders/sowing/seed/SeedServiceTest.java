@@ -2,14 +2,14 @@ package com.targetcoders.sowing.seed;
 
 import com.targetcoders.sowing.member.domain.GoogleTokens;
 import com.targetcoders.sowing.member.domain.Member;
-import com.targetcoders.sowing.member.domain.SeedType;
-import com.targetcoders.sowing.member.domain.Settings;
+import com.targetcoders.sowing.seedtype.domain.SeedType;
+import com.targetcoders.sowing.settings.domain.Settings;
 import com.targetcoders.sowing.member.service.MemberService;
 import com.targetcoders.sowing.seed.domain.Seed;
-import com.targetcoders.sowing.seed.domain.DefaultSeedType;
+import com.targetcoders.sowing.seedtype.domain.DefaultSeedType;
 import com.targetcoders.sowing.seed.dto.SeedUpdateDTO;
 import com.targetcoders.sowing.seed.service.SeedService;
-import com.targetcoders.sowing.settings.repository.SeedTypeRepository;
+import com.targetcoders.sowing.seedtype.repository.SeedTypeRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

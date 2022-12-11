@@ -4,7 +4,7 @@ import com.targetcoders.sowing.member.dao.MemberDao;
 import com.targetcoders.sowing.settings.dao.SettingsDao;
 import com.targetcoders.sowing.member.domain.GoogleTokens;
 import com.targetcoders.sowing.member.domain.Member;
-import com.targetcoders.sowing.member.domain.Settings;
+import com.targetcoders.sowing.settings.domain.Settings;
 import com.targetcoders.sowing.member.dto.CreateMemberDTO;
 import com.targetcoders.sowing.member.dto.UpdateMemberDTO;
 import com.targetcoders.sowing.seed.ILocalDate;

@@ -1,7 +1,7 @@
 package com.targetcoders.sowing.seed.domain;
 
 import com.targetcoders.sowing.member.domain.Member;
-import com.targetcoders.sowing.member.domain.SeedType;
+import com.targetcoders.sowing.seedtype.domain.SeedType;
 import com.targetcoders.sowing.seed.dto.SeedUpdateDTO;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

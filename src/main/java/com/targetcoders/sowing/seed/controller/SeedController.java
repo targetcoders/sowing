@@ -1,7 +1,7 @@
 package com.targetcoders.sowing.seed.controller;
 
 import com.targetcoders.sowing.member.domain.Member;
-import com.targetcoders.sowing.member.domain.SeedType;
+import com.targetcoders.sowing.seedtype.domain.SeedType;
 import com.targetcoders.sowing.member.service.MemberService;
 import com.targetcoders.sowing.seed.domain.Seed;
 import com.targetcoders.sowing.seed.dto.SeedCreateDTO;
@@ -9,7 +9,7 @@ import com.targetcoders.sowing.seed.dto.SeedEditDTO;
 import com.targetcoders.sowing.seed.dto.SeedEditFormDTO;
 import com.targetcoders.sowing.seed.dto.SeedUpdateDTO;
 import com.targetcoders.sowing.seed.service.SeedService;
-import com.targetcoders.sowing.settings.service.SeedTypeService;
+import com.targetcoders.sowing.seedtype.service.SeedTypeService;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

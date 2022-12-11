@@ -1,4 +1,4 @@
-package com.targetcoders.sowing.member.domain;
+package com.targetcoders.sowing.seedtype.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

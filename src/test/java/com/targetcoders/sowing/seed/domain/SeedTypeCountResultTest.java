@@ -1,6 +1,6 @@
 package com.targetcoders.sowing.seed.domain;
 
-import com.targetcoders.sowing.member.domain.SeedType;
+import com.targetcoders.sowing.seedtype.domain.SeedType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

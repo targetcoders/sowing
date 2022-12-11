@@ -2,12 +2,12 @@ package com.targetcoders.sowing.seed.service;
 
 import com.targetcoders.sowing.member.dao.MemberDao;
 import com.targetcoders.sowing.member.domain.Member;
-import com.targetcoders.sowing.member.domain.SeedType;
+import com.targetcoders.sowing.seedtype.domain.SeedType;
 import com.targetcoders.sowing.seed.dao.SeedDao;
 import com.targetcoders.sowing.seed.domain.Seed;
 import com.targetcoders.sowing.seed.dto.SeedCreateDTO;
 import com.targetcoders.sowing.seed.dto.SeedUpdateDTO;
-import com.targetcoders.sowing.settings.dao.SeedTypeDao;
+import com.targetcoders.sowing.seedtype.dao.SeedTypeDao;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -52,13 +52,6 @@ public class SeedService {
         Seed seed = Seed.create(seedType, member, title, content, seedCreateDTO.getSowingDate());
         seedDao.saveSeed(seed);
         return seed.getId();
-    }
-
-    @Transactional
-    public boolean isUsedSeedType(String username, String seedTypeName) {
-        return seedDao.findSeeds(username)
-                .stream()
-                .anyMatch(seed -> seed.getSeedType().getName().equals(seedTypeName));
     }
 
 }

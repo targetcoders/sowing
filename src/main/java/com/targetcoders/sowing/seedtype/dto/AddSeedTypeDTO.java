@@ -1,4 +1,4 @@
-package com.targetcoders.sowing.settings.dto;
+package com.targetcoders.sowing.seedtype.dto;
 
 import lombok.Getter;
 import lombok.Setter;

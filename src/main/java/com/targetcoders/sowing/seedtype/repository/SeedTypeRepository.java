@@ -1,6 +1,6 @@
-package com.targetcoders.sowing.settings.repository;
+package com.targetcoders.sowing.seedtype.repository;
 
-import com.targetcoders.sowing.member.domain.SeedType;
+import com.targetcoders.sowing.seedtype.domain.SeedType;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

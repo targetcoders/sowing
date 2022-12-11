@@ -1,6 +1,7 @@
-package com.targetcoders.sowing.member.domain;
+package com.targetcoders.sowing.settings.domain;
 
-import com.targetcoders.sowing.seed.domain.DefaultSeedType;
+import com.targetcoders.sowing.seedtype.domain.DefaultSeedType;
+import com.targetcoders.sowing.seedtype.domain.SeedType;
 import lombok.Getter;
 
 import javax.persistence.*;

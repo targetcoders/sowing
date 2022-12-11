@@ -1,7 +1,7 @@
 package com.targetcoders.sowing.settings.dao;
 
-import com.targetcoders.sowing.member.domain.Settings;
-import com.targetcoders.sowing.member.repository.SettingsRepository;
+import com.targetcoders.sowing.settings.domain.Settings;
+import com.targetcoders.sowing.settings.repository.SettingsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
