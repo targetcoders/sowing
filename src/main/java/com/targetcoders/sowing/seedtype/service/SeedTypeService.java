@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SeedTypeService {
@@ -19,8 +20,8 @@ public class SeedTypeService {
         this.seedTypeDao = seedTypeDao;
     }
 
-    public SeedType findSeedTypeBydId(Long id) {
-        return seedTypeDao.findSeedTypeById(id);
+    public Optional<SeedType> findSeedTypeBydId(String username, Long id) {
+        return seedTypeDao.findSeedTypeById(username, id);
     }
 
     @Transactional
@@ -34,9 +35,12 @@ public class SeedTypeService {
     }
 
     @Transactional
-    public void renameSeedType(SeedTypeRenameDTO seedTypeRenameDTO) {
-        SeedType seedType = seedTypeDao.findSeedTypeById(seedTypeRenameDTO.getSeedTypeId());
-        seedType.rename(seedTypeRenameDTO.getNewSeedTypeName());
+    public void renameSeedType(String username, SeedTypeRenameDTO seedTypeRenameDTO) throws NotFoundException {
+        Optional<SeedType> seedType = seedTypeDao.findSeedTypeById(username, seedTypeRenameDTO.getSeedTypeId());
+        if (seedType.isEmpty()) {
+            throw new NotFoundException("SeedType을 찾을 수 없습니다. username="+username);
+        }
+        seedType.get().rename(seedTypeRenameDTO.getNewSeedTypeName());
     }
 
     @Transactional

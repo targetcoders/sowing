@@ -58,8 +58,8 @@ public class SeedTypeController {
     }
 
     @PostMapping("/seedtypes/rename")
-    public ResponseEntity<String> renameSeedType(@RequestBody SeedTypeRenameDTO seedTypeRenameDTO) {
-        seedTypeService.renameSeedType(seedTypeRenameDTO);
+    public ResponseEntity<String> renameSeedType(Authentication authentication, @RequestBody SeedTypeRenameDTO seedTypeRenameDTO) throws NotFoundException {
+        seedTypeService.renameSeedType(authentication.getName(), seedTypeRenameDTO);
         return new ResponseEntity<>("rename success", HttpStatus.OK);
     }
 

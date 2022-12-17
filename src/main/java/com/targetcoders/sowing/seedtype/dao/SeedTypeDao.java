@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -47,8 +48,8 @@ public class SeedTypeDao {
         seedTypes.remove(foundSeedType);
     }
 
-    public SeedType findSeedTypeById(Long id) {
-        return seedTypeRepository.findSeedTypeById(id);
+    public Optional<SeedType> findSeedTypeById(String username, Long id) {
+        return seedTypeRepository.findSeedTypeById(username, id);
     }
 
     public boolean hasSeedType(String username, String seedTypeName) {

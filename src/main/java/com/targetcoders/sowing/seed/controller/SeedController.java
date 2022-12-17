@@ -21,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -68,11 +69,15 @@ public class SeedController {
     }
 
     @PostMapping("seeds/{id}/edit")
-    public String update(@ModelAttribute("form") SeedEditDTO seedEditDTO) {
+    public String update(Authentication authentication, @ModelAttribute("form") SeedEditDTO seedEditDTO) throws NotFoundException {
         ModelMapper modelMapper = new ModelMapper();
         SeedUpdateDTO seedUpdateDTO = modelMapper.map(seedEditDTO, SeedUpdateDTO.class);
         Long seedTypeId = seedEditDTO.getSeedTypeId();
-        seedUpdateDTO.setSeedType(seedTypeService.findSeedTypeBydId(seedTypeId));
+        Optional<SeedType> foundSeedType = seedTypeService.findSeedTypeBydId(authentication.getName(), seedTypeId);
+        if (foundSeedType.isEmpty()) {
+            throw new NotFoundException("SeedType을 찾을 수 없습니다. username="+authentication.getName());
+        }
+        seedUpdateDTO.setSeedType(foundSeedType.get());
         seedService.updateSeed(seedUpdateDTO);
         return "redirect:/";
     }

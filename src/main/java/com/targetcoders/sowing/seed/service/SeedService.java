@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class SeedService {
@@ -48,8 +50,11 @@ public class SeedService {
         String username = seedCreateDTO.getUsername();
         String title = seedCreateDTO.getTitle();
         Member member = memberDao.findByUsername(username);
-        SeedType seedType = seedTypeDao.findSeedTypeById(seedCreateDTO.getSeedTypeId());
-        Seed seed = Seed.create(seedType, member, title, content, seedCreateDTO.getSowingDate());
+        Optional<SeedType> seedType = seedTypeDao.findSeedTypeById(username, seedCreateDTO.getSeedTypeId());
+        if (seedType.isEmpty()) {
+            throw new NotFoundException("SeedType을 찾을 수 없습니다. username="+username);
+        }
+        Seed seed = Seed.create(seedType.get(), member, title, content, seedCreateDTO.getSowingDate());
         seedDao.saveSeed(seed);
         return seed.getId();
     }
