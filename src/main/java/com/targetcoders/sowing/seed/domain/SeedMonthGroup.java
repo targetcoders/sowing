@@ -8,11 +8,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@ToString @Getter
+@ToString
+@Getter
 public class SeedMonthGroup implements Comparable<SeedMonthGroup> {
 
     private final Month sowingMonth;
     private final List<SeedDayGroup> seedDayGroups = new ArrayList<>();
+
+    public static SeedMonthGroup create(Month month, List<Seed> sameMonthSeeds) {
+        return new SeedMonthGroup(month, sameMonthSeeds);
+    }
 
     public SeedMonthGroup(Month sowingMonth, List<Seed> sameMonthSeeds) {
         this.sowingMonth = sowingMonth;
@@ -26,24 +31,21 @@ public class SeedMonthGroup implements Comparable<SeedMonthGroup> {
         Collections.sort(seedDayGroups);
     }
 
+    public boolean isEmptySeedDayGroup() {
+        return seedDayGroups.isEmpty();
+    }
+
     private void setSeedDayGroups(List<Seed> sameMonthSeeds) {
-        boolean[] check = new boolean[32];
-        for (int i=0; i<sameMonthSeeds.size(); i++) {
-            Seed seed = sameMonthSeeds.get(i);
-            int day = seed.getSowingDate().getDayOfMonth();
-            if(check[day]) {
+        boolean[] createdGroup = new boolean[32];
+        for (int i = 0; i < sameMonthSeeds.size(); i++) {
+            Seed sameMonthSeed = sameMonthSeeds.get(i);
+            int day = sameMonthSeed.getSowingDate().getDayOfMonth();
+            if (createdGroup[day]) {
                 continue;
             }
 
-            check[day] = true;
-            SeedDayGroup seedDayGroup = new SeedDayGroup(day);
-            for (int j=i; j< sameMonthSeeds.size(); j++) {
-                Seed otherSeed = sameMonthSeeds.get(j);
-                int otherDay = otherSeed.getSowingDate().getDayOfMonth();
-                if (day == otherDay) {
-                    seedDayGroup.addSeed(otherSeed);
-                }
-            }
+            createdGroup[day] = true;
+            SeedDayGroup seedDayGroup = SeedDayGroup.create(day, sameMonthSeeds);
             seedDayGroups.add(seedDayGroup);
         }
     }

@@ -27,18 +27,23 @@ public class SeedYearGroup implements Comparable<SeedYearGroup> {
     }
 
     private void setSeedMonthGroups(List<Seed> sameYearSeeds) {
-        for (Month month : Month.values()) {
-            List<Seed> sameMonthSeeds = new ArrayList<>();
-            for (Seed filteredSeed : sameYearSeeds) {
-                if (filteredSeed.getSowingDate().getMonth() == month) {
-                    sameMonthSeeds.add(filteredSeed);
-                }
-            }
-            SeedMonthGroup seedMonthGroup = new SeedMonthGroup(month, sameMonthSeeds);
-            if (!seedMonthGroup.getSeedDayGroups().isEmpty()) {
+        for (Month eachMonth : Month.values()) {
+            List<Seed> sameMonthSeeds = sameMonthSeeds(sameYearSeeds, eachMonth);
+            SeedMonthGroup seedMonthGroup = SeedMonthGroup.create(eachMonth, sameMonthSeeds);
+            if (!seedMonthGroup.isEmptySeedDayGroup()) {
                 seedMonthGroups.add(seedMonthGroup);
             }
         }
+    }
+
+    private List<Seed> sameMonthSeeds(List<Seed> sameYearSeeds, Month eachMonth) {
+        List<Seed> sameMonthSeeds = new ArrayList<>();
+        for (Seed sameYearSeed : sameYearSeeds) {
+            if (sameYearSeed.getSowingDate().getMonth() == eachMonth) {
+                sameMonthSeeds.add(sameYearSeed);
+            }
+        }
+        return sameMonthSeeds;
     }
 
     @Override

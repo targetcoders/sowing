@@ -17,11 +17,18 @@ public class SeedDayGroup implements Comparable<SeedDayGroup> {
     private Integer day;
     private final List<Seed> seeds = new ArrayList<>();
 
-    public static SeedDayGroup create(Integer day) {
-        return new SeedDayGroup(day);
+    public static SeedDayGroup create(Integer day, List<Seed> sameMonthSeeds) {
+        SeedDayGroup result = new SeedDayGroup(day);
+        for (Seed sameMonthSeed : sameMonthSeeds) {
+            int eachDay = sameMonthSeed.getSowingDate().getDayOfMonth();
+            if (day == eachDay) {
+                result.addSeed(sameMonthSeed);
+            }
+        }
+        return result;
     }
 
-    public void addSeed(Seed seed) {
+    private void addSeed(Seed seed) {
         seeds.add(seed);
     }
 
