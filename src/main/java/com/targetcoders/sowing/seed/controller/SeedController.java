@@ -68,7 +68,7 @@ public class SeedController {
         return "seeds/editSeedForm";
     }
 
-    @PostMapping("seeds/{id}/edit")
+    @PostMapping("seeds/edit")
     public String update(Authentication authentication, @ModelAttribute("form") SeedEditDTO seedEditDTO) throws NotFoundException {
         ModelMapper modelMapper = new ModelMapper();
         SeedUpdateDTO seedUpdateDTO = modelMapper.map(seedEditDTO, SeedUpdateDTO.class);

@@ -13,17 +13,17 @@
     <div class="d-flex justify-content-center">
         <h1>시드 수정하기</h1>
     </div>
-    <form role="form" action="/seeds/new/edit" method="post" class="w-100">
+    <form role="form" action="/seeds/edit" method="post" class="w-100">
         <div class="d-flex flex-column justify-content-center align-items-center">
-            <input type="hidden" name="username" th:value="${#authentication.name}"/>
-            <input type="hidden" name="id" th:value="${seedEditFormDto.id}"/>
+            <input type="hidden" name="username" th:value="${#authentication.getName()}"/>
+            <input type="hidden" name="id" th:value="${seedEditFormDto.getId()}"/>
             <div class="form-floating w-75">
                 <input type="date" th:max="${#temporals.createToday()}" id="sowingDate" name="sowingDate" class="form-control" th:value="${seedEditFormDto.sowingDate}"/>
                 <label for="sowingDate">날짜</label>
             </div>
             <div class="form-floating w-75 mt-2">
                 <select id="seed-type" name="seedTypeId" class="form-select">
-                    <option selected th:value="${seedEditFormDto.getSelectedType().getName()}" th:text="${seedEditFormDto.getSelectedType().getName()}"></option>
+                    <option selected th:value="${seedEditFormDto.getSelectedType().getId()}" th:text="${seedEditFormDto.getSelectedType().getName()}"></option>
                     <option th:each="type : ${seedEditFormDto.getTypeList()}"
                             th:if="${!seedEditFormDto.getSelectedType.getName().equals(type.getName())}"
                             th:text="${type.getName()}"
