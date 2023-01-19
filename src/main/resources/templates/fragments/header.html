@@ -6,22 +6,30 @@
     <nav class="navbar navbar-expand-lg bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">Sowing Life Seeds</a>
-            <ul sec:authorize="isAuthenticated()" class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="navbar-item">
-                    <a class="nav-link active" href="/">홈</a>
-                </li>
-                <li class="navbar-item">
-                    <a class="nav-link active" href="/seeds/new">시드 등록하기</a>
-                </li>
-                <li class="navbar-item">
-                    <a class="nav-link active" href="/overview">요약</a>
-                </li>
-                <li class="navbar-item">
-                    <a class="nav-link active" href="/settings">설정</a>
-                </li>
-            </ul>
-            <a sec:authorize="isAnonymous()" class="btn btn-outline-primary" href="/login/google">로그인</a>
-            <a sec:authorize="isAuthenticated()" class="btn btn-outline-secondary" href="/logout">로그아웃</a>
+            <a sec:authorize="isAnonymous()" class="btn btn-outline-primary mb-auto"
+               href="/login/google">로그인</a>
+            <button sec:authorize="isAuthenticated()" class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseContent"
+                    aria-controls="collapseContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div sec:authorize="isAuthenticated()" class="collapse navbar-collapse" id="collapseContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="navbar-item">
+                        <a class="nav-link" aria-current="page" href="/">홈</a>
+                    </li>
+                    <li class="navbar-item">
+                        <a class="nav-link" href="/seeds/new">시드 등록하기</a>
+                    </li>
+                    <li class="navbar-item">
+                        <a class="nav-link" href="/overview">요약</a>
+                    </li>
+                    <li class="navbar-item">
+                        <a class="nav-link" href="/settings">설정</a>
+                    </li>
+                </ul>
+                <a class="btn btn-outline-secondary mb-auto" href="/logout">로그아웃</a>
+            </div>
         </div>
     </nav>
 </header>
