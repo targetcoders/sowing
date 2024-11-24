@@ -5,32 +5,18 @@ import com.targetcoders.sowing.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 @RequiredArgsConstructor
 public class MemberTokenDao {
 
     private final MemberRepository  memberRepository;
 
-    public String findSowingRefreshToken(String email) {
-        List<Member> members = memberRepository.findByUsername(email);
-        if (members.size() != 1) {
-            return "";
-        }
-        return members.get(0).getSowingRefreshToken();
-    }
-    public void updateSowingRefreshToken(String email, String sowingRefreshToken) {
+    public void updateAllTokens(String email, String googleAccessToken, String googleRefreshToken) {
         Member member = memberRepository.findByUsername(email).get(0);
-        member.setSowingRefreshToken(sowingRefreshToken);
-    }
-
-    public void updateAllTokens(String email, String googleAccessToken, String googleRefreshToken, String sowingRefreshToken) {
-        Member member = memberRepository.findByUsername(email).get(0);
-        if (googleRefreshToken != null && !googleRefreshToken.equals("")) {
-            member.getGoogleTokens().setRefreshToken(googleRefreshToken);
+        // refreshToken 은 처음 구글 로그인 할 때만 응답 받으므로 값이 없을 수 있다.
+        if (googleRefreshToken != null && !googleRefreshToken.isEmpty()) {
+            member.getGoogleJwt().setRefreshToken(googleRefreshToken);
         }
-        member.getGoogleTokens().setAccessToken(googleAccessToken);
-        member.setSowingRefreshToken(sowingRefreshToken);
+        member.getGoogleJwt().setAccessToken(googleAccessToken);
     }
 }

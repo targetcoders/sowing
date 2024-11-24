@@ -1,5 +1,6 @@
 package com.targetcoders.sowing.seedtype.domain;
 
+import javax.persistence.GenerationType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,10 +17,10 @@ import javax.persistence.Id;
 public class SeedType {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "seed_type_id")
     private Long id;
-    @Column(nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     public SeedType(String name) {

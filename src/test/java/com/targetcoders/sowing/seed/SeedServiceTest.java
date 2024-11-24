@@ -1,15 +1,21 @@
 package com.targetcoders.sowing.seed;
 
-import com.targetcoders.sowing.member.domain.GoogleTokens;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import com.targetcoders.sowing.member.domain.GoogleJwt;
 import com.targetcoders.sowing.member.domain.Member;
-import com.targetcoders.sowing.seedtype.domain.SeedType;
-import com.targetcoders.sowing.settings.domain.Settings;
-import com.targetcoders.sowing.member.service.MemberService;
+import com.targetcoders.sowing.member.repository.MemberRepository;
 import com.targetcoders.sowing.seed.domain.Seed;
-import com.targetcoders.sowing.seedtype.domain.DefaultSeedType;
 import com.targetcoders.sowing.seed.dto.SeedUpdateDTO;
 import com.targetcoders.sowing.seed.service.SeedService;
+import com.targetcoders.sowing.seedtype.domain.DefaultSeedType;
+import com.targetcoders.sowing.seedtype.domain.SeedType;
 import com.targetcoders.sowing.seedtype.repository.SeedTypeRepository;
+import com.targetcoders.sowing.settings.domain.Settings;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,13 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -33,7 +32,7 @@ class SeedServiceTest {
     @Autowired
     SeedService seedService;
     @Autowired
-    MemberService memberService;
+    MemberRepository memberRepository;
     @Autowired
     SeedTypeRepository seedTypeRepository;
 
@@ -43,6 +42,7 @@ class SeedServiceTest {
     void saveAndFindOne() {
         //given
         Member member = createDefaultMember();
+        memberRepository.save(member);
         Seed seed = Seed.create(new SeedType(DefaultSeedType.PLAY.toString()), member, "제목", "내용", LOCAL_DATE);
 
         //when
@@ -50,7 +50,6 @@ class SeedServiceTest {
 
         //then
         Seed getSeed = seedService.findSeedById(saveId);
-        assertThat(getSeed.getId()).isEqualTo(getSeed.getId());
         assertThat(getSeed.getSeedType().getName()).isEqualTo("PLAY");
         assertThat(getSeed.getTitle()).isEqualTo("제목");
         assertThat(getSeed.getContent()).isEqualTo("내용");
@@ -63,6 +62,7 @@ class SeedServiceTest {
     void updateSeed() {
         //given
         Member member = createDefaultMember();
+        memberRepository.save(member);
         SeedType seedTypePlay = new SeedType(DefaultSeedType.PLAY.toString());
         seedTypeRepository.saveSeedType(seedTypePlay);
         Seed seed = Seed.create(seedTypePlay, member, "제목", "내용", LOCAL_DATE);
@@ -87,6 +87,7 @@ class SeedServiceTest {
     void removeSeed() {
         //given
         Member member = createDefaultMember();
+        memberRepository.save(member);
         Seed seed = Seed.create(new SeedType(DefaultSeedType.PLAY.toString()),member, "제목", "내용", LOCAL_DATE);
         Long saveId = seedService.saveSeed(seed);
         assertThat(seedService.findSeedById(saveId)).isNotNull();
@@ -100,7 +101,7 @@ class SeedServiceTest {
     }
 
     private Member createDefaultMember() {
-        return Member.create("greenneuron", "nickname", new GoogleTokens("accessToken", "refreshToken"), "sowingRefreshToken", LOCAL_DATE, LOCAL_DATE, Settings.create());
+        return Member.create("greenneuron", "nickname", new GoogleJwt("accessToken", "refreshToken"), LOCAL_DATE, LOCAL_DATE, Settings.create());
     }
 
     @Test

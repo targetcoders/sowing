@@ -6,6 +6,7 @@ import com.targetcoders.sowing.authentication.LoginConstants;
 import com.targetcoders.sowing.authentication.dto.GoogleAuthorizationDTO;
 import com.targetcoders.sowing.authentication.dto.GoogleUserInfoDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -16,8 +17,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-@RequiredArgsConstructor
+@Slf4j
 @Component
+@RequiredArgsConstructor
 public class GoogleOauth2ServiceImpl implements GoogleOauth2Service {
 
     @Value("${oauth2.client-secret}")
@@ -39,12 +41,12 @@ public class GoogleOauth2ServiceImpl implements GoogleOauth2Service {
         headers.add("Content-Type", "application/x-www-form-urlencoded");
         HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(params, headers);
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, httpEntity, String.class);
+        log.info(response.toString());
 
         return objectMapper.readValue(response.getBody(), GoogleAuthorizationDTO.class);
     }
 
     public GoogleUserInfoDTO googleUserInfo(String accessToken) throws JsonProcessingException {
-        System.out.println("LoginService.googleUserInfo");
         String url = "https://www.googleapis.com/oauth2/v1/userinfo";
 
         HttpHeaders headers = new HttpHeaders();

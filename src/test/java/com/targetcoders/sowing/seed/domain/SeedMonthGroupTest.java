@@ -1,6 +1,6 @@
 package com.targetcoders.sowing.seed.domain;
 
-import com.targetcoders.sowing.member.domain.GoogleTokens;
+import com.targetcoders.sowing.member.domain.GoogleJwt;
 import com.targetcoders.sowing.member.domain.Member;
 import com.targetcoders.sowing.seedtype.domain.SeedType;
 import com.targetcoders.sowing.settings.domain.Settings;
@@ -26,7 +26,7 @@ class SeedMonthGroupTest {
         LocalDate dateTime2 = LocalDate.of(2022, 12, 9);
         LocalDate dateTime3 = LocalDate.of(2022, 12, 9);
         LocalDate dateTime4 = LocalDate.of(2022, 12, 31);
-        Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"),"sowingRefreshToken", dateTime1, dateTime1, Settings.create());
+        Member member = Member.create("greenneuron", "nickname", new GoogleJwt("accessToken","refreshToken"), dateTime1, dateTime1, Settings.create());
         Seed seed1 = Seed.create(new SeedType(DefaultSeedType.PLAY.toString()), member, "제목1", "내용1", dateTime1);
         Seed seed2 = Seed.create(new SeedType(DefaultSeedType.READ.toString()), member, "제목2", "내용2", dateTime2);
         Seed seed3 = Seed.create(new SeedType(DefaultSeedType.STUDY.toString()), member, "제목3", "내용3", dateTime3);

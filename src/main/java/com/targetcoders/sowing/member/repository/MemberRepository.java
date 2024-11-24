@@ -33,7 +33,9 @@ public class MemberRepository {
     }
     @SuppressWarnings("unchecked")
     public List<Member> findByUsername(String memberUsername) {
-        return em.createQuery("select m from Member m where m.username = :userName")
+        return em.createQuery("select m from Member m "
+                + "join fetch m.googleJwt "
+                + "where m.username = :userName")
                 .setParameter("userName", memberUsername)
                 .getResultList();
     }

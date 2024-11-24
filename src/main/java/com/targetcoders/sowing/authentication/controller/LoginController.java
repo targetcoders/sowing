@@ -2,18 +2,18 @@ package com.targetcoders.sowing.authentication.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.targetcoders.sowing.authentication.LoginConstants;
-import com.targetcoders.sowing.authentication.domain.JwtToken;
 import com.targetcoders.sowing.authentication.dto.GoogleUserInfoDTO;
 import com.targetcoders.sowing.authentication.service.GoogleLoginService;
-import com.targetcoders.sowing.authentication.service.HeaderSetService;
-import com.targetcoders.sowing.authentication.service.JwtTokenService;
+import com.targetcoders.sowing.authentication.service.SessionService;
 import com.targetcoders.sowing.authentication.service.TokenUpdateService;
-import com.targetcoders.sowing.member.domain.GoogleTokens;
+import com.targetcoders.sowing.member.domain.GoogleJwt;
 import com.targetcoders.sowing.member.domain.Member;
-import com.targetcoders.sowing.member.domain.MemberRole;
 import com.targetcoders.sowing.member.dto.CreateMemberDTO;
 import com.targetcoders.sowing.member.service.MemberService;
+import java.util.UUID;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -21,8 +21,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletResponse;
-
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -30,9 +29,8 @@ public class LoginController {
 
     private final GoogleLoginService googleLoginService;
     private final MemberService memberService;
-    private final JwtTokenService jwtTokenService;
     private final TokenUpdateService tokenUpdateService;
-    private final HeaderSetService headerSetService;
+    private final SessionService sessionService;
 
     @GetMapping("/login/google")
     public String login(Authentication authentication) {
@@ -50,22 +48,23 @@ public class LoginController {
 
     @GetMapping("/login/google/callback")
     public String loginCallback(@RequestParam("code") String code, @RequestParam("scope") String scope, HttpServletResponse response) throws JsonProcessingException {
-        System.out.println("code = " + code + ", scope = " + scope);
-        GoogleTokens oauthGoogleTokens = googleLoginService.googleTokens(code);
-        GoogleUserInfoDTO googleUserInfoDTO = googleLoginService.googleUserInfo(oauthGoogleTokens.getAccessToken());
+        log.info("loginCallback > code = {}, scope = {}", code, scope);
+        GoogleJwt oauthGoogleJwt = googleLoginService.googleLogin(code);
+        GoogleUserInfoDTO googleUserInfoDTO = googleLoginService.googleUserInfo(oauthGoogleJwt.getAccessToken());
 
         String email = googleUserInfoDTO.getEmail();
-        JwtToken sowingRefreshToken = jwtTokenService.createRefreshToken(email, MemberRole.ROLE_USER);
         Member member = memberService.findMemberByUsername(email);
         if (member != null) {
-            tokenUpdateService.updateAllTokens(email, oauthGoogleTokens.getAccessToken(), oauthGoogleTokens.getRefreshToken(), sowingRefreshToken);
+            tokenUpdateService.updateAllTokens(email, oauthGoogleJwt.getAccessToken(), oauthGoogleJwt.getRefreshToken());
         } else {
-            CreateMemberDTO createMemberDTO = new CreateMemberDTO(googleUserInfoDTO.getEmail(), googleUserInfoDTO.getName(), oauthGoogleTokens.getAccessToken(), oauthGoogleTokens.getRefreshToken(), sowingRefreshToken);
+            CreateMemberDTO createMemberDTO = new CreateMemberDTO(googleUserInfoDTO.getEmail(), googleUserInfoDTO.getName(), oauthGoogleJwt.getAccessToken(), oauthGoogleJwt.getRefreshToken());
             memberService.saveMember(createMemberDTO);
         }
+        UUID uuid = UUID.randomUUID();
+        sessionService.putUsername(uuid.toString(), email);
+        response.setHeader("Set-Cookie", "JSESSIONID=" + uuid + "; Path=/;");
 
-        JwtToken sowingAccessToken = jwtTokenService.createAccessToken(email, MemberRole.ROLE_USER, sowingRefreshToken);
-        headerSetService.setAccessTokenCookie(response, sowingAccessToken.toString());
+        log.info("redirect:/ after login callback");
         return "redirect:/";
     }
 
@@ -73,8 +72,7 @@ public class LoginController {
     public String logout(Authentication authentication, HttpServletResponse response) {
         if (authentication.isAuthenticated()) {
             SecurityContextHolder.getContext().setAuthentication(null);
-            tokenUpdateService.updateSowingRefreshToken(authentication.getName(), "");
-            headerSetService.removeAccessTokenCookie(response);
+            response.setHeader("Set-Cookie", "JSESSIONID=" + "; Max-Age=" + 0 + "; Path=/;");
         }
         return "redirect:/";
     }

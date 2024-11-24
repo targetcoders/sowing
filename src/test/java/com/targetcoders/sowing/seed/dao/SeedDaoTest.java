@@ -1,13 +1,17 @@
 package com.targetcoders.sowing.seed.dao;
 
-import com.targetcoders.sowing.authentication.domain.JwtToken;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.targetcoders.sowing.member.domain.Member;
-import com.targetcoders.sowing.seedtype.domain.SeedType;
 import com.targetcoders.sowing.member.dto.CreateMemberDTO;
 import com.targetcoders.sowing.member.service.MemberService;
-import com.targetcoders.sowing.seedtype.domain.DefaultSeedType;
 import com.targetcoders.sowing.seed.domain.Seed;
+import com.targetcoders.sowing.seedtype.domain.DefaultSeedType;
+import com.targetcoders.sowing.seedtype.domain.SeedType;
 import com.targetcoders.sowing.seedtype.repository.SeedTypeRepository;
+import java.time.LocalDate;
+import java.util.List;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,12 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import java.time.LocalDate;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -37,7 +35,7 @@ public class SeedDaoTest {
     void saveAndFind() {
         //given
         LocalDate now = LocalDate.now();
-        CreateMemberDTO createMemberDTO = new CreateMemberDTO("greenneuron@naver.com", "nickname", "accessToken", "refreshToken", invalidJwtToken());
+        CreateMemberDTO createMemberDTO = new CreateMemberDTO("greenneuron@naver.com", "nickname", "accessToken", "refreshToken");
         Member saveMember = memberService.saveMember(createMemberDTO);
         SeedType seedType = new SeedType(DefaultSeedType.STUDY.toString());
         seedTypeRepository.saveSeedType(seedType);
@@ -56,8 +54,5 @@ public class SeedDaoTest {
         List<Seed> seeds = seedDao.findYearSeeds(now.getYear(), "greenneuron@naver.com");
         assertThat(seeds.size()).isEqualTo(3);
     }
-
-    private JwtToken invalidJwtToken() {
-        return new JwtToken("a.b.c");
-    }
 }
+

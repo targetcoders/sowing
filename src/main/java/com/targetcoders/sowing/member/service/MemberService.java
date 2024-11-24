@@ -2,7 +2,7 @@ package com.targetcoders.sowing.member.service;
 
 import com.targetcoders.sowing.member.dao.MemberDao;
 import com.targetcoders.sowing.settings.dao.SettingsDao;
-import com.targetcoders.sowing.member.domain.GoogleTokens;
+import com.targetcoders.sowing.member.domain.GoogleJwt;
 import com.targetcoders.sowing.member.domain.Member;
 import com.targetcoders.sowing.settings.domain.Settings;
 import com.targetcoders.sowing.member.dto.CreateMemberDTO;
@@ -28,11 +28,11 @@ public class MemberService {
     public Member saveMember(CreateMemberDTO createMemberDTO) {
         String accessToken = createMemberDTO.getGoogleAccessToken();
         String refreshToken = createMemberDTO.getGoogleRefreshToken();
-        String sowingRefreshToken = createMemberDTO.getSowingRefreshToken().toString();
         LocalDate now = localDateTime.now();
-        GoogleTokens googleTokens = new GoogleTokens(accessToken, refreshToken);
+        GoogleJwt googleJwt = new GoogleJwt(accessToken, refreshToken);
         Settings settings = settingsDao.saveSettings(Settings.create());
-        Member member = Member.create(createMemberDTO.getEmail(), createMemberDTO.getNickname(), googleTokens, sowingRefreshToken, now, now, settings);
+        Member member = Member.create(createMemberDTO.getEmail(), createMemberDTO.getNickname(),
+            googleJwt, now, now, settings);
         memberDao.save(member);
         return member;
     }

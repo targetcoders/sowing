@@ -1,12 +1,12 @@
 package com.targetcoders.sowing.member;
 
-import com.targetcoders.sowing.authentication.domain.JwtToken;
-import com.targetcoders.sowing.authentication.service.JwtTokenService;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.targetcoders.sowing.member.domain.Member;
 import com.targetcoders.sowing.member.dto.CreateMemberDTO;
 import com.targetcoders.sowing.member.dto.UpdateMemberDTO;
 import com.targetcoders.sowing.member.service.MemberService;
-import com.targetcoders.sowing.seed.dao.SeedDao;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,28 +15,20 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 class MemberTest {
 
     @Autowired MemberService memberService;
-    @Autowired SeedDao seedDao;
-    @Autowired EntityManager em;
-    @Autowired JwtTokenService jwtTokenService;
 
     @Test
     @DisplayName("모든 멤버 조회")
     @Transactional
     void findAll() {
         //given
-        CreateMemberDTO createMemberDTO1 = new CreateMemberDTO("greenneuron", "nickname", "accessToken", "refreshToken", invalidJwtToken());
+        CreateMemberDTO createMemberDTO1 = new CreateMemberDTO("greenneuron", "nickname", "accessToken", "refreshToken");
         memberService.saveMember(createMemberDTO1);
-        CreateMemberDTO createMemberDTO2 = new CreateMemberDTO("greenneuron2", "nickname2", "accessToken2", "refreshToken", invalidJwtToken());
+        CreateMemberDTO createMemberDTO2 = new CreateMemberDTO("greenneuron2", "nickname2", "accessToken2", "refreshToken");
         memberService.saveMember(createMemberDTO2);
 
         //when
@@ -51,7 +43,7 @@ class MemberTest {
     @Transactional
     public void remove() {
         //given
-        CreateMemberDTO createMemberDTO1 = new CreateMemberDTO("greenneuron", "nickname", "accessToken", "refreshToken", invalidJwtToken());
+        CreateMemberDTO createMemberDTO1 = new CreateMemberDTO("greenneuron", "nickname", "accessToken", "refreshToken");
         Member saveMember = memberService.saveMember(createMemberDTO1);
 
         //when
@@ -67,7 +59,7 @@ class MemberTest {
     @Transactional
     public void update() {
         //given
-        CreateMemberDTO createMemberDTO1 = new CreateMemberDTO("greenneuron", "nickname",  "accessToken", "refreshToken", invalidJwtToken());
+        CreateMemberDTO createMemberDTO1 = new CreateMemberDTO("greenneuron", "nickname",  "accessToken", "refreshToken");
         Member saveMember = memberService.saveMember(createMemberDTO1);
         UpdateMemberDTO updateMemberDTO = new UpdateMemberDTO();
         updateMemberDTO.setId(saveMember.getId());
@@ -82,9 +74,4 @@ class MemberTest {
         assertThat(findMember.getUsername()).isEqualTo("변경된 이름");
         assertThat(findMember.getNickname()).isEqualTo("변경된 닉네임");
     }
-
-    private JwtToken invalidJwtToken() {
-        return new JwtToken("a.b.c");
-    }
-
 }

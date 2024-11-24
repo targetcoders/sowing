@@ -1,6 +1,6 @@
 package com.targetcoders.sowing.seed.service;
 
-import com.targetcoders.sowing.member.domain.GoogleTokens;
+import com.targetcoders.sowing.member.domain.GoogleJwt;
 import com.targetcoders.sowing.member.domain.Member;
 import com.targetcoders.sowing.seedtype.domain.SeedType;
 import com.targetcoders.sowing.settings.domain.Settings;
@@ -54,7 +54,7 @@ class SeedGroupServiceTest {
 
         Settings settings = Settings.create();
         settingsRepository.saveSettings(settings);
-        Member member = Member.create("greenneuron", "nickname", new GoogleTokens("accessToken","refreshToken"),"sowingRefreshToken", date1, date1, settings);
+        Member member = Member.create("greenneuron", "nickname", new GoogleJwt("accessToken","refreshToken"), date1, date1, settings);
         memberRepository.save(member);
 
         SeedType seedTypePlay = new SeedType(DefaultSeedType.PLAY.toString());

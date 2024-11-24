@@ -14,7 +14,7 @@ public class Settings {
 
     @Id
     @Column(name = "settings_id")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @JoinColumn(name = "settings_id")
